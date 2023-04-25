@@ -10,7 +10,6 @@ router.get("/", async (req, res, next) => {
   try {
     let results = await Cart.find()
       .populate("customer")
-      .populate("product")
       .lean({ virtuals: true });
 
     res.json(results);

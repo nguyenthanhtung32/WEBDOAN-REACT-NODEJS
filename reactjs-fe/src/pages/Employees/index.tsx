@@ -163,7 +163,7 @@ export default function Employees() {
     <div style={{ padding: 24 }}>
       {/* TABLE */}
       <Table
-        rowKey="id"
+        rowKey="_id"
         dataSource={employees}
         columns={columns}
         pagination={{

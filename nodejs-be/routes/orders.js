@@ -1,17 +1,17 @@
 const yup = require("yup");
 const express = require("express");
 const router = express.Router();
-const { Order } = require("../models");
+const { Order } = require("../models/index");
 const ObjectId = require("mongodb").ObjectId;
 
 // Methods: POST / PATCH / GET / DELETE / PUT
 // Get all
 router.get("/", async (req, res, next) => {
   try {
-    let results = await Order.find()
-      .populate("customer")
-      .populate("employee")
-      .populate("product")
+    const conditionFind = {};
+    let results = await Order.find(conditionFind)
+      .populate('customer')
+      .populate('employee')
       .lean({ virtuals: true });
 
     res.json(results);
@@ -97,6 +97,7 @@ router.post("/", function (req, res, next) {
       });
     });
 });
+
 router.delete("/:id", function (req, res, next) {
   const validationSchema = yup.object().shape({
     params: yup.object({
@@ -134,5 +135,17 @@ router.delete("/:id", function (req, res, next) {
       });
     });
 });
+
+router.patch("/:id", async function (req, res, next) {
+    try {
+      const id = req.params.id;
+      const patchData = req.body;
+      await Order.findByIdAndUpdate(id, patchData);
+  
+      res.send({ ok: true, message: "Updated" });
+    } catch (error) {
+      res.status(500).send({ ok: false, error });
+    }
+  });
 
 module.exports = router;

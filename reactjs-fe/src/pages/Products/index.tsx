@@ -61,6 +61,7 @@ export default function Products() {
   const create = () => {
     navigate("/product");
   };
+
   const onChangeFilter = useCallback((e: any) => {
     setFilter((prevState: any) => ({
       ...prevState,
@@ -427,7 +428,7 @@ export default function Products() {
       <div>
         <Table
           className={Styles.table}
-          rowKey="id"
+          rowKey="_id"
           dataSource={products}
           columns={columns}
           pagination={{

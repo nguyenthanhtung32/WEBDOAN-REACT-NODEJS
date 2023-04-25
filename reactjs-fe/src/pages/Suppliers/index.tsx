@@ -153,7 +153,7 @@ export default function Suppliers() {
     <div style={{ padding: 24 }}>
       {/* TABLE */}
       <Table
-        rowKey="id"
+        rowKey="_id"
         dataSource={suppliers}
         columns={columns}
         pagination={{
