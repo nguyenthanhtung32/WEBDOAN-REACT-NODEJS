@@ -149,7 +149,7 @@ export default function Categories() {
     <div style={{ padding: 24 }}>
       {/* TABLE */}
       <Table
-        rowKey="id"
+        rowKey="_id"
         dataSource={categories}
         columns={columns}
         pagination={{

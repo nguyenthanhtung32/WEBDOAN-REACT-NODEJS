@@ -1,7 +1,2 @@
-DELETE  http://localhost:9000/categories/6447752392520b7b15604e9f HTTP/1.1
+GET  http://localhost:9000/orders/641c39d738e188221207fe25 HTTP/1.1
 content-type: application/json
-
-{
-    "name": "Iphon1e",
-    "description": "dt"
-}
