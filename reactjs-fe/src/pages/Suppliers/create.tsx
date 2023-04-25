@@ -19,7 +19,6 @@ export default function Suppliers() {
       .then((response) => {
         const { data } = response;
         setSuppliers(data);
-        console.log(data);
       })
       .catch((err) => {
         console.error(err);

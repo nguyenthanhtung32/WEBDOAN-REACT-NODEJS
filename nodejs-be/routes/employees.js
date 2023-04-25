@@ -4,11 +4,8 @@ const express = require("express");
 const { CONNECTION_STRING } = require("../constants/dbSettings");
 const { default: mongoose } = require("mongoose");
 const { Employee } = require("../models");
-const {
-  validateSchema,
-  loginSchema,
-  categorySchema,
-} = require("../validation/employees");
+const { validateSchema, getEmployeeSchema } = require("../validation/employees");
+const { loginSchema } = require("../validation/login");
 const encodeToken = require("../helpers/jwtHelper");
 
 // MONGOOSE
@@ -17,26 +14,29 @@ mongoose.connect(CONNECTION_STRING);
 
 const router = express.Router();
 
-// router.post('/login', async (req, res, next) => {
-//   try {
-//       const employee = await Employee.findOne({
-//           email: req.body.email,
-//          /*  firstName: req.body.firstName, */
-//       })
-
-//       console.log(employee)
-
-//       if (!employee) return res.status(404).send("khong tim thay");
-
-//       const token = encodeToken(employee._id, employee.email, employee.birthday)
-
-//       res.send({
-//           token
-//       })
-//   } catch {
-//       res.send('errr')
-//   }
-// });
+router.get("/", validateSchema(getEmployeeSchema), async (req, res, next) => {
+    try {
+      const { limit, skip } = req.query;
+  
+      const conditionFind = {};
+  
+      let results = await Employee.find(conditionFind)
+        .skip(skip)
+        .limit(limit)
+        .lean({ virtuals: true });
+  
+      const totalResults = await Employee.countDocuments(conditionFind);
+  
+      res.json({
+        payload: results,
+        total: totalResults,
+      });
+  
+    } catch (error) {
+      console.log("error", error);
+      res.status(500).json({ ok: false, error });
+    }
+  });
 
 router.post(
   "/login",

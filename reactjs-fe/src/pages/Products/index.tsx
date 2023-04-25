@@ -68,8 +68,6 @@ export default function Products() {
     }));
   }, []);
 
-  console.log("««««« filter »»»»»", filter);
-
   const callApi = useCallback((searchParams: any) => {
     axios
       .get(`${apiName}?${searchParams}`)
@@ -429,7 +427,7 @@ export default function Products() {
       <div>
         <Table
           className={Styles.table}
-          rowKey="id"
+          rowKey="_id"
           dataSource={products}
           columns={columns}
           pagination={{

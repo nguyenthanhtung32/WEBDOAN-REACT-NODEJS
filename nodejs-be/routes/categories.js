@@ -5,21 +5,36 @@ const { Category } = require("../models");
 const ObjectId = require("mongodb").ObjectId;
 const {
   validateSchema,
-  getCategoryIdSchema,
+  getCategorySchema,
 } = require("../validation/categories");
+const { getIdSchema } = require("../validation/getId");
 
 // Methods: POST / PATCH / GET / DELETE / PUT
 // Get all
-router.get("/", async (req, res, next) => {
+router.get("/", validateSchema(getCategorySchema), async (req, res, next) => {
   try {
-    let results = await Category.find();
-    res.send(results);
-  } catch (err) {
-    res.sendStatus(500);
+    const { limit, skip } = req.query;
+
+    const conditionFind = {};
+
+    let results = await Category.find(conditionFind)
+      .skip(skip)
+      .limit(limit)
+      .lean({ virtuals: true });
+
+    const totalResults = await Category.countDocuments(conditionFind);
+
+    res.json({
+      payload: results,
+      total: totalResults,
+    });
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ ok: false, error });
   }
 });
 
-router.get("/:id", validateSchema(getCategoryIdSchema), async (req, res, next) => {
+router.get("/:id", validateSchema(getIdSchema), async (req, res, next) => {
   // Validate
   try {
     const { id } = req.params.id;
@@ -38,7 +53,6 @@ router.get("/:id", validateSchema(getCategoryIdSchema), async (req, res, next) =
     });
   }
 });
-
 
 // Create new data
 router.post("/", async function (req, res, next) {
@@ -75,9 +89,11 @@ router.post("/", async function (req, res, next) {
 router.delete("/:id", function (req, res, next) {
   const validationSchema = yup.object().shape({
     params: yup.object({
-      id: yup.string().test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
-        return ObjectId.isValid(value);
-      }),
+      id: yup
+        .string()
+        .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
+          return ObjectId.isValid(value);
+        }),
     }),
   });
 
@@ -99,14 +115,12 @@ router.delete("/:id", function (req, res, next) {
       }
     })
     .catch((err) => {
-      return res
-        .status(400)
-        .json({
-          type: err.name,
-          errors: err.errors,
-          message: err.message,
-          provider: "yup",
-        });
+      return res.status(400).json({
+        type: err.name,
+        errors: err.errors,
+        message: err.message,
+        provider: "yup",
+      });
     });
 });
 

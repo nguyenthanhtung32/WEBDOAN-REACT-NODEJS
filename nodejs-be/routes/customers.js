@@ -1,27 +1,45 @@
-const yup = require('yup');
-const express = require('express');
+const yup = require("yup");
+const express = require("express");
 const router = express.Router();
-const { Customer } = require('../models');
-const ObjectId = require('mongodb').ObjectId;
+const { Customer } = require("../models");
+const ObjectId = require("mongodb").ObjectId;
+const { validateSchema, getCustomerSchema } = require("../validation/customers");
 
 // Methods: POST / PATCH / GET / DELETE / PUT
 // Get all
-router.get('/', async (req, res, next) => {
+router.get("/", validateSchema(getCustomerSchema), async (req, res, next) => {
   try {
-    let results = await Customer.find();
-    res.send(results);
-  } catch (err) {
-    res.sendStatus(500);
+    const { limit, skip } = req.query;
+
+    const conditionFind = {};
+
+    let results = await Customer.find(conditionFind)
+      .skip(skip)
+      .limit(limit)
+      .lean({ virtuals: true });
+
+    const totalResults = await Customer.countDocuments(conditionFind);
+
+    res.json({
+      payload: results,
+      total: totalResults,
+    });
+
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ ok: false, error });
   }
 });
 
-router.get('/:id', async function (req, res, next) {
+router.get("/:id", async function (req, res, next) {
   // Validate
   const validationSchema = yup.object().shape({
     params: yup.object({
-      id: yup.string().test('Validate ObjectID', '${path} is not valid ObjectID', (value) => {
-        return ObjectId.isValid(value);
-      }),
+      id: yup
+        .string()
+        .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
+          return ObjectId.isValid(value);
+        }),
     }),
   });
 
@@ -36,15 +54,22 @@ router.get('/:id', async function (req, res, next) {
         return res.send({ ok: true, result: found });
       }
 
-      return res.send({ ok: false, message: 'Object not found' });
+      return res.send({ ok: false, message: "Object not found" });
     })
     .catch((err) => {
-      return res.status(400).json({ type: err.name, errors: err.errors, message: err.message, provider: 'yup' });
+      return res
+        .status(400)
+        .json({
+          type: err.name,
+          errors: err.errors,
+          message: err.message,
+          provider: "yup",
+        });
     });
 });
 
 // Create new data
-router.post('/', async function (req, res, next) {
+router.post("/", async function (req, res, next) {
   // Validate
   const validationSchema = yup.object({
     body: yup.object({
@@ -65,24 +90,28 @@ router.post('/', async function (req, res, next) {
         const newItem = new Customer(data);
         let result = await newItem.save();
 
-        return res.send({ ok: true, message: 'Created', result });
+        return res.send({ ok: true, message: "Created", result });
       } catch (err) {
         return res.status(500).json({ error: err });
       }
     })
     .catch((err) => {
-      return res.status(400).json({ type: err.name, errors: err.errors, provider: 'yup' });
+      return res
+        .status(400)
+        .json({ type: err.name, errors: err.errors, provider: "yup" });
     });
 });
 
 // ------------------------------------------------------------------------------------------------
 // Delete data
-router.delete('/:id', function (req, res, next) {
+router.delete("/:id", function (req, res, next) {
   const validationSchema = yup.object().shape({
     params: yup.object({
-      id: yup.string().test('Validate ObjectID', '${path} is not valid ObjectID', (value) => {
-        return ObjectId.isValid(value);
-      }),
+      id: yup
+        .string()
+        .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
+          return ObjectId.isValid(value);
+        }),
     }),
   });
 
@@ -98,26 +127,33 @@ router.delete('/:id', function (req, res, next) {
           return res.send({ ok: true, result: found });
         }
 
-        return res.status(410).send({ ok: false, message: 'Object not found' });
+        return res.status(410).send({ ok: false, message: "Object not found" });
       } catch (err) {
         return res.status(500).json({ error: err });
       }
     })
     .catch((err) => {
-      return res.status(400).json({ type: err.name, errors: err.errors, message: err.message, provider: 'yup' });
+      return res
+        .status(400)
+        .json({
+          type: err.name,
+          errors: err.errors,
+          message: err.message,
+          provider: "yup",
+        });
     });
 });
 
-router.patch('/:id', async function (req, res, next) {
-  try {
-    const id = req.params.id;
-    const patchData = req.body;
-    await Customer.findByIdAndUpdate(id, patchData);
-
-    res.send({ ok: true, message: 'Updated' });
-  } catch (error) {
-    res.status(500).send({ ok: false, error });
-  }
-});
+router.patch("/:id", async function (req, res, next) {
+    try {
+      const id = req.params._id;
+      const patchData = req.body;
+      await Customer.findByIdAndUpdate(id, patchData);
+  
+      res.send({ ok: true, message: "Updated" });
+    } catch (error) {
+      res.status(500).send({ ok: false, error });
+    }
+  });
 
 module.exports = router;

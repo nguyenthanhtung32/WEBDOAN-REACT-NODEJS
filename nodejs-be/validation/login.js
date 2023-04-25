@@ -1,5 +1,5 @@
 const yup = require("yup");
-const ObjectId = require("mongodb").ObjectId;
+//const ObjectId = require('mongodb').ObjectId;
 
 const validateSchema = (schema) => async (req, res, next) => {
   try {
@@ -14,14 +14,15 @@ const validateSchema = (schema) => async (req, res, next) => {
   }
 };
 
-const getCategorySchema = yup.object({
-  query: yup.object({
-    skip: yup.number(),
-    limit: yup.number(),
+const loginSchema = yup.object({
+  body: yup.object({
+    email: yup.string().email().required(),
+    password: yup.string().min(3).max(31).required(),
   }),
+  params: yup.object({}),
 });
 
 module.exports = {
   validateSchema,
-  getCategorySchema,
+  loginSchema,
 };

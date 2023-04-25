@@ -14,14 +14,17 @@ const validateSchema = (schema) => async (req, res, next) => {
   }
 };
 
-const getCategorySchema = yup.object({
-  query: yup.object({
-    skip: yup.number(),
-    limit: yup.number(),
+const getIdSchema = yup.object({
+  params: yup.object({
+    id: yup
+      .string()
+      .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
+        return ObjectId.isValid(value);
+      }),
   }),
 });
 
 module.exports = {
   validateSchema,
-  getCategorySchema,
+  getIdSchema,
 };

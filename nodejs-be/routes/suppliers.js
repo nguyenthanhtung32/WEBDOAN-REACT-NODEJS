@@ -5,22 +5,38 @@ const { Supplier } = require('../models');
 const ObjectId = require('mongodb').ObjectId;
 const {
   validateSchema,
-  getSupplierIdSchema,
+  getSupplierSchema,
   getSupplierBodySchema
 } = require("../validation/suppliers");
+const { getIdSchema } = require("../validation/getId");
 
 // Methods: POST / PATCH / GET / DELETE / PUT
 // Get all
-router.get('/', async (req, res, next) => {
-  try {
-    let results = await Supplier.find();
-    res.send(results);
-  } catch (err) {
-    res.sendStatus(500);
-  }
-});
+router.get("/", validateSchema(getSupplierSchema), async (req, res, next) => {
+    try {
+      const { limit, skip } = req.query;
+  
+      const conditionFind = {};
+  
+      let results = await Supplier.find(conditionFind)
+        .skip(skip)
+        .limit(limit)
+        .lean({ virtuals: true });
+  
+      const totalResults = await Supplier.countDocuments(conditionFind);
+  
+      res.json({
+        payload: results,
+        total: totalResults,
+      });
+  
+    } catch (error) {
+      console.log("error", error);
+      res.status(500).json({ ok: false, error });
+    }
+  });
 
-router.get("/:id", validateSchema(getSupplierIdSchema), async (req, res, next) => {
+router.get("/:id", validateSchema( getIdSchema), async (req, res, next) => {
   // Validate
   try {
     const { id } = req.params.id;
@@ -50,12 +66,11 @@ router.post("/", validateSchema(getSupplierBodySchema), async function (req, res
   } catch (error) {
     return res.status(500).json({ error: error });
   }
-}
-);
+});
 
 // ------------------------------------------------------------------------------------------------
 // Delete data
-router.delete("/:id", validateSchema(getSupplierIdSchema), async function (req, res, next) {
+router.delete("/:id", validateSchema(getIdSchema), async function (req, res, next) {
   try {
     const itemId = req.params.id;
 
@@ -71,7 +86,7 @@ router.delete("/:id", validateSchema(getSupplierIdSchema), async function (req, 
 }
 );
 
-router.patch('/:id', validateSchema(getSupplierIdSchema), async function (req, res, next) {
+router.patch('/:id', validateSchema(getIdSchema), async function (req, res, next) {
   try {
     const id = req.params.id;
     const patchData = req.body;
