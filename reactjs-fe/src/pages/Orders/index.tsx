@@ -10,61 +10,31 @@ import { useNavigate } from "react-router-dom";
 
 import type { ColumnsType } from "antd/es/table";
 
-const apiName = "/categories";
+const apiName = "/orders";
 
-export default function Categories() {
-  const [categories, setCategories] = React.useState<any[]>([]);
+export default function Orders() {
+  const [orders, setOrders] = React.useState<any[]>([]);
+  const [employees, setEmployees] = React.useState<any[]>([]);
+  const [customers, setCustomers] = React.useState<any[]>([]);
 
   const [refresh, setRefresh] = React.useState<number>(0);
   const [open, setOpen] = React.useState<boolean>(false);
   const [updateId, setUpdateId] = React.useState<number>(0);
 
-  const [currentPage, setCurrentPage] = React.useState<number>(1);
-  const [pageSize, setPageSize] = React.useState<number>(10);
-  const [totalResults, setTotalResults] = React.useState<number | undefined>();
-
-  const [deleteCategoryId, setDeleteCategoryId] = React.useState<number>(0);
+  const [deleteOrderId, setOrderId] = React.useState<number>(0);
   const [showDeleteConfirm, setShowDeleteConfirm] =
     React.useState<boolean>(false);
 
   const [updateForm] = Form.useForm();
-  const navigate = useNavigate();
-  const create = () => {
-    navigate("/category");
-  };
-
-  const callApi = useCallback((searchParams: any) => {
-    axios
-      .get(`${apiName}?${searchParams}`)
-      .then((response) => {
-        const { data } = response;
-        setCategories(data.payload);
-        setTotalResults(data.total);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
-  React.useEffect(() => {
-    let filters: {
-      skip: any;
-      limit: any;
-    } = {
-      skip: (currentPage - 1) * pageSize,
-      limit: pageSize,
-    };
-    callApi(filters);
-  }, [callApi, currentPage, pageSize]);
 
   // Hàm hiển thị xác nhận xóa
-  const showConfirmDelete = (CategoryId: number) => {
-    setDeleteCategoryId(CategoryId);
+  const showConfirmDelete = (orderId: number) => {
+    setOrderId(orderId);
     setShowDeleteConfirm(true);
   };
   // Hàm xóa sản phẩm
-  const handleDeleteCategory = () => {
-    axios.delete(apiName + "/" + deleteCategoryId).then((response) => {
+  const handleDeleteProduct = () => {
+    axios.delete(apiName + "/" + deleteOrderId).then((response) => {
       setRefresh((f) => f + 1);
       message.success("Xóa sản phẩm thành công!", 1.5);
       setShowDeleteConfirm(false);
@@ -76,7 +46,7 @@ export default function Categories() {
     <Modal
       title="Xóa sản phẩm"
       open={showDeleteConfirm}
-      onOk={handleDeleteCategory}
+      onOk={handleDeleteProduct}
       onCancel={() => setShowDeleteConfirm(false)}
       okText="Xóa"
       cancelText="Hủy"
@@ -88,8 +58,8 @@ export default function Categories() {
   const columns: ColumnsType<any> = [
     {
       title: "Id",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "_id",
+      key: "_id",
       width: "1%",
       align: "right",
       render: (text, record, index) => {
@@ -97,9 +67,27 @@ export default function Categories() {
       },
     },
     {
-      title: "Tên danh mục",
-      dataIndex: "name",
-      key: "name",
+      title: "Tên khách hàng",
+      dataIndex: "customer.name",
+      key: "customer.name",
+      render: (text, record, index) => {
+        const fullNameCustomer = `${record.customer.lastName}, ${record.customer.firstName}`;
+        return <span>{fullNameCustomer}</span>;
+      },
+    },
+    {
+      title: "Tên nhân viên",
+      dataIndex: "employees.name",
+      key: "employees.name",
+      render: (text, record, index) => {
+        const fullNameEmployee = `${record?.employee?.lastName}, ${record?.employee?.firstName}`;
+        return <span>{fullNameEmployee}</span>;
+      },
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
       render: (text, record, index) => {
         return <strong style={{ color: "#6c5ce7" }}>{text}</strong>;
       },
@@ -109,8 +97,18 @@ export default function Categories() {
       dataIndex: "description",
       key: "description",
     },
-
     {
+      title: "Địa chỉ giao hàng",
+      dataIndex: "shippingAddress",
+      key: "shippingAddress",
+    },
+    {
+      title: "Hình thức thanh toán",
+      dataIndex: "paymentType",
+      key: "paymentType",
+    },
+    {
+      title: "Hành động",
       width: "1%",
       render: (text, record, index) => {
         return (
@@ -130,21 +128,17 @@ export default function Categories() {
                 showConfirmDelete(record._id);
               }}
             />
+             <Button
+              icon={<EditOutlined />}
+              onClick={() => {
+                setOpen(true);
+                setUpdateId(record._id);
+                updateForm.setFieldsValue(record);
+              }}
+            />
           </Space>
         );
       },
-      title: (
-        <Button
-          icon={<AppstoreAddOutlined />}
-          style={{
-            marginBottom: "10px",
-            float: "right",
-            border: "1px solid #4096ff",
-            color: "#4096ff",
-          }}
-          onClick={create}
-        ></Button>
-      ),
     },
   ];
 
@@ -154,12 +148,36 @@ export default function Categories() {
       .get(apiName)
       .then((response) => {
         const { data } = response;
-        setCategories(data.payload);
+        setOrders(data);
       })
       .catch((err) => {
         console.error(err);
       });
   }, [refresh]);
+
+  React.useEffect(() => {
+    axios
+      .get("/employees")
+      .then((response) => {
+        const { data } = response;
+        setEmployees(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  React.useEffect(() => {
+    axios
+      .get("/customers")
+      .then((response) => {
+        const { data } = response;
+        setCustomers(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   const onUpdateFinish = (values: any) => {
     axios
@@ -176,19 +194,10 @@ export default function Categories() {
   return (
     <div style={{ padding: 24 }}>
       {/* TABLE */}
-      <Table
-        rowKey="_id"
-        dataSource={categories}
-        columns={columns}
-        pagination={{
-          total: totalResults,
-          current: currentPage,
-          pageSize: pageSize,
-          onChange: (page) => setCurrentPage(page),
-          onShowSizeChange: (_, size) => setPageSize(size),
-        }}
-      />
-      {deleteConfirmModal}
+      <div>
+        <Table rowKey="_id" dataSource={orders} columns={columns} />
+        {deleteConfirmModal}
+      </div>
       <Modal
         open={open}
         title="Cập nhật danh mục"
@@ -212,22 +221,33 @@ export default function Categories() {
             span: 16,
           }}
         >
+          <Form.Item label="Trạng thái" name="status">
+            <Input />
+          </Form.Item>
+
+          <Form.Item label="Mô tả / Ghi chú" name="description">
+            <Input />
+          </Form.Item>
+
           <Form.Item
-            label="Tên danh mục"
-            name="name"
-            hasFeedback
+            label="Địa chỉ giao hàng"
+            name="shippingAddress"
             required={true}
             rules={[
               {
                 required: true,
-                message: "Tên danh mục bắt buộc phải nhập",
+                message: "Bắt buộc phải nhập địa chỉ giao hàng",
               },
             ]}
           >
             <Input />
           </Form.Item>
 
-          <Form.Item label="Mô tả / Ghi chú" name="description">
+          <Form.Item
+            label="Hình thức thanh toán"
+            name="paymentType"
+            required={true}
+          >
             <Input />
           </Form.Item>
         </Form>

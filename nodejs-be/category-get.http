@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 POST http://localhost:9000/carts HTTP/1.1
 content-type: application/json
 
@@ -11,3 +12,7 @@ content-type: application/json
     }
    ]
 }
+=======
+GET  http://localhost:9000/orders/641c39d738e188221207fe25 HTTP/1.1
+content-type: application/json
+>>>>>>> 70fab3849f54f294a0d7e1b112f7eeb411bb3560

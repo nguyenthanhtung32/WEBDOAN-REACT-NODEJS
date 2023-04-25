@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
+
 const orderDetailSchema = new Schema(
   {
     productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
@@ -10,7 +11,6 @@ const orderDetailSchema = new Schema(
   },
   {
     versionKey: false,
-    timestamps: true,
   }
 );
 
@@ -22,9 +22,9 @@ orderDetailSchema.virtual("product", {
   justOne: true,
 });
 
-// Virtuals in console.log()
+// Virtual in console.log()
 orderDetailSchema.set("toObject", { virtuals: true });
-// Virtuals in JSON
+// Virtual in JSON
 orderDetailSchema.set("toJSON", { virtuals: true });
 
 // ------------------------------------------------------------------------------------------------
