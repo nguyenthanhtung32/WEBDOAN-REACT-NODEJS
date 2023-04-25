@@ -4,11 +4,11 @@ const router = express.Router();
 const { Product } = require('../models');
 const ObjectId = require('mongodb').ObjectId;
 
-const { validateSchema, getProductsSchema, } = require('../validation/products');
+const { validateSchema, getProductSchema, } = require('../validation/products');
 
 // Methods: POST / PATCH / GET / DELETE / PUT
 // Get all
-router.get('/', validateSchema(getProductsSchema), async (req, res, next) => {
+router.get('/', validateSchema(getProductSchema), async (req, res, next) => {
   try {
     const { category, supplier, productName, stockStart, stockEnd, priceStart, priceEnd, discountStart, discountEnd, skip, limit } = req.query;
     const conditionFind = {};
@@ -160,12 +160,13 @@ router.delete('/:id', function (req, res, next) {
     });
 });
 
-router.patch('/:id', async function (req, res, next) {
+router.patch("/:id", async function (req, res, next) {
   try {
     const id = req.params.id;
-    const data = req.body;
-    await Product.findByIdAndUpdate(id, data);
-    res.send({ ok: true, message: 'Updated' });
+    const patchData = req.body;
+    await Product.findByIdAndUpdate(id, patchData);
+
+    res.send({ ok: true, message: "Updated" });
   } catch (error) {
     res.status(500).send({ ok: false, error });
   }

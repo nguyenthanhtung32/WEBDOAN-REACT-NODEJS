@@ -3,48 +3,49 @@ const express = require('express');
 const router = express.Router();
 const { Customer } = require('../models');
 const ObjectId = require('mongodb').ObjectId;
+const { validateSchema, getCustomerSchema } = require('../validation/customers');
+const { getIdSchema } = require('../validation/getId');
 
 // Methods: POST / PATCH / GET / DELETE / PUT
 // Get all
-router.get('/', async (req, res, next) => {
+router.get('/', validateSchema(getCustomerSchema), async (req, res, next) => {
   try {
-    let results = await Customer.find();
-    res.send(results);
-  } catch (err) {
-    res.sendStatus(500);
+    const { skip, limit } = req.query;
+
+    const conditionFind = {};
+
+    let results = await Customer.find(conditionFind).skip(skip).limit(limit).lean({ virtuals: true });
+
+    const totalResults = await Customer.countDocuments(conditionFind);
+    res.json({
+      payload: results,
+      total: totalResults,
+    });
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ ok: false, error });
   }
 });
 
-router.get('/:id', async function (req, res, next) {
+router.get("/:id", validateSchema(getIdSchema), async (req, res, next) => {
   // Validate
-  const validationSchema = yup.object().shape({
-    params: yup.object({
-      id: yup.string().test('Validate ObjectID', '${path} is not valid ObjectID', (value) => {
-        return ObjectId.isValid(value);
-      }),
-    }),
-  });
+  try {
+    const { id } = req.params;
 
-  validationSchema
-    .validate({ params: req.params }, { abortEarly: false })
-    .then(async () => {
-      const id = req.params.id;
+    let results = await Customer.findById(id).lean({ virtuals: true });
 
-      let found = await Customer.findById(id);
+    if (results) {
+      return res.send({ ok: true, result: results });
+    }
 
-      if (found) {
-        return res.send({ ok: true, result: found });
-      }
-
-      return res.send({ ok: false, message: 'Object not found' });
-    })
-    .catch((err) => {
-      return res.status(400).json({ type: err.name, errors: err.errors, message: err.message, provider: 'yup' });
-    });
+    return res.send({ ok: false, message: "Object not found" });
+  } catch (err) {
+    return res.status(400).json({ type: err.name, errors: err.errors, message: err.message, provider: 'yup' });
+  }
 });
 
 // Create new data
-router.post('/', async function (req, res, next) {
+router.post("/", async function (req, res, next) {
   // Validate
   const validationSchema = yup.object({
     body: yup.object({
@@ -65,13 +66,15 @@ router.post('/', async function (req, res, next) {
         const newItem = new Customer(data);
         let result = await newItem.save();
 
-        return res.send({ ok: true, message: 'Created', result });
+        return res.send({ ok: true, message: "Created", result });
       } catch (err) {
         return res.status(500).json({ error: err });
       }
     })
     .catch((err) => {
-      return res.status(400).json({ type: err.name, errors: err.errors, provider: 'yup' });
+      return res
+        .status(400)
+        .json({ type: err.name, errors: err.errors, provider: "yup" });
     });
 });
 

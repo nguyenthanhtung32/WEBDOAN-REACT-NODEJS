@@ -1,5 +1,5 @@
 const yup = require("yup");
-const ObjectId = require('mongodb').ObjectId;
+const ObjectId = require("mongodb").ObjectId;
 
 const validateSchema = (schema) => async (req, res, next) => {
   try {
@@ -14,25 +14,14 @@ const validateSchema = (schema) => async (req, res, next) => {
   }
 };
 
-const getSupplierIdSchema = yup.object({
-  params: yup.object({
-    id: yup.string().test('Validate ObjectID', '${path} is not valid ObjectID', (value) => {
-      return ObjectId.isValid(value);
-    }),
-  }),
-});
-
-const getSupplierBodySchema = yup.object({
-  body: yup.object({
-    name: yup.string().required(),
-    email: yup.string().email().required(),
-    phoneNumber: yup.string().required(),
-    address: yup.string().required()
+const getSupplierSchema = yup.object({
+  query: yup.object({
+    skip: yup.number(),
+    limit: yup.number(),
   }),
 });
 
 module.exports = {
   validateSchema,
-  getSupplierIdSchema,
-  getSupplierBodySchema
+  getSupplierSchema,
 };

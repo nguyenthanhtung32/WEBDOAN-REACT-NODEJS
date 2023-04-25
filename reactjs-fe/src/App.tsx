@@ -17,7 +17,7 @@ import NavigationBar from "./components/NavigationBar";
 import Home from "./pages/Home";
 
 const headerStyle: React.CSSProperties = {
-    backgroundColor: "white",
+    backgroundColor: "dark",
   };
   const footerStyle: React.CSSProperties = {
     textAlign: "center",

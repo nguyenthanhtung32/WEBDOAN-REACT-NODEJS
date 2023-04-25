@@ -5,37 +5,46 @@ const { Category } = require("../models");
 const ObjectId = require("mongodb").ObjectId;
 const {
   validateSchema,
-  getCategoryIdSchema,
+  getCategorySchema,
 } = require("../validation/categories");
+const { getIdSchema } = require("../validation/getId");
 
 // Methods: POST / PATCH / GET / DELETE / PUT
 // Get all
-router.get("/", async (req, res, next) => {
+router.get("/", validateSchema(getCategorySchema), async (req, res, next) => {
   try {
-    let results = await Category.find();
-    res.send(results);
-  } catch (err) {
-    res.sendStatus(500);
+    const { limit, skip } = req.query;
+
+    const conditionFind = {};
+
+    let results = await Category.find(conditionFind).skip(skip).limit(limit).lean({ virtuals: true });
+
+    const totalResults = await Category.countDocuments(conditionFind);
+
+    res.json({
+      payload: results,
+      total: totalResults,
+    });
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ ok: false, error });
   }
 });
 
-router.get("/:id", validateSchema(getCategoryIdSchema), async (req, res, next) => {
+router.get("/:id", validateSchema(getIdSchema), async (req, res, next) => {
   // Validate
   try {
-    const { id } = req.params.id;
+    const { id } = req.params;
 
-    let found = await Category.findById(id);
+    let results = await Category.findById(id).lean({ virtuals: true });
 
-    if (found) {
-      return res.send({ ok: true, result: found });
+    if (results) {
+      return res.send({ ok: true, result: results });
     }
 
     return res.send({ ok: false, message: "Object not found" });
   } catch (err) {
-    res.status(401).json({
-      statusCode: 401,
-      message: "Unauthorized",
-    });
+    return res.status(400).json({ type: err.name, errors: err.errors, message: err.message, provider: 'yup' });
   }
 });
 

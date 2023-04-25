@@ -14,7 +14,7 @@ const validateSchema = (schema) => async (req, res, next) => {
     }
 };
 
-const getProductsSchema = yup.object({
+const getProductSchema = yup.object({
     query: yup.object({
         category: yup.string().test('Validate ObjectID', '${path} is not valid ObjectID', (value) => {
             if (!value) return true;
@@ -56,5 +56,5 @@ const getProductsSchema = yup.object({
 
 module.exports = {
     validateSchema,
-    getProductsSchema,
+    getProductSchema,
 }
