@@ -1,11 +1,2 @@
-DELETE http://localhost:9000/customers/6447529bf2cfecc363a43367 HTTP/1.1
+GET  http://localhost:9000/carts HTTP/1.1
 content-type: application/json
-
-{ 
-   "firstName" : "Phạam Xuân",
-   "lastName" : "Thanh",
-   "phoneNumber" : "0905407429",
-   "email" : "binbungbu6201@gmail.com",
-   "address" : "Đầu kiệt 8, thôn Yến Nê 1",
-   "birthday" : "2001-08-03"
-}
