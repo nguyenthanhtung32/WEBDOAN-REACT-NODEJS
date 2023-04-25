@@ -2,12 +2,6 @@ const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 const bcrypt = require("bcryptjs");
 
-// Mongoose Datatypes:
-// https://mongoosejs.com/docs/schematypes.html
-
-// Validator
-// https://mongoosejs.com/docs/validation.html#built-in-validators
-
 const employeeSchema = new Schema(
   {
     firstName: { type: String, required: true },
@@ -20,7 +14,6 @@ const employeeSchema = new Schema(
           return emailRegex.test(value);
         },
         message: `{VALUE} is not a valid email!`,
-        // message: (props) => `{props.value} is not a valid email!`,
       },
       required: [true, "email is required"],
     },
@@ -33,7 +26,6 @@ const employeeSchema = new Schema(
           return phoneRegex.test(value);
         },
         message: `{VALUE} is not a valid phone!`,
-        // message: (props) => `{props.value} is not a valid email!`,
       },
     },
     password: { type: String, required: true },

@@ -13,7 +13,6 @@ const customerSchema = new Schema(
           return emailRegex.test(value);
         },
         message: `{VALUE} is not a valid email!`,
-        // message: (props) => `{props.value} is not a valid email!`,
       },
       required: true,
     },
@@ -25,7 +24,6 @@ const customerSchema = new Schema(
           return phoneRegex.test(value);
         },
         message: `{VALUE} is not a valid phone!`,
-        // message: (props) => `{props.value} is not a valid email!`,
       },
     },
     address: { type: String, required: true },
