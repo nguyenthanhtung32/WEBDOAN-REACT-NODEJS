@@ -6,9 +6,10 @@ import { useNavigate } from "react-router-dom";
 const apiName = "/products";
 
 export default function Products() {
-  const [items, setItems] = React.useState<any[]>([]);
   const [products, setProducts] = React.useState<any[]>([]);
-  const [suppliers, setSupplier] = React.useState<any[]>([]);
+  const [categories, setCategories] = React.useState<any[]>([]);
+  const [suppliers, setSuppliers] = React.useState<any[]>([]);
+
   const [refresh, setRefresh] = React.useState<number>(0);
   const navigate = useNavigate();
 
@@ -20,7 +21,7 @@ export default function Products() {
       .get(apiName)
       .then((response) => {
         const { data } = response;
-        setItems(data);
+        setProducts(data.payload);
       })
       .catch((err) => {
         console.error(err);
@@ -33,7 +34,7 @@ export default function Products() {
       .get("/categories")
       .then((response) => {
         const { data } = response;
-        setProducts(data);
+        setCategories(data.payload);
       })
       .catch((err) => {
         console.error(err);
@@ -46,7 +47,7 @@ export default function Products() {
       .get("/suppliers")
       .then((response) => {
         const { data } = response;
-        setSupplier(data);
+        setSuppliers(data.payload);
       })
       .catch((err) => {
         console.error(err);
@@ -96,7 +97,7 @@ export default function Products() {
           >
             <Select
               style={{ width: "100%" }}
-              options={products.map((c) => {
+              options={categories.map((c) => {
                 return { value: c._id, label: c.name };
               })}
             />

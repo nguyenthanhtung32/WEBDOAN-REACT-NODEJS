@@ -68,8 +68,6 @@ export default function Products() {
     }));
   }, []);
 
-  console.log("««««« filter »»»»»", filter);
-
   const callApi = useCallback((searchParams: any) => {
     axios
       .get(`${apiName}?${searchParams}`)
@@ -294,7 +292,7 @@ export default function Products() {
       .get("/categories")
       .then((response) => {
         const { data } = response;
-        setCategories([...allOption, ...data]);
+        setCategories([...allOption, ...data.payload]);
       })
       .catch((err) => {
         console.error(err);
@@ -307,7 +305,7 @@ export default function Products() {
       .get("/suppliers")
       .then((response) => {
         const { data } = response;
-        setSuppliers([...allOption, ...data]);
+        setSuppliers([...allOption, ...data.payload]);
       })
       .catch((err) => {
         console.error(err);

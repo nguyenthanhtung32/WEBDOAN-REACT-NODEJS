@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Button, Form, Input, Table, message, Space, Modal } from "antd";
 import axios from "../../libraries/axiosClient";
 import {
@@ -14,15 +14,44 @@ const apiName = "/suppliers";
 
 export default function Suppliers() {
   const [suppliers, setSuppliers] = React.useState<any[]>([]);
+
   const [refresh, setRefresh] = React.useState<number>(0);
   const [open, setOpen] = React.useState<boolean>(false);
   const [updateId, setUpdateId] = React.useState<number>(0);
+
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const [pageSize, setPageSize] = React.useState<number>(10);
+  const [totalResults, setTotalResults] = React.useState<number | undefined>();
 
   const [updateForm] = Form.useForm();
   const navigate = useNavigate();
   const create = () => {
     navigate("/supplier");
   };
+
+  const callApi = useCallback((searchParams: any) => {
+    axios
+      .get(`${apiName}?${searchParams}`)
+      .then((response) => {
+        const { data } = response;
+        setSuppliers(data.payload);
+        setTotalResults(data.total);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  React.useEffect(() => {
+    let filters: {
+      skip: any;
+      limit: any;
+    } = {
+      skip: (currentPage - 1) * pageSize,
+      limit: pageSize,
+    };
+    callApi(filters);
+  }, [callApi, currentPage, pageSize]);
 
   const columns: ColumnsType<any> = [
     {
@@ -102,8 +131,7 @@ export default function Suppliers() {
       .get(apiName)
       .then((response) => {
         const { data } = response;
-        setSuppliers(data);
-        console.log(data);
+        setSuppliers(data.payload);
       })
       .catch((err) => {
         console.error(err);
@@ -124,7 +152,18 @@ export default function Suppliers() {
   return (
     <div style={{ padding: 24 }}>
       {/* TABLE */}
-      <Table rowKey="id" dataSource={suppliers} columns={columns} />
+      <Table
+        rowKey="id"
+        dataSource={suppliers}
+        columns={columns}
+        pagination={{
+          total: totalResults,
+          current: currentPage,
+          pageSize: pageSize,
+          onChange: (page) => setCurrentPage(page),
+          onShowSizeChange: (_, size) => setPageSize(size),
+        }}
+      />
       {/* EDIT FORM */}
       <Modal
         open={open}

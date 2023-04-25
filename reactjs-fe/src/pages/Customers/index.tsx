@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Button, Form, Input, Table, message, Space, Modal } from "antd";
 import axios from "../../libraries/axiosClient";
 import {
@@ -14,15 +14,44 @@ const apiName = "/customers";
 
 export default function Customers() {
   const [customers, setCustomers] = React.useState<any[]>([]);
+
   const [refresh, setRefresh] = React.useState<number>(0);
   const [open, setOpen] = React.useState<boolean>(false);
   const [updateId, setUpdateId] = React.useState<number>(0);
+
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const [pageSize, setPageSize] = React.useState<number>(10);
+  const [totalResults, setTotalResults] = React.useState<number | undefined>();
 
   const [updateForm] = Form.useForm();
   const navigate = useNavigate();
   const create = () => {
     navigate("/customer");
   };
+
+  const callApi = useCallback((searchParams: any) => {
+    axios
+      .get(`${apiName}?${searchParams}`)
+      .then((response) => {
+        const { data } = response;
+        setCustomers(data.payload);
+        setTotalResults(data.total);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  React.useEffect(() => {
+    let filters: {
+      skip: any;
+      limit: any;
+    } = {
+      skip: (currentPage - 1) * pageSize,
+      limit: pageSize,
+    };
+    callApi(filters);
+  }, [callApi, currentPage, pageSize]);
 
   const columns: ColumnsType<any> = [
     {
@@ -112,8 +141,7 @@ export default function Customers() {
       .get(apiName)
       .then((response) => {
         const { data } = response;
-        setCustomers(data);
-        console.log(data);
+        setCustomers(data.payload);
       })
       .catch((err) => {
         console.error(err);
@@ -121,9 +149,6 @@ export default function Customers() {
   }, [refresh]);
 
   const onUpdateFinish = (values: any) => {
-    // console.log(values);
-    // console.log(updateId);
-
     axios
       .patch(apiName + "/" + updateId, values)
       .then((response) => {
@@ -137,7 +162,18 @@ export default function Customers() {
   return (
     <div style={{ padding: 24 }}>
       {/* TABLE */}
-      <Table rowKey="id" dataSource={customers} columns={columns} />
+      <Table
+        rowKey="id"
+        dataSource={customers}
+        columns={columns}
+        pagination={{
+          total: totalResults,
+          current: currentPage,
+          pageSize: pageSize,
+          onChange: (page) => setCurrentPage(page),
+          onShowSizeChange: (_, size) => setPageSize(size),
+        }}
+      />
       {/* EDIT FORM */}
       <Modal
         open={open}

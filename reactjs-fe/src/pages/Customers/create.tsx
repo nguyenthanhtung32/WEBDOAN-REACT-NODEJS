@@ -18,8 +18,7 @@ export default function Customers() {
       .get(apiName)
       .then((response) => {
         const { data } = response;
-        setCustomers(data);
-        console.log(data);
+        setCustomers(data.payload);
       })
       .catch((err) => {
         console.error(err);

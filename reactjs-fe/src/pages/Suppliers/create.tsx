@@ -18,8 +18,7 @@ export default function Suppliers() {
       .get(apiName)
       .then((response) => {
         const { data } = response;
-        setSuppliers(data);
-        console.log(data);
+        setSuppliers(data.payload);
       })
       .catch((err) => {
         console.error(err);

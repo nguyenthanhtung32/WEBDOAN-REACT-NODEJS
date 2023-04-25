@@ -18,7 +18,7 @@ export default function Categories() {
       .get(apiName)
       .then((response) => {
         const { data } = response;
-        setCategories(data);
+        setCategories(data.payload);
         console.log(data);
       })
       .catch((err) => {

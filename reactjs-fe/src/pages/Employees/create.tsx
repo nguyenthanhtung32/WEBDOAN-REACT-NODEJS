@@ -18,8 +18,7 @@ export default function Employees() {
       .get(apiName)
       .then((response) => {
         const { data } = response;
-        setEmployees(data);
-        console.log(data);
+        setEmployees(data.payload);
       })
       .catch((err) => {
         console.error(err);
