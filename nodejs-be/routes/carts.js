@@ -10,7 +10,6 @@ router.get("/", async (req, res, next) => {
   try {
     let results = await Cart.find()
       .populate("customer")
-      .populate("product")
       .lean({ virtuals: true });
 
     res.json(results);
@@ -54,20 +53,13 @@ router.post("/", function (req, res, next) {
   // Validate
   const validationSchema = yup.object({
     body: yup.object({
-      customer: yup.object().shape({
-        _id: yup
-          .string()
-          .required()
-          .test(
-            "Validate ObjectID",
-            "${path} is not valid ObjectID",
-            (value) => {
-              return ObjectId.isValid(value);
-            }
-          ),
-        firstName: yup.string().required(),
-        lastName: yup.string().required(),
-      }),
+      customerId: yup
+        .string()
+        .required()
+        .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
+          return ObjectId.isValid(value);
+        }),
+      cartDetails: yup.array().required(),
     }),
   });
   validationSchema
@@ -87,6 +79,7 @@ router.post("/", function (req, res, next) {
       });
     });
 });
+
 
 router.delete("/:id", function (req, res, next) {
   const validationSchema = yup.object().shape({

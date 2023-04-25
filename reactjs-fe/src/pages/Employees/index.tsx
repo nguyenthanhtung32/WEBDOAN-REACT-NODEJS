@@ -23,6 +23,10 @@ export default function Employees() {
   const [pageSize, setPageSize] = React.useState<number>(10);
   const [totalResults, setTotalResults] = React.useState<number | undefined>();
 
+  const [deleteEmployeeId, setDeleteEmployeeId] = React.useState<number>(0);
+  const [showDeleteConfirm, setShowDeleteConfirm] =
+    React.useState<boolean>(false);
+
   const [updateForm] = Form.useForm();
   const navigate = useNavigate();
   const create = () => {
@@ -52,6 +56,34 @@ export default function Employees() {
     };
     callApi(filters);
   }, [callApi, currentPage, pageSize]);
+
+  // Hàm hiển thị xác nhận xóa
+  const showConfirmDelete = (employeeId: number) => {
+    setDeleteEmployeeId(employeeId);
+    setShowDeleteConfirm(true);
+  };
+  // Hàm xóa sản phẩm
+  const handleDeleteEmployee = () => {
+    axios.delete(apiName + "/" + deleteEmployeeId).then((response) => {
+      setRefresh((f) => f + 1);
+      message.success("Xóa sản phẩm thành công!", 1.5);
+      setShowDeleteConfirm(false);
+    });
+  };
+
+  // Modal xác nhận xóa sản phẩm
+  const deleteConfirmModal = (
+    <Modal
+      title="Xóa sản phẩm"
+      open={showDeleteConfirm}
+      onOk={handleDeleteEmployee}
+      onCancel={() => setShowDeleteConfirm(false)}
+      okText="Xóa"
+      cancelText="Hủy"
+    >
+      <p>Bạn có chắc chắn muốn xóa sản phẩm?</p>
+    </Modal>
+  );
 
   const columns: ColumnsType<any> = [
     {
@@ -111,11 +143,7 @@ export default function Employees() {
               danger
               icon={<DeleteOutlined />}
               onClick={() => {
-                console.log(record.id);
-                axios.delete(apiName + "/" + record._id).then((response) => {
-                  setRefresh((f) => f + 1);
-                  message.success("Xóa danh mục thành công!", 1.5);
-                });
+                showConfirmDelete(record._id);
               }}
             />
           </Space>
@@ -174,6 +202,7 @@ export default function Employees() {
           onShowSizeChange: (_, size) => setPageSize(size),
         }}
       />
+      {deleteConfirmModal}
       {/* EDIT FORM */}
       <Modal
         open={open}

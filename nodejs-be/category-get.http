@@ -1,7 +1,13 @@
-DELETE  http://localhost:9000/categories/6447752392520b7b15604e9f HTTP/1.1
+POST http://localhost:9000/carts HTTP/1.1
 content-type: application/json
 
-{
-    "name": "Iphon1e",
-    "description": "dt"
+{ 
+   "customerId": "641a9425e0ca92023090b68d",
+   "cartDetails": [
+    {
+        "productId": "643a3d4ac7561978bc899450",
+        "price": 30000000,
+        "quantity": 1
+    }
+   ]
 }

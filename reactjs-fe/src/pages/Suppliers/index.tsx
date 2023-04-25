@@ -23,6 +23,10 @@ export default function Suppliers() {
   const [pageSize, setPageSize] = React.useState<number>(10);
   const [totalResults, setTotalResults] = React.useState<number | undefined>();
 
+  const [deleteSupplierId, setDeleteSupplierId] = React.useState<number>(0);
+  const [showDeleteConfirm, setShowDeleteConfirm] =
+    React.useState<boolean>(false);
+
   const [updateForm] = Form.useForm();
   const navigate = useNavigate();
   const create = () => {
@@ -52,6 +56,34 @@ export default function Suppliers() {
     };
     callApi(filters);
   }, [callApi, currentPage, pageSize]);
+
+  // Hàm hiển thị xác nhận xóa
+  const showConfirmDelete = (supplierId: number) => {
+    setDeleteSupplierId(supplierId);
+    setShowDeleteConfirm(true);
+  };
+  // Hàm xóa sản phẩm
+  const handleDeleteSupplier = () => {
+    axios.delete(apiName + "/" + deleteSupplierId).then((response) => {
+      setRefresh((f) => f + 1);
+      message.success("Xóa sản phẩm thành công!", 1.5);
+      setShowDeleteConfirm(false);
+    });
+  };
+
+  // Modal xác nhận xóa sản phẩm
+  const deleteConfirmModal = (
+    <Modal
+      title="Xóa sản phẩm"
+      open={showDeleteConfirm}
+      onOk={handleDeleteSupplier}
+      onCancel={() => setShowDeleteConfirm(false)}
+      okText="Xóa"
+      cancelText="Hủy"
+    >
+      <p>Bạn có chắc chắn muốn xóa sản phẩm?</p>
+    </Modal>
+  );
 
   const columns: ColumnsType<any> = [
     {
@@ -101,11 +133,7 @@ export default function Suppliers() {
               danger
               icon={<DeleteOutlined />}
               onClick={() => {
-                console.log(record.id);
-                axios.delete(apiName + "/" + record._id).then((response) => {
-                  setRefresh((f) => f + 1);
-                  message.success("Xóa danh mục thành công!", 1.5);
-                });
+                showConfirmDelete(record._id);
               }}
             />
           </Space>
@@ -164,6 +192,7 @@ export default function Suppliers() {
           onShowSizeChange: (_, size) => setPageSize(size),
         }}
       />
+      {deleteConfirmModal}
       {/* EDIT FORM */}
       <Modal
         open={open}
@@ -204,7 +233,7 @@ export default function Suppliers() {
           </Form.Item>
           <Form.Item
             label="PhoneNumber"
-            name="phonenumber"
+            name="phoneNumber"
             hasFeedback
             required={true}
             rules={[{ required: true, message: "Bạn chưa nhập số điện thoại" }]}

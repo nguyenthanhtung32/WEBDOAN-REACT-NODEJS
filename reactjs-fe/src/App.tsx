@@ -5,6 +5,7 @@ import Customers from "./pages/Customers/index";
 import Suppliers from "./pages/Suppliers/index";
 import Employees from "./pages/Employees/index";
 import Products from "./pages/Products/index";
+import Cart from "./pages/Cart/index";
 import CreateProduct from "./pages/Products/create"
 import CreateCategory from "./pages/Categories/create"
 import CreateCustomer from "./pages/Customers/create"
@@ -44,6 +45,7 @@ function App() {
             <Route path="/customers" element={<Customers />} />
             <Route path="/suppliers" element={<Suppliers />} />
             <Route path="/employees" element={<Employees />} />
+            <Route path="/cart" element={<Cart />} />
           </Routes>
           <Routes>
             <Route path="/category" element={<CreateCategory />} />

@@ -47,6 +47,11 @@ const items: MenuProps["items"] = [
     key: "orders",
     icon: <ShoppingCartOutlined />,
   },
+  {
+    label: "Cart",
+    key: "Cart",
+    icon: <ShoppingCartOutlined />,
+  },
 ];
 
 export default function NavigationBar() {

@@ -6,13 +6,9 @@ const ObjectId = require("mongodb").ObjectId;
 
 // Methods: POST / PATCH / GET / DELETE / PUT
 // Get all
-router.get("/", async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
-    let results = await Order.find()
-      .populate("customer")
-      .populate("employee")
-      .populate("product")
-      .lean({ virtuals: true });
+    let results = await Order.find().populate('customer').populate('employee').lean({ virtuals: true });
 
     res.json(results);
   } catch (error) {
