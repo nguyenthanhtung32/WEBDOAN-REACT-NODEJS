@@ -7,7 +7,7 @@ const { Employee } = require("../models");
 const {
   validateSchema,
   loginSchema,
-  categorySchema,
+  getEmployeeSchema
 } = require("../validation/employees");
 const encodeToken = require("../helpers/jwtHelper");
 
@@ -16,27 +16,6 @@ mongoose.set("strictQuery", false);
 mongoose.connect(CONNECTION_STRING);
 
 const router = express.Router();
-
-// router.post('/login', async (req, res, next) => {
-//   try {
-//       const employee = await Employee.findOne({
-//           email: req.body.email,
-//          /*  firstName: req.body.firstName, */
-//       })
-
-//       console.log(employee)
-
-//       if (!employee) return res.status(404).send("khong tim thay");
-
-//       const token = encodeToken(employee._id, employee.email, employee.birthday)
-
-//       res.send({
-//           token
-//       })
-//   } catch {
-//       res.send('errr')
-//   }
-// });
 
 router.post(
   "/login",
@@ -84,30 +63,23 @@ router.get(
   }
 );
 
-// router.route('/profile').get(passport.authenticate('jwt', { session: false }), async (req, res, next) => {
-//   try {
-//     const employee = await Employee.findById(req.user._id);
-
-//     if (!employee) return res.status(404).send({ message: 'Not found' });
-
-//     res.status(200).json(employee);
-//   } catch (err) {
-//     res.sendStatus(500);
-//   }
-// },);
-
 // GET
-router.get("/", function (req, res, next) {
+router.get('/', validateSchema(getEmployeeSchema), async (req, res, next) => {
   try {
-    Employee.find()
-      .then((result) => {
-        res.send(result);
-      })
-      .catch((err) => {
-        res.status(400).send({ message: err.message });
-      });
-  } catch (err) {
-    res.sendStatus(500);
+    const { skip, limit } = req.query;
+    const conditionFind = {};
+
+    let results = await Product.find(conditionFind).skip(skip).limit(limit).lean({ virtuals: true });
+
+    const totalResults = await Product.countDocuments(conditionFind)
+
+    res.json({
+      payload: results,
+      total: totalResults,
+    });
+  } catch (error) {
+    console.log('««««« error »»»»»', error);
+    res.status(500).json({ ok: false, error });
   }
 });
 

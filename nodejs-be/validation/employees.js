@@ -16,13 +16,15 @@ const validateSchema = (schema) => async (req, res, next) => {
 
 const getEmployeeSchema = yup.object({
   body: yup.object({
-    firstName : yup.string().required(),
-    lastName : yup.string().required(),
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
     email: yup.string().email().required(),
-    phoneNumber : yup.string(),
-    address : yup.string().required(),
+    phoneNumber: yup.string(),
+    address: yup.string().required(),
     password: yup.string().min(3).max(31).required(),
-    birthday : yup.string().required(),
+    birthday: yup.string().required(),
+    skip: yup.number(),
+    limit: yup.number(),
   }),
   params: yup.object({}),
 });
