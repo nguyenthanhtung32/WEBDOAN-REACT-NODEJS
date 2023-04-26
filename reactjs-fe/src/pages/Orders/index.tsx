@@ -128,14 +128,6 @@ export default function Orders() {
                 showConfirmDelete(record._id);
               }}
             />
-             <Button
-              icon={<EditOutlined />}
-              onClick={() => {
-                setOpen(true);
-                setUpdateId(record._id);
-                updateForm.setFieldsValue(record);
-              }}
-            />
           </Space>
         );
       },
