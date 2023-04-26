@@ -5,7 +5,6 @@ const cartDetailSchema = new Schema(
   {
     productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
     quantity: { type: Number, required: true, min: 0 },
-    price: { type: Number, required: true, min: 0, default: 0 },
     createdDate: { type: Date, default: Date.now },
   },
   {

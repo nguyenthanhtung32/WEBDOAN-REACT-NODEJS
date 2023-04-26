@@ -1,12 +1,10 @@
 import { Button, Form, message, Space, Modal, Input, Table } from "antd";
 import axios from "../../libraries/axiosClient";
-import React, { useCallback } from "react";
+import React from "react";
 import {
-  AppstoreAddOutlined,
   DeleteOutlined,
   EditOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 
 import type { ColumnsType } from "antd/es/table";
 
@@ -33,7 +31,7 @@ export default function Orders() {
     setShowDeleteConfirm(true);
   };
   // Hàm xóa sản phẩm
-  const handleDeleteProduct = () => {
+  const handleDeleteOrders = () => {
     axios.delete(apiName + "/" + deleteOrderId).then((response) => {
       setRefresh((f) => f + 1);
       message.success("Xóa sản phẩm thành công!", 1.5);
@@ -46,7 +44,7 @@ export default function Orders() {
     <Modal
       title="Xóa sản phẩm"
       open={showDeleteConfirm}
-      onOk={handleDeleteProduct}
+      onOk={handleDeleteOrders}
       onCancel={() => setShowDeleteConfirm(false)}
       okText="Xóa"
       cancelText="Hủy"
@@ -71,7 +69,7 @@ export default function Orders() {
       dataIndex: "customer.name",
       key: "customer.name",
       render: (text, record, index) => {
-        const fullNameCustomer = `${record.customer.lastName}, ${record.customer.firstName}`;
+        const fullNameCustomer = `${record.customer.firstName} ${record.customer.lastName}`;
         return <span>{fullNameCustomer}</span>;
       },
     },
@@ -80,7 +78,7 @@ export default function Orders() {
       dataIndex: "employees.name",
       key: "employees.name",
       render: (text, record, index) => {
-        const fullNameEmployee = `${record?.employee?.lastName}, ${record?.employee?.firstName}`;
+        const fullNameEmployee = `${record?.employee?.firstName} ${record?.employee?.lastName}`;
         return <span>{fullNameEmployee}</span>;
       },
     },
@@ -126,14 +124,6 @@ export default function Orders() {
               icon={<DeleteOutlined />}
               onClick={() => {
                 showConfirmDelete(record._id);
-              }}
-            />
-             <Button
-              icon={<EditOutlined />}
-              onClick={() => {
-                setOpen(true);
-                setUpdateId(record._id);
-                updateForm.setFieldsValue(record);
               }}
             />
           </Space>

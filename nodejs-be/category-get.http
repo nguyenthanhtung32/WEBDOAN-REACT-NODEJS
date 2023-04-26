@@ -1,18 +1,12 @@
-<<<<<<< HEAD
-POST http://localhost:9000/carts HTTP/1.1
+GET http://localhost:9000/carts/6448c1cb1adbf9094a11ac53 HTTP/1.1
 content-type: application/json
 
 { 
-   "customerId": "641a9425e0ca92023090b68d",
+   "customerId": "642431ee35bf9d4ed2c41d34",
    "cartDetails": [
     {
         "productId": "643a3d4ac7561978bc899450",
-        "price": 30000000,
         "quantity": 1
     }
    ]
 }
-=======
-GET  http://localhost:9000/orders/641c39d738e188221207fe25 HTTP/1.1
-content-type: application/json
->>>>>>> 70fab3849f54f294a0d7e1b112f7eeb411bb3560

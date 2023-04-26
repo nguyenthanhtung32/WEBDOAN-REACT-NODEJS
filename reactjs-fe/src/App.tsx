@@ -6,6 +6,7 @@ import Suppliers from "./pages/Suppliers/index";
 import Employees from "./pages/Employees/index";
 import Products from "./pages/Products/index";
 import Cart from "./pages/Cart/index";
+import Orders from "./pages/Orders";
 import CreateProduct from "./pages/Products/create"
 import CreateCategory from "./pages/Categories/create"
 import CreateCustomer from "./pages/Customers/create"
@@ -15,6 +16,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import NavigationBar from "./components/NavigationBar";
+import SideBar from "./components/SideBar";
 import Home from "./pages/Home";
 
 const headerStyle: React.CSSProperties = {
@@ -38,14 +40,16 @@ function App() {
           <NavigationBar />
         </Header>
         <Content style={contentStyle}>
+          {/* <SideBar/> */}
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/products" element={<Products />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/suppliers" element={<Suppliers />} />
             <Route path="/employees" element={<Employees />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/orders" element={<Orders />} />
           </Routes>
           <Routes>
             <Route path="/category" element={<CreateCategory />} />
