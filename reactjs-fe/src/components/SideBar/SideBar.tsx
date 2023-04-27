@@ -3,19 +3,19 @@ import { Button, Input, message } from "antd";
 import { Layout, Menu, theme } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { Route, Routes } from "react-router-dom";
-import Categories from "../pages/Categories/index";
-import Customers from "../pages/Customers/index";
-import Suppliers from "../pages/Suppliers/index";
-import Employees from "../pages/Employees/index";
-import Products from "../pages/Products/index";
-import Cart from "../pages/Cart/index";
-import Orders from "../pages/Orders";
-import CreateProduct from "../pages/Products/create";
-import CreateCategory from "../pages/Categories/create";
-import CreateCustomer from "../pages/Customers/create";
-import CreateSupplier from "../pages/Suppliers/create";
-import CreateEmployee from "../pages/Employees/create";
-import axios from "../libraries/axiosClient";
+import Categories from "../../pages/Categories/index";
+import Customers from "../../pages/Customers/index";
+import Suppliers from "../../pages/Suppliers/index";
+import Employees from "../../pages/Employees/index";
+import Products from "../../pages/Products/index";
+import Cart from "../../pages/Cart/index";
+import Orders from "../../pages/Orders";
+import CreateProduct from "../../pages/Products/create";
+import CreateCategory from "../../pages/Categories/create";
+import CreateCustomer from "../../pages/Customers/create";
+import CreateSupplier from "../../pages/Suppliers/create";
+import CreateEmployee from "../../pages/Employees/create";
+import axios from "../../libraries/axiosClient";
 
 const { Sider } = Layout;
 const initialState = {
@@ -134,11 +134,10 @@ const App: React.FC = () => {
   }, [callApi]);
 
   return (
-    <Layout>
       <Layout>
         <Sider
           width={200}
-          style={{ height: "auto", background: colorBgContainer }}
+          style={{ height: "300px", background: colorBgContainer }}
         >
           <select
             id="category"
@@ -254,7 +253,6 @@ const App: React.FC = () => {
           </Content>
         </Layout>
       </Layout>
-    </Layout>
   );
 };
 

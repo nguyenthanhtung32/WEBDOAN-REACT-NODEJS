@@ -1,28 +1,27 @@
 import "antd/dist/reset.css";
-import "./App.css";
-import Categories from "./pages/Categories/index";
-import Customers from "./pages/Customers/index";
-import Suppliers from "./pages/Suppliers/index";
-import Employees from "./pages/Employees/index";
-import Products from "./pages/Products/index";
-import Cart from "./pages/Cart/index";
-import Orders from "./pages/Orders";
-import CreateProduct from "./pages/Products/create";
-import CreateCategory from "./pages/Categories/create";
-import CreateCustomer from "./pages/Customers/create";
-import CreateSupplier from "./pages/Suppliers/create";
-import CreateEmployee from "./pages/Employees/create";
+import Categories from "../../pages/Categories/index";
+import Customers from "../../pages/Customers/index";
+import Suppliers from "../../pages/Suppliers/index";
+import Employees from "../../pages/Employees/index";
+import Products from "../../pages/Products/index";
+import Cart from "../../pages/Cart/index";
+import Orders from "../../pages/Orders";
+import CreateProduct from "../../pages/Products/create";
+import CreateCategory from "../../pages/Categories/create";
+import CreateCustomer from "../../pages/Customers/create";
+import CreateSupplier from "../../pages/Suppliers/create";
+import CreateEmployee from "../../pages/Employees/create";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
-import NavigationBar from "./components/Navigation/NavigationBar";
-import SideBar from "./components/SideBar/SideBar";
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
-import Home from "./pages/Home";
+import NavigationBar from "../Navigation/NavigationBar";
+import SideBar from "../SideBar/SideBar";
+import Home from "../../pages/Home";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 
 const headerStyle: React.CSSProperties = {
-  backgroundColor: "#ffffff",
+  backgroundColor: "dark",
 };
 const footerStyle: React.CSSProperties = {
   textAlign: "center",
@@ -32,24 +31,29 @@ const footerStyle: React.CSSProperties = {
 const contentStyle: React.CSSProperties = {
   minHeight: "100vh",
   backgroundColor: "#ffffff",
-  margin: "0 20px"
+  display: "flex",
+  width: "100%",
 };
 
-function App() {
+interface IProps {
+  setIsLogin: (value: boolean) => void;
+}
+
+function BaseWeb(props: IProps) {
+  const { setIsLogin } = props;
   return (
     <BrowserRouter>
       <Layout>
         <Header />
-
-        <nav style={{margin: "0 20px"}}>
-          <NavigationBar setIsLogin={function (value: boolean): void {
+        <NavigationBar
+          setIsLogin={function (value: boolean): void {
             throw new Error("Function not implemented.");
-          } } />
-        </nav>
+          }}
+        />
         <Content style={contentStyle}>
-          <SideBar/>
-          {/* <Routes>
-            <Route path="/home" element={<Home />} />
+          <SideBar />
+          <Routes>
+            <Route path="/" element={<Home />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/products" element={<Products />} />
             <Route path="/customers" element={<Customers />} />
@@ -64,13 +68,12 @@ function App() {
             <Route path="/customer" element={<CreateCustomer />} />
             <Route path="/supplier" element={<CreateSupplier />} />
             <Route path="/employee" element={<CreateEmployee />} />
-          </Routes> */}
+          </Routes>
         </Content>
-        {/* <Footer style={footerStyle}>Web Design Ideas Copyright © 2023.</Footer> */}
         <Footer />
       </Layout>
     </BrowserRouter>
   );
 }
 
-export default App;
+export default BaseWeb;

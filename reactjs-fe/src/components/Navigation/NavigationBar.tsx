@@ -8,6 +8,10 @@ import React from "react";
 
 import { useNavigate } from "react-router-dom";
 
+interface IProps {
+  setIsLogin: (value: boolean) => void;
+}
+
 const items: MenuProps["items"] = [
   {
     label: "Home",
@@ -54,22 +58,32 @@ const items: MenuProps["items"] = [
   },
 ];
 
-export default function NavigationBar() {
+function NavigationBar(props: IProps) {
   const navigate = useNavigate();
-
+  const { setIsLogin } = props;
+  const handleUpdate = () => {
+    setIsLogin(false);
+    navigate(`/`);
+  };
   const [current, setCurrent] = React.useState("home");
 
   return (
-    <Menu
-      theme="dark"
-      onClick={(e) => {
-        console.log(e);
-        setCurrent(e.key);
-        navigate(e.key);
-      }}
-      selectedKeys={[current]}
-      mode="horizontal"
-      items={items}
-    />
+    <>
+      <Menu
+        onClick={(e) => {
+          console.log(e);
+          setCurrent(e.key);
+          navigate(e.key);
+        }}
+        selectedKeys={[current]}
+        mode="horizontal"
+        items={items}
+      />
+      <button onClick={handleUpdate} className="btn btn-outline-success">
+        Đăng xuất
+      </button>
+    </>
   );
 }
+
+export default NavigationBar;
