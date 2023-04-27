@@ -1,0 +1,30 @@
+.header_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #ffffff;
+    margin: 0 20px;
+  }
+  
+  .logo {
+    width: 150px;
+  }
+  
+  .nav_links a {
+    margin: 0 10px;
+    font-size: 20px;
+    text-decoration: none;
+    color: #000000;
+    transition: color 0.3s;
+  }
+  
+  .nav_links a:hover {
+    color: #1890ff;
+  }
+  
+  .nav_links span {
+    margin: 0 10px;
+    font-size: 20px;
+    color: #333333;
+  }
