@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useCallback } from "react";
 import { Button, Input, message } from "antd";
 import { Layout, Menu, theme } from "antd";
@@ -257,3 +258,17 @@ const App: React.FC = () => {
 };
 
 export default App;
+=======
+import  Styles from "./SideBar.module.css";
+
+const SideBar: React.FC = () => {
+//   const { title } = props
+  return (
+    <header className={`py-3 ps-2 mb-5 ${Styles.width_30} `}>
+      <h1>The Pulpit </h1>
+    </header>
+  );
+};
+
+export default SideBar;
+>>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9

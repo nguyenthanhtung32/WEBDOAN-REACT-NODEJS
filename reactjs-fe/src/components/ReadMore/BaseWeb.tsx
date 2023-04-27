@@ -14,12 +14,17 @@ import CreateEmployee from "../../pages/Employees/create";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
+<<<<<<< HEAD
 import NavigationBar from "../Navigation/NavigationBar";
+=======
+import NavigationBar from "../NavigationBar/NavigationBar";
+>>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9
 import SideBar from "../SideBar/SideBar";
 import Home from "../../pages/Home";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 
+<<<<<<< HEAD
 const headerStyle: React.CSSProperties = {
   backgroundColor: "dark",
 };
@@ -28,11 +33,16 @@ const footerStyle: React.CSSProperties = {
   color: "#fff",
   backgroundColor: "#ffcccc",
 };
+=======
+>>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9
 const contentStyle: React.CSSProperties = {
   minHeight: "100vh",
   backgroundColor: "#ffffff",
   display: "flex",
+<<<<<<< HEAD
   width: "100%",
+=======
+>>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9
 };
 
 interface IProps {
@@ -40,6 +50,7 @@ interface IProps {
 }
 
 function BaseWeb(props: IProps) {
+<<<<<<< HEAD
   const { setIsLogin } = props;
   return (
     <BrowserRouter>
@@ -50,6 +61,17 @@ function BaseWeb(props: IProps) {
             throw new Error("Function not implemented.");
           }}
         />
+=======
+  return (
+    <BrowserRouter>
+      <Layout>
+        <Header/>
+          <NavigationBar
+            setIsLogin={function (value: boolean): void {
+              throw new Error("Function not implemented.");
+            }}
+          />
+>>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9
         <Content style={contentStyle}>
           <SideBar />
           <Routes>
@@ -70,7 +92,11 @@ function BaseWeb(props: IProps) {
             <Route path="/employee" element={<CreateEmployee />} />
           </Routes>
         </Content>
+<<<<<<< HEAD
         <Footer />
+=======
+        <Footer/>
+>>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9
       </Layout>
     </BrowserRouter>
   );

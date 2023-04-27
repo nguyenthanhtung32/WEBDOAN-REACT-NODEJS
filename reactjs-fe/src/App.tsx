@@ -1,5 +1,6 @@
-import "antd/dist/reset.css";
+import React, { useState } from "react";
 import "./App.css";
+<<<<<<< HEAD
 import Categories from "./pages/Categories/index";
 import Customers from "./pages/Customers/index";
 import Suppliers from "./pages/Suppliers/index";
@@ -72,5 +73,22 @@ function App() {
     </BrowserRouter>
   );
 }
+=======
+import BaseWeb from "./components/ReadMore/BaseWeb";
+import Login from "./pages/Auth/Login";
+//   import Login from "./Components/pages/Auth/Login";
+function App() {
+>>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9
 
+    const[isLogin, setIsLogin] = useState(false);
+
+  return (
+    <>
+    {isLogin ? (
+        < BaseWeb setIsLogin={setIsLogin}/>
+      ) : (<Login setIsLogin={setIsLogin}/>)} 
+      {/* <BaseWeb/> */}
+    </>
+    );
+}
 export default App;

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import { FacebookFilled, InstagramFilled, TwitterSquareFilled, YoutubeFilled } from "@ant-design/icons";
+=======
+>>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9
 import styles from "./Footer.module.css"
 
 function Footer() {
@@ -32,10 +35,17 @@ function Footer() {
       <div className={styles.footer_follow}>
         <h2>Theo dõi chúng tôi trên</h2>
         <ul>
+<<<<<<< HEAD
           <li><FacebookFilled />Facebook</li>
           <li><InstagramFilled />Instagram</li>
           <li><TwitterSquareFilled />Twitter</li>
           <li><YoutubeFilled />Youtube</li>
+=======
+          <li>Facebook</li>
+          <li>Instagram</li>
+          <li>Twitter</li>
+          <li>Youtube</li>
+>>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9
         </ul>
       </div>
       <div className={styles.footer_download}>
@@ -53,4 +63,8 @@ function Footer() {
   );
 }
 
+<<<<<<< HEAD
 export default Footer;
+=======
+export default Footer;
+>>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9
