@@ -23,7 +23,7 @@ import Footer from "../Footer/Footer";
 const contentStyle: React.CSSProperties = {
   minHeight: "100vh",
   backgroundColor: "#ffffff",
-  display: "flex",
+//   display: "flex",
 };
 
 interface IProps {
@@ -41,7 +41,7 @@ function BaseWeb(props: IProps) {
             }}
           />
         <Content style={contentStyle}>
-          <SideBar />
+          {/* <SideBar /> */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/categories" element={<Categories />} />
