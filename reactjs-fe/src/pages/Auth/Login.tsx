@@ -13,7 +13,10 @@ const Login: React.FC<IProps> = (props) => {
   useEffect(() => {}, []);
 
   const onSubmit = (values: any) => {
-    if (userName === "HoangVinh" && userPassWord === "Vinh02") {
+    if (
+      (userName === "HoangVinh" && userPassWord === "Vinh02") ||
+      (userName === "ThanhTung" && userPassWord === "Tung2306")
+    ) {
       alert("login thanh cong");
       setIsLogin(true);
     } else {

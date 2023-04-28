@@ -8,9 +8,9 @@ import React from "react";
 
 import { useNavigate } from "react-router-dom";
 
-interface IProps {
+/* interface IProps {
   setIsLogin: (value: boolean) => void;
-}
+} */
 
 const items: MenuProps["items"] = [
   {
@@ -58,34 +58,25 @@ const items: MenuProps["items"] = [
   },
 ];
 
-function NavigationBar(props: IProps) {
+function NavigationBar(/* props: IProps */) {
   const navigate = useNavigate();
-<<<<<<<< HEAD:reactjs-fe/src/components/Navigation/NavigationBar.tsx
-  const { setIsLogin } = props;
-  const handleUpdate = () => {
-    setIsLogin(false);
-    navigate(`/`);
-  };
+  //   const { setIsLogin } = props;
+  //   const handleUpdate = () => {
+  //     setIsLogin(false);
+  //     navigate(`/`);
+  //   };
   const [current, setCurrent] = React.useState("home");
 
   return (
-    <>
+    <div
+      style={
+        {
+          /* display: "flex", justifyContent: "space-between" */
+        }
+      }
+    >
       <Menu
         onClick={(e) => {
-          console.log(e);
-========
-//   const { setIsLogin } = props;
-//   const handleUpdate = () => {
-//     setIsLogin(false);
-//     navigate(`/`);
-//   };
-  const [current, setCurrent] = React.useState("home");
-
-  return (
-    <div style={{ /* display: "flex", justifyContent: "space-between" */ }}>
-      <Menu
-        onClick={(e) => {
->>>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9:reactjs-fe/src/components/NavigationBar/NavigationBar.tsx
           setCurrent(e.key);
           navigate(e.key);
         }}
@@ -93,17 +84,10 @@ function NavigationBar(props: IProps) {
         mode="horizontal"
         items={items}
       />
-<<<<<<<< HEAD:reactjs-fe/src/components/Navigation/NavigationBar.tsx
-      <button onClick={handleUpdate} className="btn btn-outline-success">
-        Đăng xuất
-      </button>
-    </>
-========
       {/* <Button onClick={handleUpdate} type="primary">
         Đăng xuất
       </Button> */}
     </div>
->>>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9:reactjs-fe/src/components/NavigationBar/NavigationBar.tsx
   );
 }
 

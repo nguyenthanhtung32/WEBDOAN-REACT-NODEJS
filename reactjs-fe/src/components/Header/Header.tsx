@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {
   ShoppingCartOutlined,
   FacebookOutlined,
@@ -40,7 +39,7 @@ export default function Header() {
       <header className={Styles.header_container}>
         <div className={Styles.top_nav_links}>
           <div className={Styles.social_links}>
-            <Link to="/" className={Styles.icon_download}>
+            <Link to="https://shopee.vn/web" className={Styles.icon_download}>
               <DownloadOutlined />
               <img
                 src="https://static.vecteezy.com/system/resources/previews/002/520/836/original/download-apps-button-google-play-and-app-store-vector.jpg"
@@ -48,10 +47,10 @@ export default function Header() {
                 className={Styles.img_download}
               />
             </Link>
-            <Link to="/">
+            <Link to="https://www.facebook.com/ShopeeVN">
               <FacebookOutlined />
             </Link>
-            <Link to="/">
+            <Link to="https://www.instagram.com/shopee_vn/">
               <InstagramOutlined />
             </Link>
           </div>
@@ -108,31 +107,3 @@ export default function Header() {
     </>
   );
 }
-=======
-import { ShoppingCartOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import Styles from "./Header.module.css";
-
-export default function Header() {
-  return (
-    <header className={Styles.header_container}>
-      <Link to="/home">
-        <img
-          className={Styles.logo}
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Shopee.svg/2560px-Shopee.svg.png"
-          alt="Logo"
-        />
-      </Link>
-      <div className={Styles.nav_links}>
-        <Link to="/products">Products</Link>
-        <Link to="/cart">
-          <ShoppingCartOutlined />{" "}
-        </Link>
-        <Link to="/login">Login</Link>
-        <span>|</span>
-        <Link to="/signup">Sign up</Link>
-      </div>
-    </header>
-  );
-}
->>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9

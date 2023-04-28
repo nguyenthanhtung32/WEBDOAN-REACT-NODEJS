@@ -327,9 +327,10 @@ export default function Products() {
       });
   };
   return (
-    <div style={{ padding: 24 }}>
+    <div style={{ padding: 24, display : 'flex' }}>
       {/* TABLE */}
       <div className={Styles.filter}>
+        <h1 className={Styles.h1}>DANH MỤC</h1>
         <select
           className={Styles.select}
           id="cars"
@@ -425,9 +426,8 @@ export default function Products() {
           Refresh
         </Button>
       </div>
-      <div>
+      <div className={Styles.table}>
         <Table
-          className={Styles.table}
           rowKey="_id"
           dataSource={products}
           columns={columns}

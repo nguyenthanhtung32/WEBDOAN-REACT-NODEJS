@@ -14,68 +14,32 @@ import CreateEmployee from "../../pages/Employees/create";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
-<<<<<<< HEAD
-import NavigationBar from "../Navigation/NavigationBar";
-=======
 import NavigationBar from "../NavigationBar/NavigationBar";
->>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9
 import SideBar from "../SideBar/SideBar";
-import Home from "../../pages/Home";
+import Home from "../../pages/Home/Home";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 
-<<<<<<< HEAD
-const headerStyle: React.CSSProperties = {
-  backgroundColor: "dark",
-};
-const footerStyle: React.CSSProperties = {
-  textAlign: "center",
-  color: "#fff",
-  backgroundColor: "#ffcccc",
-};
-=======
->>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9
 const contentStyle: React.CSSProperties = {
   minHeight: "100vh",
   backgroundColor: "#ffffff",
-  display: "flex",
-<<<<<<< HEAD
-  width: "100%",
-=======
->>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9
+  //   display: "flex",
 };
 
-interface IProps {
+/* interface IProps {
   setIsLogin: (value: boolean) => void;
-}
+} */
 
-function BaseWeb(props: IProps) {
-<<<<<<< HEAD
-  const { setIsLogin } = props;
+function BaseWeb(/* props: IProps */) {
   return (
     <BrowserRouter>
       <Layout>
         <Header />
-        <NavigationBar
-          setIsLogin={function (value: boolean): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
-=======
-  return (
-    <BrowserRouter>
-      <Layout>
-        <Header/>
-          <NavigationBar
-            setIsLogin={function (value: boolean): void {
-              throw new Error("Function not implemented.");
-            }}
-          />
->>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9
+        <NavigationBar />
         <Content style={contentStyle}>
           <SideBar />
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/products" element={<Products />} />
             <Route path="/customers" element={<Customers />} />
@@ -92,11 +56,7 @@ function BaseWeb(props: IProps) {
             <Route path="/employee" element={<CreateEmployee />} />
           </Routes>
         </Content>
-<<<<<<< HEAD
         <Footer />
-=======
-        <Footer/>
->>>>>>> 1f6ce0cb26f1e1a0eb8344fbfd6d251cf605c1c9
       </Layout>
     </BrowserRouter>
   );
