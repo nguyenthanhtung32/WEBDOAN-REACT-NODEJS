@@ -51,6 +51,7 @@ const getProductSchema = yup.object({
         }),
         skip: yup.number(),
         limit: yup.number(),
+        description: yup.string(),
     })
 });
 

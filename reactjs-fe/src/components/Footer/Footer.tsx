@@ -1,4 +1,10 @@
-import styles from "./Footer.module.css"
+import styles from "./Footer.module.css";
+import {
+  FacebookFilled,
+  InstagramFilled,
+  TwitterSquareFilled,
+  YoutubeFilled,
+} from "@ant-design/icons";
 
 function Footer() {
   return (
@@ -31,10 +37,22 @@ function Footer() {
       <div className={styles.footer_follow}>
         <h2>Theo dõi chúng tôi trên</h2>
         <ul>
-          <li>Facebook</li>
-          <li>Instagram</li>
-          <li>Twitter</li>
-          <li>Youtube</li>
+          <li>
+            <FacebookFilled />
+            Facebook
+          </li>
+          <li>
+            <InstagramFilled />
+            Instagram
+          </li>
+          <li>
+            <TwitterSquareFilled />
+            Twitter
+          </li>
+          <li>
+            <YoutubeFilled />
+            Youtube
+          </li>
         </ul>
       </div>
       <div className={styles.footer_download}>

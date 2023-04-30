@@ -56,6 +56,7 @@ router.post("/", async function (req, res, next) {
     body: yup.object({
       name: yup.string().required(),
       description: yup.string(),
+      img : yup.string(),
     }),
   });
 

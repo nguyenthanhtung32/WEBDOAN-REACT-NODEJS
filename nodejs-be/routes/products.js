@@ -10,7 +10,7 @@ const { validateSchema, getProductSchema, } = require('../validation/products');
 // Get all
 router.get('/', validateSchema(getProductSchema), async (req, res, next) => {
   try {
-    const { category, supplier, productName, stockStart, stockEnd, priceStart, priceEnd, discountStart, discountEnd, skip, limit } = req.query;
+    const { category, supplier, productName, stockStart, stockEnd, priceStart, priceEnd, discountStart, discountEnd, skip, limit,description } = req.query;
     const conditionFind = {};
     console.log(conditionFind);
 
@@ -23,6 +23,9 @@ router.get('/', validateSchema(getProductSchema), async (req, res, next) => {
     if (productName) {
       conditionFind.name = new RegExp(`${productName}`)
     }
+    if (description) {
+        conditionFind.description = new RegExp(`${description}`)
+      }
     if (stockStart || stockEnd) {
       const stockGte = stockStart ? { $gte: stockStart } : {};
       const stockLte = stockEnd ? { $lte: stockEnd } : {};

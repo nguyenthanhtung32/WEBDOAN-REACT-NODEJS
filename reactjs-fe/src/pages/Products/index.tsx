@@ -21,6 +21,8 @@ import { useNavigate } from "react-router-dom";
 
 import type { ColumnsType } from "antd/es/table";
 import numeral from "numeral";
+import { useLocation } from "react-router-dom";
+
 
 const apiName = "/products";
 
@@ -38,6 +40,9 @@ const initialState = {
 const allOption = [{ _id: "", name: "----All----" }];
 
 export default function Products() {
+  const location = useLocation();
+  const nameCategory = location?.state?.nameCategory;
+  console.log('nameCategory', nameCategory)
   const [products, setProducts] = React.useState<any[]>([]);
   const [categories, setCategories] = React.useState<any[]>([]);
   const [suppliers, setSuppliers] = React.useState<any[]>([]);
@@ -61,7 +66,7 @@ export default function Products() {
   const create = () => {
     navigate("/product");
   };
-
+  
   const onChangeFilter = useCallback((e: any) => {
     setFilter((prevState: any) => ({
       ...prevState,
@@ -326,6 +331,7 @@ export default function Products() {
         console.error(err);
       });
   };
+  
   return (
     <div style={{ padding: 24, display : 'flex' }}>
       {/* TABLE */}
