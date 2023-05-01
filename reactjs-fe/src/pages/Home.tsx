@@ -12,19 +12,18 @@ const initialState = {
 export default function Home() {
   const [categories, setCategories] = React.useState<any[]>([]);
   const [products, setProducts] = React.useState<any[]>([]);
-  const [filter, setFilter] = React.useState<any>(initialState);
+  //   const [filter, setFilter] = React.useState<any>(initialState);
   const navigate = useNavigate();
 
-  const onClickFilter = ((name: string | undefined) => {
-    console.log('name', name);
-      navigate('/renderCategory', {
-        state: {
-          nameCategory: name,
-        }
-      });
+  const onClickFilter = (name: string | undefined) => {
+    console.log("name", name);
+    navigate("/renderCategory", {
+      state: {
+        nameCategory: name,
+      },
+    });
     // call api voi param name
-    
-  });
+  };
 
   const [refresh] = React.useState<number>(0);
   React.useEffect(() => {
@@ -109,9 +108,15 @@ export default function Home() {
           {categories.map(
             (item: { _id: string; name: string; img: string }) => {
               return (
-                <Col xl={{ span: 3, offset: 1 }} sm={{ span: 12, offset: 2 }} md={{ span: 6, offset: 2 }}>
+                <Col
+                  xl={{ span: 3, offset: 1 }}
+                  sm={{ span: 12, offset: 2 }}
+                  md={{ span: 6, offset: 2 }}
+                >
                   <Card
-                    onClick={() => {onClickFilter(item?.name)}}
+                    onClick={() => {
+                      onClickFilter(item?.name);
+                    }}
                     hoverable
                     style={{
                       width: "145px",
@@ -136,6 +141,43 @@ export default function Home() {
               );
             }
           )}
+        </Row>
+      </div>
+      <div style={{ border: "1px solid #ccc", margin: "20px 50px 0px 50px" }}>
+        <h2 style={{ marginLeft: "10px" }}>Flash sale</h2>
+        <Row>
+          {products.map((item: { _id: string; name: string; img: string }) => {
+            return (
+              <Col
+                xl={{ span: 3, offset: 1 }}
+                sm={{ span: 12, offset: 2 }}
+                md={{ span: 6, offset: 2 }}
+              >
+                <Card
+                  onClick={() => {
+                    onClickFilter(item?.name);
+                  }}
+                  hoverable
+                  style={{
+                    width: "145px",
+                    height: "150px",
+                    margin: "20px 10px 10px 10px",
+                  }}
+                  cover={
+                    <img
+                      alt=""
+                      style={{ width: "100%", height: "100px" }}
+                      src={item.img}
+                    />
+                  }
+                >
+                  <strong style={{ display: "flex", justifyContent: "center" }}>
+                    {item.name}
+                  </strong>
+                </Card>
+              </Col>
+            );
+          })}
         </Row>
       </div>
     </>

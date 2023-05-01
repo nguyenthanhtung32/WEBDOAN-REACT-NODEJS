@@ -1,6 +1,6 @@
 import { Button, Card, Input, message } from "antd";
 import axios from "../../libraries/axiosClient";
-import React, { useCallback } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Styles from "./index.module.css";
 
@@ -34,17 +34,14 @@ export default function Products() {
       },
     });
   };
-  const onChangeFilter = useCallback((e: any) => {
+  const onChangeFilter = (e: any) => {
     setFilter((prevState: any) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
-  }, []);
+  };
 
-  if(nameCategory){
-    
-  }
-  const callApi = useCallback((searchParams: any) => {
+  const callApi = (searchParams: any) => {
     axios
       .get(`${apiName}?${searchParams}`)
       .then((response) => {
@@ -54,9 +51,9 @@ export default function Products() {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  };
 
-  const onSearch = useCallback(() => {
+  const onSearch = () => {
     const checkInputData = (input: any, name: any) => {
       if ((input && isNaN(input)) || (input && input < 0)) {
         message.error(`Dữ liệu nhập vào ô ${name} không hợp lệ!`);
@@ -82,15 +79,16 @@ export default function Products() {
     );
 
     // Tạo query params từ các trường đã lọc
-    const searchParams = new URLSearchParams(
-      filterFields.map((key) => {
-        return [key, filter[key]];
-      })
-    );
+    const a = filterFields.map((key) => {
+      return [key, filter[key]];
+    });
+    const b = ["productName", nameCategory];
+    a.push(b);
+    const searchParams = new URLSearchParams(a);
 
     // Gọi API với các query params đã tạo
     callApi(searchParams);
-  }, [callApi, filter]);
+  };
 
   React.useEffect(() => {
     axios
@@ -159,7 +157,7 @@ export default function Products() {
           Tìm Kiếm
         </Button>
       </div>
-      <div style={{ marginLeft: "24px", flex: "1", display: "flex"}}>
+      <div style={{ marginLeft: "24px", flex: "1", display: "flex" }}>
         {products.map((item) => (
           <Card
             key={item._id}

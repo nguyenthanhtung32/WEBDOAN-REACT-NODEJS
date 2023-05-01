@@ -12,7 +12,6 @@ router.get('/', validateSchema(getProductSchema), async (req, res, next) => {
   try {
     const { category, supplier, productName, stockStart, stockEnd, priceStart, priceEnd, discountStart, discountEnd, skip, limit,description } = req.query;
     const conditionFind = {};
-    console.log(conditionFind);
 
     if (category) {
       conditionFind.categoryId = category;
@@ -62,7 +61,6 @@ router.get('/', validateSchema(getProductSchema), async (req, res, next) => {
       total: totalResults,
     });
   } catch (error) {
-    console.log('««««« error »»»»»', error);
     res.status(500).json({ ok: false, error });
   }
 });
