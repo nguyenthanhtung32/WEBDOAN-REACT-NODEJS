@@ -106,6 +106,10 @@ export default function Home() {
             style={{ height: "100%", width: "30%" }}
             src="https://cf.shopee.vn/file/vn-50009109-d02dfb0938956b674846428074581299_xhdpi"
           />
+          <img
+            style={{ height: "100%", width: "30%" }}
+            src="https://cf.shopee.vn/file/vn-50009109-c621578f239c62ce7917370f5d077bbb_xhdpi"
+          />
         </div>
       </div>
 
