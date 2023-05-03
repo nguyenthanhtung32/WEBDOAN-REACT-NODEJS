@@ -8,12 +8,29 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import Styles from "./Header.module.css";
-import { Button } from "antd";
+import { Button, Input } from "antd";
 import { useCallback } from "react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function Header() {
   const [showButton, setShowButton] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const onSearch = () => {
+    navigate("/renderCategory", {
+      state: {
+        nameCategory: searchValue,
+      },
+    });
+  };
+
+  React.useEffect(() => {
+    setSearchValue("");
+  }, [location.pathname]);
 
   const handleMoveTop = useCallback(() => {
     window.scrollTo({
@@ -77,12 +94,15 @@ export default function Header() {
             </Link>
           </div>
           <div className={Styles.search_container}>
-            <input
+            <Input
               type="text"
               placeholder="Tìm kiếm sản phẩm"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
               className={Styles.search_box}
             />
-            <button className={Styles.search_button}>
+
+            <button className={Styles.search_button} onClick={onSearch}>
               <SearchOutlined />
             </button>
           </div>

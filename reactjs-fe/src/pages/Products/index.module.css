@@ -1,77 +1,48 @@
-/* .filter {
-  display: flex;
+.filter {
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to right, #12c2e9, #c471ed, #f64f59);
   margin-bottom: 20px;
   border: 1px solid black;
-  height: 50px;
+  height: auto;
   border-radius: 10px;
+  width: 15%;
+  margin-right: 20px;
+  background-color: #ee4d2d;
+  ;
 }
+
 .select {
   width: 200px;
   border-radius: 5px;
   height: 30px;
-  margin-left: 10px;
+  margin: 10px 10px 5px 5px;
 }
+
 .input {
-  width: 200px;
-  margin-left: 10px;
+  width: auto;
+  margin: 10px 10px 5px 5px;
 }
+
 .but {
-  margin-left: 10px;
+  margin: 10px 10px 5px 5px;
 }
+
 .ton {
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 10px 10px 5px 5px;
 }
+
 .table {
   border: 1px solid black;
   border-radius: 10px;
-} */
-.filter {
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    border: 1px solid black;
-    height: auto;
-    border-radius: 10px;
-    width: 15%;
-    margin-right: 20px;
-    background-color: #ee4d2d;
-    ;
-}
-
-.select {
-    width: 200px;
-    border-radius: 5px;
-    height: 30px;
-    margin: 10px 10px 5px 5px;
-}
-
-.input {
-    width: 200px;
-    margin: 10px 10px 5px 5px;
-}
-
-.but {
-    margin: 10px 10px 5px 5px;
-}
-
-.ton {
-    margin: 10px 10px 5px 5px;
-}
-
-.table {
-    border: 1px solid black;
-    border-radius: 10px;
-    width: 100%;
+  width: 100%;
 }
 
 .h1{
-    color: white;
-    display: flex;
-    justify-content: center;
-    margin-top: 5px;
-    font-family: display-bold;
+  color: white;
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}
+.button {
+  margin: 20px 50px 10px 50px;
 }

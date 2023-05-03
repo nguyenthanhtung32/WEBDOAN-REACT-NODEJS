@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 
 import type { ColumnsType } from "antd/es/table";
 import numeral from "numeral";
+import { useLocation } from "react-router-dom";
 
 const apiName = "/products";
 
@@ -38,6 +39,9 @@ const initialState = {
 const allOption = [{ _id: "", name: "----All----" }];
 
 export default function Products() {
+  const location = useLocation();
+  const nameCategory = location?.state?.nameCategory;
+  console.log("nameCategory", nameCategory);
   const [products, setProducts] = React.useState<any[]>([]);
   const [categories, setCategories] = React.useState<any[]>([]);
   const [suppliers, setSuppliers] = React.useState<any[]>([]);
@@ -178,7 +182,7 @@ export default function Products() {
       dataIndex: "category.name",
       key: "category.name",
       render: (text, record, index) => {
-        return <span>{record.category.name}</span>;
+        return <span>{record?.category?.name}</span>;
       },
     },
     {
@@ -186,7 +190,7 @@ export default function Products() {
       dataIndex: "supplier.name",
       key: "supplier.name",
       render: (text, record, index) => {
-        return <span>{record.supplier.name}</span>;
+        return <span>{record?.supplier?.name}</span>;
       },
     },
     {
@@ -326,8 +330,9 @@ export default function Products() {
         console.error(err);
       });
   };
+
   return (
-    <div style={{ padding: 24, display : 'flex' }}>
+    <div style={{ padding: 24, display: "flex" }}>
       {/* TABLE */}
       <div className={Styles.filter}>
         <h1 className={Styles.h1}>DANH MỤC</h1>
@@ -513,6 +518,20 @@ export default function Products() {
               {
                 required: true,
                 message: "Tên sản phẩm bắt buộc phải nhập",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Mô tả/ Ghi chú"
+            name="description"
+            hasFeedback
+            required={true}
+            rules={[
+              {
+                required: true,
+                message: "Mô tả/ Ghi chú bắt buộc phải nhập",
               },
             ]}
           >

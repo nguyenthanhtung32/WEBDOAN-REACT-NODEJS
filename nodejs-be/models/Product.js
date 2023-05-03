@@ -8,6 +8,8 @@ const productSchema = Schema(
     price: { type: Number, required: true, min: 0, default: 0 },
     discount: { type: Number, min: 0, max: 75, default: 0 },
     stock: { type: Number, min: 0, default: 0 },
+    description: { type: String, required: true },
+    img: { type: String, required: true },
     categoryId: {
       type: Schema.Types.ObjectId,
       ref: "Category",

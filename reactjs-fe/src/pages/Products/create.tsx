@@ -63,7 +63,7 @@ export default function Products() {
         setRefresh((f) => f + 1);
         createForm.resetFields();
         message.success("Thêm mới sản phẩm thành công!", 1.5);
-        navigate("/products")
+        navigate("/products");
       })
       .catch((err) => {});
   };
@@ -134,6 +134,12 @@ export default function Products() {
               },
             ]}
           >
+            <Input />
+          </Form.Item>
+          <Form.Item label="Mô tả" name="description" hasFeedback>
+            <Input />
+          </Form.Item>
+          <Form.Item label="Hình ảnh" name="img" hasFeedback>
             <Input />
           </Form.Item>
 

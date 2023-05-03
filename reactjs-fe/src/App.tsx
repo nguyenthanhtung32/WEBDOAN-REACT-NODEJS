@@ -8,12 +8,12 @@ function App() {
   const [isLogin, setIsLogin] = React.useState(false);
   return (
     <>
-      {/* {isLogin ? (
+      {isLogin ? (
         <BaseWeb setIsLogin={setIsLogin} />
       ) : (
         <Login setIsLogin={setIsLogin} />
-      )} */}
-      <BaseWeb/>
+      )}
+      {/* <BaseWeb/> */}
     </>
   );
 }

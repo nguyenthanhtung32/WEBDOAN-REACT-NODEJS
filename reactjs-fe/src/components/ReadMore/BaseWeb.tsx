@@ -15,10 +15,12 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
 import NavigationBar from "../NavigationBar/NavigationBar";
-import SideBar from "../SideBar/SideBar";
-import Home from "../../pages/Home/Home";
+// import SideBar from "../SideBar/SideBar";
+import Home from "../../pages/Home";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
+import RenderCategory from "../../pages/Products/renderCategory";
+import Detail from "../../pages/Products/Detail";
 
 const contentStyle: React.CSSProperties = {
   minHeight: "100vh",
@@ -26,19 +28,24 @@ const contentStyle: React.CSSProperties = {
   //   display: "flex",
 };
 
-/* interface IProps {
+interface IProps {
   setIsLogin: (value: boolean) => void;
-} */
+}
 
-function BaseWeb(/* props: IProps */) {
+function BaseWeb(props: IProps) {
   return (
     <BrowserRouter>
       <Layout>
         <Header />
-        <NavigationBar />
+        <NavigationBar
+          setIsLogin={function (value: boolean): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
         <Content style={contentStyle}>
-          <SideBar />
+          {/* <SideBar /> */}
           <Routes>
+            <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/products" element={<Products />} />
@@ -54,6 +61,8 @@ function BaseWeb(/* props: IProps */) {
             <Route path="/customer" element={<CreateCustomer />} />
             <Route path="/supplier" element={<CreateSupplier />} />
             <Route path="/employee" element={<CreateEmployee />} />
+            <Route path="/renderCategory" element={<RenderCategory />} />
+            <Route path="/detail" element={<Detail />} />
           </Routes>
         </Content>
         <Footer />
