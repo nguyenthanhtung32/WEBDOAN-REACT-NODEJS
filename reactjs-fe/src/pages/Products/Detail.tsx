@@ -21,6 +21,26 @@ export default function Products() {
   const [refresh, setRefresh] = React.useState<number>(0);
 
   React.useEffect(() => {
+    if (!productDetail) return;
+
+    axios
+      .get(`${apiName}?description=${productDetail}`)
+      .then((response) => {
+        const { data } = response;
+
+        // Lọc ra sản phẩm có description trùng với productDetail
+        const filteredProducts = data.payload.filter(
+          (product: any) => product.description === productDetail
+        );
+
+        setProducts(filteredProducts);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [refresh, productDetail]);
+
+  React.useEffect(() => {
     axios
       .get(`${apiName}?description=${productDetail}`)
       .then((response) => {
@@ -76,7 +96,7 @@ export default function Products() {
                 Tồn kho: <span>{numeral(item.stock).format("0,0")}</span>
               </span>
             </div>
-            <div style={{ marginTop: 10}}>
+            <div style={{ marginTop: 10 }}>
               <Button
                 icon={<EditOutlined />}
                 onClick={() => {
@@ -126,11 +146,7 @@ export default function Products() {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Mô tả/ Ghi chú"
-            name="description"
-            hasFeedback
-          >
+          <Form.Item label="Mô tả/ Ghi chú" name="description" hasFeedback>
             <Input />
           </Form.Item>
 
