@@ -183,7 +183,7 @@ export default function Products() {
       dataIndex: "category.name",
       key: "category.name",
       render: (text, record, index) => {
-        return <span>{record.category.name}</span>;
+        return <span>{record?.category?.name}</span>;
       },
     },
     {
@@ -191,7 +191,7 @@ export default function Products() {
       dataIndex: "supplier.name",
       key: "supplier.name",
       render: (text, record, index) => {
-        return <span>{record.supplier.name}</span>;
+        return <span>{record?.supplier?.name}</span>;
       },
     },
     {

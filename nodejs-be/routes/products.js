@@ -113,6 +113,7 @@ router.post('/', function (req, res, next) {
         .test('Validate ObjectID', '${path} is not valid ObjectID', (value) => {
           return ObjectId.isValid(value);
         }),
+      img : yup.string(),
     }),
   });
 

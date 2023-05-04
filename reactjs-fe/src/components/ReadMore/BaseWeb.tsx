@@ -28,19 +28,19 @@ const contentStyle: React.CSSProperties = {
 //   display: "flex",
 };
 
-interface IProps {
-  setIsLogin: (value: boolean) => void;
-}
+// interface IProps {
+//   setIsLogin: (value: boolean) => void;
+// }
 
-function BaseWeb(props: IProps) {
+function BaseWeb() {
   return (
     <BrowserRouter>
       <Layout>
         <Header/>
           <NavigationBar
-            setIsLogin={function (value: boolean): void {
-              throw new Error("Function not implemented.");
-            }}
+            // setIsLogin={function (value: boolean): void {
+            //   throw new Error("Function not implemented.");
+            // }}
           />
         <Content style={contentStyle}>
           {/* <SideBar /> */}

@@ -3,9 +3,9 @@
     align-items: center;
     margin-bottom: 20px;
     border: 1px solid black;
-    height: auto;
+    height: 400px;
     border-radius: 10px;
-    width: 15%;
+    width:15%;
     margin-right: 20px;
     background-color: #ee4d2d;
     ;
@@ -19,16 +19,12 @@
 }
 
 .input {
-    width: 200px;
+    width: auto;
     margin: 10px 10px 5px 5px;
 }
 
-.but {
-    margin: 10px 10px 5px 5px;
-}
-
-.ton {
-    margin: 10px 10px 5px 5px;
+.but,.ton {
+    margin: 20px 5px 5px 50px;
 }
 
 .table {

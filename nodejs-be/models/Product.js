@@ -18,11 +18,13 @@ const productSchema = Schema(
       ref: "Supplier",
       required: true,
     },
+    description : { type: String },
+    img : {type : String },
   },
   {
     versionKey: false,
     timestamps: true,
-  }
+  },
 );
 
 productSchema.virtual("total").get(function () {

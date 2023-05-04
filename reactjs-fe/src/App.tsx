@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import BaseWeb from "./components/ReadMore/BaseWeb";
-import Login from "./pages/Auth/Login";
+// import Login from "./pages/Auth/Login";
 //   import Login from "./Components/pages/Auth/Login";
 function App() {
 
-    const[isLogin, setIsLogin] = useState(false);
+    // const[isLogin, setIsLogin] = useState(false);
 
   return (
     <>
-    {isLogin ? (
+    {/* {isLogin ? (
         < BaseWeb setIsLogin={setIsLogin}/>
-      ) : (<Login setIsLogin={setIsLogin}/>)} 
-      {/* <BaseWeb/> */}
+      ) : (<Login setIsLogin={setIsLogin}/>)}  */}
+      <BaseWeb/>
     </>
     );
 }

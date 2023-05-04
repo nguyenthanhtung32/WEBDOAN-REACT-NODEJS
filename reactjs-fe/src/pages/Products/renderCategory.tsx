@@ -16,13 +16,15 @@ const initialState = {
   priceEnd: "",
   discountStart: "",
   discountEnd: "",
+  category : [],
 };
 
 export default function Products() {
   const [products, setProducts] = React.useState<any[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
-  const nameCategory = location?.state?.nameCategory;
+  const nameCategory = location.state.nameCategory;
+//   const category = location.state.category;
 
   const [filter, setFilter] = React.useState<any>(initialState);
 
@@ -82,13 +84,25 @@ export default function Products() {
     const a = filterFields.map((key) => {
       return [key, filter[key]];
     });
-    const b = ["productName", nameCategory];
+    const b = ["category", nameCategory];
     a.push(b);
     const searchParams = new URLSearchParams(a);
 
     // Gọi API với các query params đã tạo
     callApi(searchParams);
   };
+
+  React.useEffect(() => {
+    axios
+      .get(`${apiName}?category=${nameCategory}`)
+      .then((response) => {
+        const { data } = response;
+        setProducts(data.payload);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [nameCategory]);
 
   React.useEffect(() => {
     axios
@@ -101,8 +115,10 @@ export default function Products() {
         console.error(err);
       });
   }, [nameCategory]);
+  
   return (
     <div style={{ padding: 24, display: "flex" }}>
+
       <div className={Styles.filter}>
         <h1 className={Styles.h1}>DANH MUC</h1>
         <Input
@@ -157,6 +173,7 @@ export default function Products() {
           Tìm Kiếm
         </Button>
       </div>
+
       <div style={{ marginLeft: "24px", flex: "1", display: "flex" }}>
         {products.map((item) => (
           <Card
@@ -166,14 +183,15 @@ export default function Products() {
             style={{ width: 300, margin: "12px" }}
             hoverable
             onClick={() => {
-              onClickFilter(item?.description);
+              onClickFilter(item.description);
             }}
+            cover={ <img
+                alt=""
+                style={{ width: "100%", height: "100%" }}
+                src={item.img}
+              />}
           >
-            <img
-              alt=""
-              style={{ width: "100%", height: "100px" }}
-              src={item.img}
-            />
+           
             <div style={{ display: "flex" }}>
               <strong>{item.description}</strong>
             </div>
@@ -188,6 +206,7 @@ export default function Products() {
           </Card>
         ))}
       </div>
+      
     </div>
   );
 }
