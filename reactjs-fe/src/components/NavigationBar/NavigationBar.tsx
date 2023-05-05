@@ -8,9 +8,9 @@ import React from "react";
 
 import { useNavigate } from "react-router-dom";
 
-interface IProps {
-  setIsLogin: (value: boolean) => void;
-}
+// interface IProps {
+//   setIsLogin: (value: boolean) => void;
+// }
 
 const items: MenuProps["items"] = [
   {
@@ -58,7 +58,7 @@ const items: MenuProps["items"] = [
   },
 ];
 
-function NavigationBar(props: IProps) {
+function NavigationBar() {
   const navigate = useNavigate();
   //   const { setIsLogin } = props;
   //   const handleUpdate = () => {
