@@ -23,7 +23,6 @@ import type { ColumnsType } from "antd/es/table";
 import numeral from "numeral";
 import { useLocation } from "react-router-dom";
 
-
 const apiName = "/products";
 
 const initialState = {
@@ -42,7 +41,7 @@ const allOption = [{ _id: "", name: "----All----" }];
 export default function Products() {
   const location = useLocation();
   const nameCategory = location?.state?.nameCategory;
-  console.log('nameCategory', nameCategory)
+  console.log("nameCategory", nameCategory);
   const [products, setProducts] = React.useState<any[]>([]);
   const [categories, setCategories] = React.useState<any[]>([]);
   const [suppliers, setSuppliers] = React.useState<any[]>([]);
@@ -66,7 +65,7 @@ export default function Products() {
   const create = () => {
     navigate("/product");
   };
-  
+
   const onChangeFilter = useCallback((e: any) => {
     setFilter((prevState: any) => ({
       ...prevState,
@@ -331,100 +330,122 @@ export default function Products() {
         console.error(err);
       });
   };
-  
+
   return (
-    <div style={{ padding: 24, display : 'flex' }}>
+    <div style={{ padding: 24, display: "flex" }}>
       {/* TABLE */}
-      <div className={Styles.filter}>
-        <h1 className={Styles.h1}>DANH MUC</h1>
-        <select
-          className={Styles.select}
-          id="cars"
-          name="category"
-          value={filter.category}
-          onChange={onChangeFilter}
-        >
-          {categories.map((item: { _id: string; name: string }) => {
-            return (
-              <option key={item._id} value={item._id}>
-                {item.name}
-              </option>
-            );
-          })}
-        </select>
+      <div className={Styles.filterProduct}>
+        {/* <h1 className={Styles.h1}>DANH MUC</h1> */}
+        <div className={Styles.formatSelect}>
+          <p className={Styles.text}>TÌm kiếm danh mục :</p>
+          <select
+            className={Styles.select}
+            id="cars"
+            name="category"
+            value={filter.category}
+            onChange={onChangeFilter}
+          >
+            {categories.map((item: { _id: string; name: string }) => {
+              return (
+                <option key={item._id} value={item._id}>
+                  {item.name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
 
-        <select
-          className={Styles.select}
-          id="cars"
-          name="supplier"
-          value={filter.supplier}
-          onChange={onChangeFilter}
-        >
-          {suppliers.map((item: { _id: string; name: string }) => {
-            return (
-              <option key={item._id} value={item._id}>
-                {item.name}
-              </option>
-            );
-          })}
-        </select>
+        <div className={Styles.formatSelect}>
+          <p className={Styles.text}>Tìm kiếm nhà cung cấp :</p>
+          <select
+            className={Styles.select}
+            id="cars"
+            name="supplier"
+            value={filter.supplier}
+            onChange={onChangeFilter}
+          >
+            {suppliers.map((item: { _id: string; name: string }) => {
+              return (
+                <option key={item._id} value={item._id}>
+                  {item.name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
 
-        <Input
-          placeholder="Tìm kiếm sản phẩm"
-          name="productName"
-          value={filter.productName}
-          onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
-        <Input
-          placeholder="Tồn kho thấp nhất"
-          name="stockStart"
-          value={filter.stockStart}
-          onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
-        <Input
-          placeholder="Tồn kho cao nhất"
-          name="stockEnd"
-          value={filter.stockEnd}
-          onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
-        <Input
-          placeholder="Giá thấp nhất"
-          name="priceStart"
-          value={filter.priceStart}
-          onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
-        <Input
-          placeholder="Giá cao nhất"
-          name="priceEnd"
-          value={filter.priceEnd}
-          onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
-        <Input
-          placeholder="Giảm giá thấp nhất"
-          name="discountStart"
-          value={filter.discountStart}
-          onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
-        <Input
-          placeholder="Giám giá cao nhất"
-          name="discountEnd"
-          value={filter.discountEnd}
-          onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
+        <div className={Styles.formatSelect}>
+          <p className={Styles.text}>Tìm kiếm sản phẩm :</p>
+          <Input
+            placeholder="Vui lòng nhập sản phẩm"
+            name="productName"
+            value={filter.productName}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+        </div>
+
+        <div className={Styles.formatSelect}>
+          <p className={Styles.text}>Stock :</p>
+          <Input
+            placeholder="From :"
+            name="stockStart"
+            value={filter.stockStart}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+          <Input
+            placeholder="To :"
+            name="stockEnd"
+            value={filter.stockEnd}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+        </div>
+
+        <div className={Styles.formatSelect}>
+          <p className={Styles.text}>Price :</p>
+          <Input
+            placeholder="From :"
+            name="priceStart"
+            value={filter.priceStart}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+          <Input
+            placeholder="To :"
+            name="priceEnd"
+            value={filter.priceEnd}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+        </div>
+
+        <div className={Styles.formatSelect}>
+          <p className={Styles.text}>Discount :</p>
+          <Input
+            placeholder="From :"
+            name="discountStart"
+            value={filter.discountStart}
+            onChange={onChangeFilter}
+            className={Styles.inputSelect}
+            allowClear
+          />
+          <Input
+            placeholder="To :"
+            name="discountEnd"
+            value={filter.discountEnd}
+            onChange={onChangeFilter}
+            className={Styles.inputSelect}
+            allowClear
+          />
+        </div>
+
         <Button className={Styles.but} onClick={onSearch}>
           Tìm Kiếm
         </Button>
@@ -432,6 +453,7 @@ export default function Products() {
           Refresh
         </Button>
       </div>
+
       <div className={Styles.table}>
         <Table
           rowKey="_id"

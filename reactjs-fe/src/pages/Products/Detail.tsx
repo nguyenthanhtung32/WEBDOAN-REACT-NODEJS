@@ -1,27 +1,20 @@
-import { Button, Card, Form, Input, InputNumber, message, Modal } from "antd";
+import { Button, Card } from "antd";
 import axios from "../../libraries/axiosClient";
 import React from "react";
-// import Styles from "./index.module.css";
+import Styles from "./index.module.css";
 // import { useNavigate } from "react-router-dom";
 
 import numeral from "numeral";
 import { useLocation } from "react-router-dom";
-import { EditOutlined } from "@ant-design/icons";
 
 const apiName = "/products";
 
 export default function Products() {
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
   const location = useLocation();
   const productDetail = location.state.productDetail;
 
   const [products, setProducts] = React.useState<any[]>([]);
-
-  const [updateForm] = Form.useForm();
-
-  const [open, setOpen] = React.useState<boolean>(false);
-  const [updateId, setUpdateId] = React.useState<number>(0);
-  const [refresh, setRefresh] = React.useState<number>(0);
 
   React.useEffect(() => {
     if (!productDetail) return;
@@ -41,7 +34,7 @@ export default function Products() {
       .catch((err) => {
         console.error(err);
       });
-  }, [refresh, productDetail]);
+  }, [productDetail]);
 
   React.useEffect(() => {
     axios
@@ -53,21 +46,7 @@ export default function Products() {
       .catch((err) => {
         console.error(err);
       });
-  }, [refresh, productDetail]);
-
-  const onUpdateFinish = (values: any) => {
-    axios
-      .patch(apiName + "/" + updateId, values)
-      .then((response) => {
-        setRefresh((f) => f + 1);
-        updateForm.resetFields();
-        message.success("Cập nhật thành công!", 1.5);
-        setOpen(false);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
+  }, [productDetail]);
 
   return (
     <div style={{ padding: 24, display: "flex" }}>
@@ -99,85 +78,13 @@ export default function Products() {
                 Tồn kho: <span>{numeral(item.stock).format("0,0")}</span>
               </span>
             </div>
-            <div style={{ marginTop: 10 }}>
-              <Button
-                icon={<EditOutlined />}
-                onClick={() => {
-                  setOpen(true);
-                  setUpdateId(item.id);
-                  updateForm.setFieldsValue(item);
-                }}
-              />
+            <div className={Styles.formatButton}>
+              <Button className={Styles.formatButtonBuy}>Mua hàng</Button>
+              <Button className={Styles.formatButtonCart}>Thêm vào giỏ hàng</Button>
             </div>
           </Card>
         ))}
       </div>
-      
-      <Modal
-        open={open}
-        title="Cập nhật danh mục"
-        onCancel={() => {
-          setOpen(false);
-        }}
-        cancelText="Đóng"
-        okText="Lưu thông tin"
-        onOk={() => {
-          updateForm.submit();
-        }}
-      >
-        <Form
-          form={updateForm}
-          name="update-form"
-          onFinish={onUpdateFinish}
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
-        >
-          <Form.Item
-            label="Tên sản phẩm"
-            name="name"
-            hasFeedback
-            required={true}
-            rules={[
-              {
-                required: true,
-                message: "Tên sản phẩm bắt buộc phải nhập",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item label="Mô tả/ Ghi chú" name="description" hasFeedback>
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Giá bán"
-            name="price"
-            hasFeedback
-            required={true}
-            rules={[
-              {
-                required: true,
-                message: "Giá bán bắt buộc phải nhập",
-              },
-            ]}
-          >
-            <InputNumber style={{ width: 200 }} />
-          </Form.Item>
-
-          <Form.Item label="Giảm giá" name="discount" hasFeedback>
-            <InputNumber style={{ width: 200 }} />
-          </Form.Item>
-
-          <Form.Item label="Tồn kho" name="stock" hasFeedback>
-            <InputNumber style={{ width: 200 }} />
-          </Form.Item>
-        </Form>
-      </Modal>
     </div>
   );
 }
