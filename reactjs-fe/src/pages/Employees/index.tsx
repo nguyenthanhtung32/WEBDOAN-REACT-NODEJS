@@ -228,7 +228,7 @@ export default function Employees() {
             name="firstName"
             hasFeedback
             required={true}
-            rules={[{ required: true, message: "Bạn chưa nhập tên" }]}
+            rules={[{ required: true, message: "Bạn chưa nhập họ" }]}
           >
             <Input />
           </Form.Item>

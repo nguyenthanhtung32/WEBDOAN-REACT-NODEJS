@@ -21,11 +21,13 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import RenderCategory from "../../pages/Products/renderCategory";
 import Detail from "../../pages/Products/Detail";
+import Logins from "../../pages/Auth/Login";
+import SignUp from "../../pages/Auth/SignUp";
 
 const contentStyle: React.CSSProperties = {
   minHeight: "100vh",
   backgroundColor: "#ffffff",
-//   display: "flex",
+  //   display: "flex",
 };
 
 // interface IProps {
@@ -36,12 +38,12 @@ function BaseWeb() {
   return (
     <BrowserRouter>
       <Layout>
-        <Header/>
-          <NavigationBar
-            // setIsLogin={function (value: boolean): void {
-            //   throw new Error("Function not implemented.");
-            // }}
-          />
+        <Header />
+        <NavigationBar
+        // setIsLogin={function (value: boolean): void {
+        //   throw new Error("Function not implemented.");
+        // }}
+        />
         <Content style={contentStyle}>
           {/* <SideBar /> */}
           <Routes>
@@ -54,6 +56,8 @@ function BaseWeb() {
             <Route path="/employees" element={<Employees />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/orders" element={<Orders />} />
+            <Route path="/login" element={<Logins />} />
+            <Route path="/signup" element={<SignUp />} />
           </Routes>
           <Routes>
             <Route path="/category" element={<CreateCategory />} />
@@ -63,9 +67,10 @@ function BaseWeb() {
             <Route path="/employee" element={<CreateEmployee />} />
             <Route path="/renderCategory" element={<RenderCategory />} />
             <Route path="/detail" element={<Detail />} />
+            
           </Routes>
         </Content>
-        <Footer/>
+        <Footer />
       </Layout>
     </BrowserRouter>
   );

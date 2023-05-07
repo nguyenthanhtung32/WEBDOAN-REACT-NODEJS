@@ -28,6 +28,7 @@ const passportConfigLocal = new LocalStrategy(
     usernameField: "email",
   },
   async (email, password, done) => {
+    console.log('password',password)
     try {
       const user = await Employee.findOne({ email });
 

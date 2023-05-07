@@ -13,17 +13,19 @@ const encodeToken = require("../helpers/jwtHelper");
 mongoose.set("strictQuery", false);
 mongoose.connect(CONNECTION_STRING);
 
-const router = express.Router();
-
+const router = express.Router()
 router.post(
   "/login",
   validateSchema(loginSchema),
-  passport.authenticate("local", { session: false }),
+//   passport.authenticate("local", { session: false }),
+    
   async (req, res, next) => {
     try {
-      const { email /* , password */ } = req.body;
+      const { email , password } = req.body;
 
-      const employee = await Employee.findOne({ email /* , password */ });
+      console.log('req.body', req.body);
+
+      const employee = await Employee.findOne({ email , password });
 
       if (!employee) return res.status(404).send({ message: "Not found" });
 
@@ -43,7 +45,7 @@ router.post(
     }
   }
 );
-
+  
 router.get(
   "/profile",
   passport.authenticate("jwt", { session: false }),
