@@ -1,9 +1,10 @@
-import axios from 'axios';
-import { TOKEN, REFRESH_TOKEN } from '../constants';
+import axios from "axios";
+
+// import { REFRESH_TOKEN, TOKEN } from "../constants";
 
 const axiosClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-  headers: {'Content-Type': 'application/json'},
+  headers: { "Content-Type": "application/json" },
 });
 
 // axiosClient.interceptors.request.use((config) => {

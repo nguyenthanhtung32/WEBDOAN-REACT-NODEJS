@@ -1,13 +1,12 @@
-POST http://localhost:9000/products HTTP/1.1
+POST http://localhost:9000/employees HTTP/1.1
 content-type: application/json
 
-{
-    "name" : "Owen Slimfit",
-    "price": 625000,
-    "discount": 25,
-    "stock": 10,
-    "categoryId": "64512a5db48a290d59802997",
-    "supplierId": "6451425d3ca2038bc3f8f1af",
-    "description": "Quần jeans nam Owen Slimfit màu xanh",
-    "img": "https://shopee.vn/Qu%E1%BA%A7n-jeans-nam-Owen-Slimfit-m%C3%A0u-xanh-QJSL23687L(MHR)-i.92937520.22231837489"
+{ 
+   "firstName" : "Phạm Thị",
+   "lastName" : "C",
+   "phoneNumber" : "0905412512",
+   "address" : "Tổ 14, thôn An Trạch",
+   "email" : "phamthib@gmail.com",
+   "password" : "123456",
+   "birthday" : "2001-06-25"
 }

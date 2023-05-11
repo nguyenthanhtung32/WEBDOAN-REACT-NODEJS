@@ -392,12 +392,12 @@ export default function Products() {
       </div>
       <Row gutter={[16, 16]} style={{ marginTop: "24px" }}>
         {products.map((item) => (
-          <Col key={item._id} xs={24} sm={12} md={8} lg={8} xl={8}>
+          <Col key={item._id} xs={24} sm={12} md={12} lg={12} xl={12}>
             <Card
               key={item._id}
               title={item.name}
               bordered={false}
-              style={{ width: 300 }}
+              style={{ width: 300, height: 400 }}
               hoverable
               onClick={() => {
                 onClickFilter(item?.description);
@@ -405,7 +405,7 @@ export default function Products() {
               cover={
                 <img
                   alt=""
-                  style={{ width: "auto", height: 200 }}
+                  style={{ width: "auto", height: 150, marginTop: 20}}
                   src={item.img}
                 />
               }
