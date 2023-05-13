@@ -263,6 +263,7 @@ import axios from "../../libraries/axiosClient";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import numeral from "numeral";
+import Link from "next/link";
 
 const apiName = "/products";
 
@@ -283,7 +284,6 @@ export default function Products({ products }) {
   const [filter, setFilter] = useState(initialState);
 
   const onClickFilter = (description) => {
-    console.log("description", description);
     router.push("/detail", {
       query: {
         productDetail: description,
@@ -395,38 +395,40 @@ export default function Products({ products }) {
       <Row gutter={[16, 16]} style={{ marginTop: "24px" }}>
         {products.map((item) => (
           <Col key={item._id} xs={24} sm={12} md={12} lg={12} xl={12}>
-            <Card
-              key={item._id}
-              title={item.name}
-              bordered={false}
-              style={{ width: 300, height: 400 }}
-              hoverable
-              onClick={() => {
-                onClickFilter(item?.description);
-              }}
-              cover={
-                <img
-                  alt=""
-                  style={{ width: "auto", height: 150, marginTop: 20 }}
-                  src={item.img}
-                />
-              }
-            >
-              <div style={{ display: "flex" }}>
-                <strong>{item.description}</strong>
-              </div>
-              <div style={{ display: "flex", color: "#ff3300" }}>
-                <span>
-                  Giá: <span>{numeral(item.price).format("0,0")}</span>
-                </span>
-              </div>
-              <div style={{ display: "flex", color: "#ff3300" }}>
-                <span>
-                  Giảm giá: <span>{numeral(item.discount).format("0,0")}%</span>
-                  ;
-                </span>
-              </div>
-            </Card>
+            <Link href={`/detail/${item.id}`}>
+              <Card
+                key={item._id}
+                title={item.name}
+                bordered={false}
+                style={{ width: 300, height: 400 }}
+                hoverable
+                onClick={() => {
+                  onClickFilter(item?.description);
+                }}
+                cover={
+                  <img
+                    alt=""
+                    style={{ width: "auto", height: 150, marginTop: 20 }}
+                    src={item.img}
+                  />
+                }
+              >
+                <div style={{ display: "flex" }}>
+                  <strong>{item.description}</strong>
+                </div>
+                <div style={{ display: "flex", color: "#ff3300" }}>
+                  <span>
+                    Giá: <span>{numeral(item.price).format("0,0")}</span>
+                  </span>
+                </div>
+                <div style={{ display: "flex", color: "#ff3300" }}>
+                  <span>
+                    Giảm giá: <span>{numeral(item.discount).format("0,0")}%</span>
+                    ;
+                  </span>
+                </div>
+              </Card>
+            </Link>
           </Col>
         ))}
       </Row>
@@ -454,9 +456,7 @@ export async function getServerSideProps(context) {
     };
   } catch (e) {
     return {
-      props: {
-        products: [],
-      },
+      notFound: true,
     };
   }
 }

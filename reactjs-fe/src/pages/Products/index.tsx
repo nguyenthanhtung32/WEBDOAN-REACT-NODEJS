@@ -40,7 +40,7 @@ const allOption = [{ _id: "", name: "----All----" }];
 
 export default function Products() {
   const location = useLocation();
-  const nameCategory = location?.state?.nameCategory;
+  const nameCategory = location.state.nameCategory;
   console.log("nameCategory", nameCategory);
   const [products, setProducts] = React.useState<any[]>([]);
   const [categories, setCategories] = React.useState<any[]>([]);
