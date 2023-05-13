@@ -28,7 +28,7 @@ export default function SignUp() {
       const response = await axios.post("/employees", payload);
       console.log(response);
       alert("Đăng kí thành công");
-      window.location.href = "/products";
+      window.location.href = "/login";
       // handle success here
     } catch (error) {
       console.error(error);

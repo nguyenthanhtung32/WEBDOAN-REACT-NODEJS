@@ -1,9 +1,34 @@
 import { Button, Checkbox, Form, Input } from "antd";
 import React, { useState } from "react";
+import axios from "../../libraries/axiosClient";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    const token = {
+      email,
+      password,
+    };
+
+    try {
+      const response = await axios.post("/employees/login", token);
+      console.log(response);
+      
+      localStorage.setItem("token", response.data.token);
+      alert("Đăng nhập thành công");
+      window.location.href = "/home";
+
+    } catch (error) {
+      console.error(error);
+      alert("Đăng nhập thất bại");
+      
+    }
+  };
+
 
   return (
     <Form
@@ -12,8 +37,6 @@ export default function Login() {
       wrapperCol={{ span: 16 }}
       style={{ maxWidth: 600 }}
       initialValues={{ remember: true }}
-      // onFinish={onFinish}
-      // onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
       <Form.Item
@@ -53,7 +76,7 @@ export default function Login() {
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" onClick={(e) => handleSubmit(e)}>
           Submit
         </Button>
       </Form.Item>

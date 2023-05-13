@@ -46,6 +46,44 @@ router.post(
   }
 );
   
+// router.post(
+//     '/login',
+//     validateSchema(loginSchema),
+//     async (req, res) => {
+//       const { email, password } = req.body;
+  
+//       try {
+//         const employee = await Employee.findOne({ email });
+//         if (!employee) {
+//           return res.status(404).json({ message: 'User not found' });
+//         }
+  
+//         const isMatch = await bcrypt.compare(password, employee.password);
+  
+//         if (!isMatch) {
+//           return res.status(400).json({ message: 'Invalid password' });
+//         }
+  
+//         const payload = { 
+//           _id: employee._id, 
+//           email: employee.email,
+//           firstName: employee.firstName,
+//           lastName: employee.lastName,
+//           timestamp: new Date().getTime()
+//         };
+//         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+  
+//         return res.status(200).json({ 
+//           token,
+//           payload
+//         });
+//       } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ message: 'Server error' });
+//       }
+//     }
+//   );
+
 router.get(
   "/profile",
   passport.authenticate("jwt", { session: false }),
