@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 
 import type { ColumnsType } from "antd/es/table";
 import numeral from "numeral";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 
 const apiName = "/products";
 
@@ -39,9 +39,9 @@ const initialState = {
 const allOption = [{ _id: "", name: "----All----" }];
 
 export default function Products() {
-  const location = useLocation();
-  const nameCategory = location.state.nameCategory;
-  console.log("nameCategory", nameCategory);
+  //   const location = useLocation();
+  //   const nameCategory = location.state.nameCategory;
+  //   console.log("nameCategory", nameCategory);
   const [products, setProducts] = React.useState<any[]>([]);
   const [categories, setCategories] = React.useState<any[]>([]);
   const [suppliers, setSuppliers] = React.useState<any[]>([]);
@@ -207,6 +207,7 @@ export default function Products() {
       key: "price",
       width: "1%",
       align: "right",
+      sorter: (a, b) => a.price - b.price,
       render: (text, record, index) => {
         return <span>{numeral(text).format("0,0")}</span>;
       },
@@ -219,6 +220,7 @@ export default function Products() {
       key: "discount",
       width: "1%",
       align: "right",
+      sorter: (a, b) => a.discount - b.discount,
       render: (text, record, index) => {
         return <span>{numeral(text).format("0,0")}%</span>;
       },
@@ -231,6 +233,7 @@ export default function Products() {
       key: "stock",
       width: "1%",
       align: "right",
+      sorter: (a, b) => a.stockEnd - b.stockStart,
       render: (text, record, index) => {
         return <span>{numeral(text).format("0,0")}</span>;
       },
@@ -332,32 +335,38 @@ export default function Products() {
   };
 
   return (
-    <div style={{ padding: 24, display: "flex" }}>
+    <div style={{ padding: 24}}>
       {/* TABLE */}
-      <div className={Styles.filter}>
-        <h1 className={Styles.h1}>DANH MỤC</h1>
-        <select
-          className={Styles.select}
-          id="cars"
-          name="category"
-          value={filter.category}
+    
+      <div
+        style={{
+          padding: 24,
+          display: "flex",
+          border: "1px solid #ccc",
+          marginBottom: "20px",
+          borderRadius: "5px",
+          backgroundColor: "#ffcccc",
+        }}
+      >
+        <Input
+          placeholder="Tìm kiếm tên sản phẩm"
+          name="productName"
           onChange={onChangeFilter}
-        >
-          {categories.map((item: { _id: string; name: string }) => {
-            return (
-              <option key={item._id} value={item._id}>
-                {item.name}
-              </option>
-            );
-          })}
-        </select>
+          value={filter.productName}
+          allowClear
+        />
 
         <select
-          className={Styles.select}
           id="cars"
           name="supplier"
           value={filter.supplier}
           onChange={onChangeFilter}
+          style={{
+            width: "100px",
+            borderRadius: "5px",
+            height: "30px",
+            marginLeft: "10px",
+          }}
         >
           {suppliers.map((item: { _id: string; name: string }) => {
             return (
@@ -368,66 +377,94 @@ export default function Products() {
           })}
         </select>
 
-        <Input
-          placeholder="Tìm kiếm sản phẩm"
-          name="productName"
-          value={filter.productName}
+        <select
+          id="cars"
+          name="category"
+          value={filter.category}
           onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
+          style={{
+            width: "150px",
+            borderRadius: "5px",
+            height: "30px",
+            marginLeft: "10px",
+          }}
+        >
+          {categories.map((item: { _id: string; name: string }) => {
+            return (
+              <option key={item._id} value={item._id}>
+                {item.name}
+              </option>
+            );
+          })}
+        </select>
+
         <Input
-          placeholder="Tồn kho thấp nhất"
+          style={{ marginLeft: "10px" }}
+          placeholder="Stock Min"
           name="stockStart"
-          value={filter.stockStart}
           onChange={onChangeFilter}
-          className={Styles.input}
+          value={filter.stockStart}
           allowClear
         />
+
         <Input
-          placeholder="Tồn kho cao nhất"
+          style={{ marginLeft: "10px" }}
+          placeholder="Stock Max"
           name="stockEnd"
           value={filter.stockEnd}
           onChange={onChangeFilter}
-          className={Styles.input}
           allowClear
         />
+
         <Input
-          placeholder="Giá thấp nhất"
+          style={{ marginLeft: "10px" }}
+          placeholder="Price Min"
           name="priceStart"
           value={filter.priceStart}
           onChange={onChangeFilter}
-          className={Styles.input}
           allowClear
         />
+
         <Input
-          placeholder="Giá cao nhất"
+          style={{ marginLeft: "10px" }}
+          placeholder="Price Max"
           name="priceEnd"
           value={filter.priceEnd}
           onChange={onChangeFilter}
-          className={Styles.input}
           allowClear
         />
+
         <Input
-          placeholder="Giảm giá thấp nhất"
+          style={{ marginLeft: "10px" }}
+          placeholder="Discount Min"
           name="discountStart"
           value={filter.discountStart}
           onChange={onChangeFilter}
-          className={Styles.input}
           allowClear
         />
+
         <Input
-          placeholder="Giám giá cao nhất"
+          style={{ marginLeft: "10px" }}
+          placeholder="Discount Max"
           name="discountEnd"
           value={filter.discountEnd}
           onChange={onChangeFilter}
-          className={Styles.input}
           allowClear
         />
-        <Button className={Styles.but} onClick={onSearch}>
-          Tìm Kiếm
+
+        <Button
+          type="primary"
+          onClick={onSearch}
+          style={{ marginLeft: "10px" }}
+        >
+          Search
         </Button>
-        <Button className={Styles.ton} onClick={resetFilter}>
+
+        <Button
+          type="primary"
+          onClick={resetFilter}
+          style={{ marginLeft: "10px" }}
+        >
           Refresh
         </Button>
       </div>

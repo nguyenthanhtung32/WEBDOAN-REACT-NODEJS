@@ -1,6 +1,6 @@
 .header_container {
   padding: 0 20px;
-  background-color: #ee4d2d;
+  background-color: #80bfff;
 }
 
 .top_nav_links {
@@ -10,45 +10,20 @@
   margin: 10px 10px;
 }
 
-.social_links > * {
-  color: #ffffff;
-  font-size: 20px;
-  margin-right: 25px;
-}
-
-.social_links > *:hover {
-  color: #ccc;
-}
-
 .bottom_nav_links {
   display: flex;
   justify-content: space-between;
   margin: 20px 0 10px 0;
 }
 
-.logo {
-  height: 70px;
-}
-
-.link {
-  font-size: 14px;
-  color: #ffffff;
-  text-transform: uppercase;
-  font-weight: bold;
-  margin-left: 20px;
-  transition: color 0.2s ease-in-out;
-}
-
-.link:hover {
-  color: #ccc;
-}
 
 .search_container {
-  margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
+  /* margin-left: 250px; */
+
 }
 
 .search_box {
@@ -67,13 +42,13 @@
 
 .search_box:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #ee4d2d;
+  box-shadow: 0 0 0 2px #3399ff;
 }
 
 .search_button {
   height: 40px;
   width: 50px;
-  background-color: #ee4d2d;
+  background-color: #3399ff;
   position: absolute;
   right: 0;
   border: none;
@@ -89,37 +64,6 @@
 
 .search_button:hover {
   background-color: #fb7054;
-}
-
-.cart_container {
-  font-size: 40px;
-  margin-top: 20px;
-}
-
-.cart_icon {
-  color: #ffffff;
-  margin-right: 10px;
-}
-
-.cart_icon :hover {
-  color: #ccc;
-}
-
-.icon_download {
-  position: relative;
-  display: inline-block;
-}
-
-.icon_download:hover .img_download {
-  display: block;
-}
-
-.img_download {
-  display: none;
-  position: absolute;
-  transform: translateX(-20%);
-  z-index: 1;
-  width: 150px;
 }
 
 .move_top_wrapper {
@@ -152,24 +96,12 @@
     padding: 20px 10px;
   }
 
-  .top_nav_links {
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 10px;
-  }
-
   .bottom_nav_links {
     flex-direction: column;
     align-items: center;
     margin: 10px;
-  }
-
-  .social_links {
-    margin-bottom: 20px;
-  }
-
-  .search_container {
-    margin-top: 10px;
+    display: flex;
+    justify-content: center;
   }
 
   .search_box {
@@ -180,12 +112,12 @@
 
   .search_button {
     height: 45px;
-    width: auto;
+    width: 30px;
     margin: 5px 0 5px 10px;
     border-radius: 0;
   }
-
-  .cart_container {
-    margin-top: 10px;
+  .button{
+    width: 20%;
   }
+
 }
