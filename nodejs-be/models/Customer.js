@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
+const bcrypt = require("bcryptjs");
 
 const customerSchema = new Schema(
   {
@@ -14,7 +15,7 @@ const customerSchema = new Schema(
         },
         message: `{VALUE} is not a valid email!`,
       },
-      required: true,
+      required: [true, "email is required"],
     },
     phoneNumber: {
       type: String,
@@ -26,6 +27,7 @@ const customerSchema = new Schema(
         message: `{VALUE} is not a valid phone!`,
       },
     },
+    password: { type: String, required: true },
     address: { type: String, required: true },
     birthday: { type: Date },
   },
@@ -34,6 +36,33 @@ const customerSchema = new Schema(
     timestamps: true,
   },
 );
+
+customerSchema.virtual("fullName").get(function () {
+  return this.firstName + " " + this.lastName;
+});
+
+customerSchema.pre("save", async function (next) {
+  try {
+    // generate salt key
+    const salt = await bcrypt.genSalt(10); // 10 ký tự
+    // generate password = sale key + hash key
+    const hassPass = await bcrypt.hash(this.password, salt);
+    // override password
+    this.password = hassPass;
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+customerSchema.methods.isValidPass = async function (pass) {
+  try {
+    return await bcrypt.compare(pass, this.password);
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
 
 const Customer = model('Customer', customerSchema);
 module.exports = Customer;

@@ -7,16 +7,12 @@ import {
   SlSocialTwitter,
 } from "react-icons/sl";
 import { Alert } from "antd";
-interface IProps {
-  setIsLogin: (value: boolean) => void;
-}
 
-const Login: React.FC<IProps> = (props) => {
-  const { setIsLogin } = props;
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const token = {

@@ -156,13 +156,14 @@ export default function Home() {
   const onClickFilter = (_id) => {
     console.log("_id", _id);
     router.push({
-      pathname: "/renderCategory",
+      pathname: "/products",
       query: {
         nameCategory: _id,
       },
     });
     // call api voi param name
   };
+
   React.useEffect(() => {
     axios
       .get(apiName)

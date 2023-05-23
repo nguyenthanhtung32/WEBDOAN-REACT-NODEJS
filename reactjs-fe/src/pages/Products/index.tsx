@@ -15,13 +15,14 @@ import {
   AppstoreAddOutlined,
   DeleteOutlined,
   EditOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
 import Styles from "./index.module.css";
 import { useNavigate } from "react-router-dom";
 
 import type { ColumnsType } from "antd/es/table";
+
 import numeral from "numeral";
-import { useLocation } from "react-router-dom";
 
 const apiName = "/products";
 
@@ -39,9 +40,6 @@ const initialState = {
 const allOption = [{ _id: "", name: "----All----" }];
 
 export default function Products() {
-  const location = useLocation();
-  const nameCategory = location.state.nameCategory;
-  console.log("nameCategory", nameCategory);
   const [products, setProducts] = React.useState<any[]>([]);
   const [categories, setCategories] = React.useState<any[]>([]);
   const [suppliers, setSuppliers] = React.useState<any[]>([]);
@@ -182,16 +180,90 @@ export default function Products() {
       dataIndex: "category.name",
       key: "category.name",
       render: (text, record, index) => {
-        return <span>{record?.category?.name}</span>;
+        return <span>{record.category.name}</span>;
       },
+      filterDropdown: (
+        <>
+          <select
+            className={Styles.select}
+            id="cars"
+            name="category"
+            value={filter.category}
+            onChange={onChangeFilter}
+          >
+            {categories.map((item: { _id: string; name: string }) => {
+              return (
+                <option key={item._id} value={item._id}>
+                  {item.name}
+                </option>
+              );
+            })}
+          </select>
+          <Button
+            className={Styles.but}
+            type="primary"
+            onClick={onSearch}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            className={Styles.ton}
+            size="small"
+            style={{ width: 90 }}
+            onClick={resetFilter}
+          >
+            Refresh
+          </Button>
+        </>
+      ),
     },
     {
       title: "Nhà cung cấp",
       dataIndex: "supplier.name",
       key: "supplier.name",
       render: (text, record, index) => {
-        return <span>{record?.supplier?.name}</span>;
+        return <span>{record.supplier.name}</span>;
       },
+      filterDropdown: (
+        <>
+          <select
+            className={Styles.select}
+            id="cars"
+            name="supplier"
+            value={filter.supplier}
+            onChange={onChangeFilter}
+          >
+            {suppliers.map((item: { _id: string; name: string }) => {
+              return (
+                <option key={item._id} value={item._id}>
+                  {item.name}
+                </option>
+              );
+            })}
+          </select>
+          <Button
+            className={Styles.but}
+            type="primary"
+            onClick={onSearch}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            className={Styles.ton}
+            size="small"
+            style={{ width: 90 }}
+            onClick={resetFilter}
+          >
+            Refresh
+          </Button>
+        </>
+      ),
     },
     {
       title: "Tên sản phẩm",
@@ -200,6 +272,36 @@ export default function Products() {
       render: (text, record, index) => {
         return <strong>{text}</strong>;
       },
+      filterDropdown: (
+        <>
+          <Input
+            placeholder="Tìm kiếm sản phẩm"
+            name="productName"
+            value={filter.productName}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+          <Button
+            className={Styles.but}
+            type="primary"
+            onClick={onSearch}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            className={Styles.ton}
+            size="small"
+            style={{ width: 90 }}
+            onClick={resetFilter}
+          >
+            Refresh
+          </Button>
+        </>
+      ),
     },
     {
       title: "Giá bán",
@@ -210,6 +312,44 @@ export default function Products() {
       render: (text, record, index) => {
         return <span>{numeral(text).format("0,0")}</span>;
       },
+      filterDropdown: (
+        <>
+          <Input
+            placeholder="Giá thấp nhất"
+            name="priceStart"
+            value={filter.priceStart}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+          <Input
+            placeholder="Giá cao nhất"
+            name="priceEnd"
+            value={filter.priceEnd}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+          <Button
+            className={Styles.but}
+            type="primary"
+            onClick={onSearch}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            className={Styles.ton}
+            size="small"
+            style={{ width: 90 }}
+            onClick={resetFilter}
+          >
+            Refresh
+          </Button>
+        </>
+      ),
     },
     {
       title: () => {
@@ -222,6 +362,44 @@ export default function Products() {
       render: (text, record, index) => {
         return <span>{numeral(text).format("0,0")}%</span>;
       },
+      filterDropdown: (
+        <>
+          <Input
+            placeholder="Giảm giá thấp nhất"
+            name="discountStart"
+            value={filter.discountStart}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+          <Input
+            placeholder="Giảm giá cao nhất"
+            name="discountEnd"
+            value={filter.discountEnd}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+          <Button
+            className={Styles.but}
+            type="primary"
+            onClick={onSearch}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            className={Styles.ton}
+            size="small"
+            style={{ width: 90 }}
+            onClick={resetFilter}
+          >
+            Refresh
+          </Button>
+        </>
+      ),
     },
     {
       title: () => {
@@ -234,6 +412,44 @@ export default function Products() {
       render: (text, record, index) => {
         return <span>{numeral(text).format("0,0")}</span>;
       },
+      filterDropdown: (
+        <>
+          <Input
+            placeholder="Tồn kho thấp nhất"
+            name="stockStart"
+            value={filter.stockStart}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+          <Input
+            placeholder="Tồn kho cao nhất"
+            name="stockEnd"
+            value={filter.stockEnd}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+          <Button
+            className={Styles.but}
+            type="primary"
+            onClick={onSearch}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            className={Styles.ton}
+            size="small"
+            style={{ width: 90 }}
+            onClick={resetFilter}
+          >
+            Refresh
+          </Button>
+        </>
+      ),
     },
     {
       title: "Mô tả / Ghi chú",
@@ -332,120 +548,22 @@ export default function Products() {
   };
 
   return (
-    <div style={{ padding: 24, display: "flex" }}>
+    <div style={{ padding: 24 }}>
       {/* TABLE */}
-      <div className={Styles.filter}>
-        <h1 className={Styles.h1}>DANH MỤC</h1>
-        <select
-          className={Styles.select}
-          id="cars"
-          name="category"
-          value={filter.category}
-          onChange={onChangeFilter}
-        >
-          {categories.map((item: { _id: string; name: string }) => {
-            return (
-              <option key={item._id} value={item._id}>
-                {item.name}
-              </option>
-            );
-          })}
-        </select>
-
-        <select
-          className={Styles.select}
-          id="cars"
-          name="supplier"
-          value={filter.supplier}
-          onChange={onChangeFilter}
-        >
-          {suppliers.map((item: { _id: string; name: string }) => {
-            return (
-              <option key={item._id} value={item._id}>
-                {item.name}
-              </option>
-            );
-          })}
-        </select>
-
-        <Input
-          placeholder="Tìm kiếm sản phẩm"
-          name="productName"
-          value={filter.productName}
-          onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
-        <Input
-          placeholder="Tồn kho thấp nhất"
-          name="stockStart"
-          value={filter.stockStart}
-          onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
-        <Input
-          placeholder="Tồn kho cao nhất"
-          name="stockEnd"
-          value={filter.stockEnd}
-          onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
-        <Input
-          placeholder="Giá thấp nhất"
-          name="priceStart"
-          value={filter.priceStart}
-          onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
-        <Input
-          placeholder="Giá cao nhất"
-          name="priceEnd"
-          value={filter.priceEnd}
-          onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
-        <Input
-          placeholder="Giảm giá thấp nhất"
-          name="discountStart"
-          value={filter.discountStart}
-          onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
-        <Input
-          placeholder="Giám giá cao nhất"
-          name="discountEnd"
-          value={filter.discountEnd}
-          onChange={onChangeFilter}
-          className={Styles.input}
-          allowClear
-        />
-        <Button className={Styles.but} onClick={onSearch}>
-          Tìm Kiếm
-        </Button>
-        <Button className={Styles.ton} onClick={resetFilter}>
-          Refresh
-        </Button>
-      </div>
-      <div className={Styles.table}>
-        <Table
-          rowKey="_id"
-          dataSource={products}
-          columns={columns}
-          pagination={{
-            total: totalResults,
-            current: currentPage,
-            pageSize: pageSize,
-            onChange: (page) => setCurrentPage(page),
-            onShowSizeChange: (_, size) => setPageSize(size),
-          }}
-        />
-        {deleteConfirmModal}
-      </div>
+      <Table
+      className={Styles.table}
+        rowKey="_id"
+        dataSource={products}
+        columns={columns}
+        pagination={{
+          total: totalResults,
+          current: currentPage,
+          pageSize: pageSize,
+          onChange: (page) => setCurrentPage(page),
+          onShowSizeChange: (_, size) => setPageSize(size),
+        }}
+      />
+      {deleteConfirmModal}
       {/* EDIT FORM */}
       <Modal
         open={open}
