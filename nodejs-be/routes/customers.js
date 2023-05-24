@@ -1,6 +1,6 @@
-const yup = require("yup");
 const passport = require("passport");
 const express = require("express");
+
 const { CONNECTION_STRING } = require("../constants/dbSettings");
 const { default: mongoose } = require("mongoose");
 const router = express.Router();
@@ -18,7 +18,7 @@ const encodeToken = require("../helpers/jwtHelper");
 router.post(
   "/login",
   validateSchema(loginSchema),
-  passport.authenticate("local", { session: false }),
+  /* passport.authenticate("local", { session: false }) */
   async (req, res, next) => {
     try {
       const { email /* , password */ } = req.body;

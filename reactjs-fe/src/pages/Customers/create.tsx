@@ -104,6 +104,15 @@ export default function Customers() {
           >
             <Input />
           </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            hasFeedback
+            required={true}
+            rules={[{ required: true, message: "Bạn chưa nhập mật khẩu" }]}
+          >
+            <Input />
+          </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
               Submit

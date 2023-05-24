@@ -1,14 +1,9 @@
 import React, { useCallback } from "react";
 import { Button, Form, Input, Table, message, Space, Modal } from "antd";
 import axios from "../../libraries/axiosClient";
-import {
-  AppstoreAddOutlined,
-  DeleteOutlined,
-  EditOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 import type { ColumnsType } from "antd/es/table";
-import { useNavigate } from "react-router-dom";
 
 const apiName = "/customers";
 
@@ -27,12 +22,7 @@ export default function Customers() {
   const [showDeleteConfirm, setShowDeleteConfirm] =
     React.useState<boolean>(false);
 
-
   const [updateForm] = Form.useForm();
-  const navigate = useNavigate();
-  const create = () => {
-    navigate("/customer");
-  };
 
   const callApi = useCallback((searchParams: any) => {
     axios
@@ -150,18 +140,6 @@ export default function Customers() {
           </Space>
         );
       },
-      title: (
-        <Button
-          icon={<AppstoreAddOutlined />}
-          style={{
-            marginBottom: "10px",
-            float: "right",
-            border: "1px solid #4096ff",
-            color: "#4096ff",
-          }}
-          onClick={create}
-        ></Button>
-      ),
     },
   ];
   React.useEffect(() => {

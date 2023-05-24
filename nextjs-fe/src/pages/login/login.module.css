@@ -95,6 +95,11 @@
     padding: 1rem;
 }
 
+.text2 {
+    font-weight: bolder;
+    margin-left: 4px;
+}
+
 /* ....///Media query///..... */
 
 /* @media (max-width: 501px) {
@@ -133,39 +138,3 @@
         height: 100vmax;
     }
 } */
-@media (max-width: 501px) {
-    html {
-        font-size: 15px;
-    }
-
-    .form_1 {
-        width: 300px;
-    }
-}
-
-@media (min-width: 501px) and (max-width: 768px) {
-    html {
-        font-size: 14px;
-    }
-
-    .form_1 {
-        width: 450px;
-    }
-}
-
-@media (min-width: 765px) and (max-width: 1200px) {
-    html {
-        font-size: 18px;
-    }
-
-    .form_1 {
-        width: 540px;
-        height: 550px;
-    }
-}
-
-@media (orientation: landscape) and (max-height: 500px) {
-    .container {
-        height: 100vmax;
-    }
-}

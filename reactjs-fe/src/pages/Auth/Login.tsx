@@ -29,11 +29,13 @@ const Login: React.FC<IProps> = (props) => {
       console.log(response);
 
       localStorage.setItem("token", response.data.token);
-      <Alert message="Đăng nhập thành công!" type="success" showIcon />
+      //   <Alert message="Đăng nhập thành công!" type="success" showIcon />
+      alert("Đăng nhập thành công");
       setIsLogin(true);
     } catch (error) {
       console.error(error);
-      <Alert message="Đăng nhập thất bại" type="error" showIcon />
+      //   <Alert message="Đăng nhập thất bại" type="error" showIcon />
+      alert("Đăng nhập thất bại");
     }
   };
 
