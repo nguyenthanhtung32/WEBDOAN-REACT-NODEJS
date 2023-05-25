@@ -16,13 +16,13 @@ import { Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
 import NavigationBar from "../NavigationBar/NavigationBar";
 // import SideBar from "../SideBar/SideBar";
-import Home from "../../pages/Home";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import RenderCategory from "../../pages/Products/renderCategory";
 import Detail from "../../pages/Products/Detail";
 import Logins from "../../pages/Auth/Login";
 import SignUp from "../../pages/Auth/SignUp";
+import Home from "../../pages/Home";
 
 const contentStyle: React.CSSProperties = {
   minHeight: "100vh",
@@ -54,7 +54,6 @@ function BaseWeb() {
             <Route path="/customers" element={<Customers />} />
             <Route path="/suppliers" element={<Suppliers />} />
             <Route path="/employees" element={<Employees />} />
-            <Route path="/cart" element={<Cart />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/login" element={<Logins />} />
             <Route path="/signup" element={<SignUp />} />
