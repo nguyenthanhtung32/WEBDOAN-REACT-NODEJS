@@ -1,6 +1,8 @@
+
 import { Card, Carousel, Col, Row } from "antd";
 import axios from "../libraries/axiosClient";
 import React from "react";
+import { Route, useNavigate } from "react-router-dom";
 import { useRouter } from "next/router";
 
 const apiName = "/products";
@@ -12,15 +14,19 @@ export default function Home() {
   const [refresh] = React.useState(0);
   const router = useRouter();
 
+  // const navigate = useNavigate();
+
   const onClickFilter = (_id) => {
+    console.log("_id", _id);
     router.push({
       pathname: "/products",
       query: {
-        id: _id,
+        nameCategory: _id,
       },
     });
     // call api voi param name
   };
+
   React.useEffect(() => {
     axios
       .get(apiName)
@@ -45,6 +51,14 @@ export default function Home() {
       });
   }, []);
 
+  // const contentStyle: CSSProperties: any = {
+  //   height: "200px",
+  //   color: "#fff",
+  //   lineHeight: "160px",
+  //   textAlign: "center",
+  //   background: "#364d79",
+  // };
+
   return (
     <>
       <div
@@ -57,7 +71,7 @@ export default function Home() {
       >
         <Carousel autoplay>
           <div>
-            <h3>
+            <h3 /* style={contentStyle} */>
               <img
                 style={{ height: "100%", width: "100%" }}
                 src="https://cf.shopee.vn/file/vn-50009109-440c89823337cc1fb4591834c65a0225_xxhdpi"
@@ -65,7 +79,7 @@ export default function Home() {
             </h3>
           </div>
           <div>
-            <h3>
+            <h3 /* style={contentStyle} */>
               <img
                 style={{ height: "100%", width: "100%" }}
                 src="https://cf.shopee.vn/file/vn-50009109-3a1f19249482dcdac154ea3666bb4076_xxhdpi"
@@ -73,7 +87,7 @@ export default function Home() {
             </h3>
           </div>
           <div>
-            <h3>
+            <h3 /* style={contentStyle} */>
               <img
                 style={{ height: "100%", width: "100%" }}
                 src="https://cf.shopee.vn/file/vn-50009109-fa79715264f5c973648d8096a8aa9773_xxhdpi"
@@ -81,7 +95,7 @@ export default function Home() {
             </h3>
           </div>
           <div>
-            <h3>
+            <h3 /* style={contentStyle} */>
               <img
                 style={{ height: "100%", width: "100%" }}
                 src="https://cf.shopee.vn/file/vn-50009109-1a6095f0c892a26625c343726f14ba1f_xxhdpi"
@@ -108,64 +122,14 @@ export default function Home() {
       <div
         style={{
           border: "1px solid #ccc",
+          margin: "20px 50px 0px 50px",
+          padding: "10px",
         }}
-        className="container"
       >
         <h2 style={{ marginLeft: "10px" }}>Danh Mục</h2>
         <Row gutter={[16, 16]} style={{ display: "flex", flexWrap: "wrap" }}>
-          {categories.map((item) => {
-            return (
-              <Col
-                key={item._id}
-                xs={12}
-                sm={9}
-                md={6}
-                lg={3}
-                style={{ marginBottom: "16px" }}
-              >
-                <Card
-                  onClick={() => {
-                    onClickFilter(item._id);
-                  }}
-                  hoverable
-                  style={{
-                    height: 200,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    transform: "scale(0.8)",
-                  }}
-                  cover={
-                    <img
-                      alt=""
-                      style={{
-                        width: "100%",
-                        height: "100px",
-                        margin: "10px 0 10px 0",
-                      }}
-                      src={item.img}
-                    />
-                  }
-                >
-                  <strong>{item.name}</strong>
-                </Card>
-              </Col>
-            );
-          })}
-        </Row>
-      </div>
-
-      <div
-        style={{
-          border: "1px solid #ccc",
-        }}
-        className="container"
-      >
-        <h2 style={{ marginLeft: "10px" }}>Flash Sale</h2>
-        <Row gutter={[16, 16]} style={{ display: "flex", flexWrap: "wrap" }}>
-          {products.map((item) => {
-            if (item.discount > 0) {
+          {categories.map(
+            (item) => {
               return (
                 <Col
                   key={item._id}
@@ -177,11 +141,11 @@ export default function Home() {
                 >
                   <Card
                     onClick={() => {
-                      onClickFilter(item?.name);
+                      onClickFilter(item._id);
                     }}
                     hoverable
                     style={{
-                      height: 250,
+                      height: 200,
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",
@@ -204,10 +168,66 @@ export default function Home() {
                   </Card>
                 </Col>
               );
-            } else {
-              return null;
             }
-          })}
+          )}
+        </Row>
+      </div>
+
+      <div
+        style={{
+          border: "1px solid #ccc",
+          margin: "20px 50px 0px 50px",
+          padding: "10px",
+        }}
+      >
+        <h2 style={{ marginLeft: "10px" }}>Flash Sale</h2>
+        <Row gutter={[16, 16]} style={{ display: "flex", flexWrap: "wrap" }}>
+          {products.map(
+            (item) => {
+              if (item.discount > 0) {
+                return (
+                  <Col
+                    key={item._id}
+                    xs={12}
+                    sm={9}
+                    md={6}
+                    lg={3}
+                    style={{ marginBottom: "16px" }}
+                  >
+                    <Card
+                      onClick={() => {
+                        onClickFilter(item?.name);
+                      }}
+                      hoverable
+                      style={{
+                        height: 250,
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        transform: "scale(0.8)",
+                      }}
+                      cover={
+                        <img
+                          alt=""
+                          style={{
+                            width: "100%",
+                            height: "100px",
+                            margin: "10px 0 10px 0",
+                          }}
+                          src={item.img}
+                        />
+                      }
+                    >
+                      <strong>{item.name}</strong>
+                    </Card>
+                  </Col>
+                );
+              } else {
+                return null;
+              }
+            }
+          )}
         </Row>
       </div>
     </>

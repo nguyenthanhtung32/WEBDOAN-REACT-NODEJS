@@ -1,4 +1,3 @@
-
 import { Button, Card, Col, Input, message, Row } from "antd";
 import axios from "../../libraries/axiosClient";
 import React, { useState } from "react";
@@ -21,6 +20,7 @@ const initialState = {
 export default function Products({ products }) {
   const router = useRouter();
   const nameCategory = router.query.nameCategory;
+  console.log('nameCategory',nameCategory);
 
   const [filter, setFilter] = useState(initialState);
 
