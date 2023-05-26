@@ -3,6 +3,6 @@ module.exports = {
   // DATABASE_NAME: 'training-database',
 
   CONNECTION_STRING:
-    "mongodb+srv://user1:123123456456@cluster0.bwyphih.mongodb.net/training-database",
-  DATABASE_NAME: "training-database",
+    'mongodb+srv://user1:123123456456@cluster0.bwyphih.mongodb.net/training-database',
+  DATABASE_NAME: 'training-database',
 };

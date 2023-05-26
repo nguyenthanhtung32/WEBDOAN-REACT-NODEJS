@@ -551,7 +551,7 @@ export default function Products() {
     <div style={{ padding: 24 }}>
       {/* TABLE */}
       <Table
-      className={Styles.table}
+        className={Styles.table}
         rowKey="_id"
         dataSource={products}
         columns={columns}

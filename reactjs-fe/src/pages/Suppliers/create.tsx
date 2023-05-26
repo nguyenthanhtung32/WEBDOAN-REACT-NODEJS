@@ -23,7 +23,7 @@ export default function Suppliers() {
       .catch((err) => {
         console.error(err);
       });
-  }, [refresh]);
+  }, [refresh, suppliers]);
 
   const onFinish = (values: any) => {
     console.log(values);
@@ -34,7 +34,7 @@ export default function Suppliers() {
         setRefresh((f) => f + 1);
         createForm.resetFields();
         message.success("Thêm mới nhà cung cấp thành công!", 1.5);
-        navigate("/suppliers")
+        navigate("/suppliers");
       })
       .catch((err) => {});
   };

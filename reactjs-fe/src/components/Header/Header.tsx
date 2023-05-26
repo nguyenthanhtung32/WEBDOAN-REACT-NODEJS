@@ -16,7 +16,7 @@ export default function Header(props: IProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { setIsLogin } = props;
-  const handleUpdate = () => {
+  const handleLogout = () => {
     setIsLogin(false);
     navigate(`/`);
   };
@@ -49,7 +49,7 @@ export default function Header(props: IProps) {
               <SearchOutlined />
             </button>
           </div>
-          <Button className={Styles.button} onClick={handleUpdate}>
+          <Button className={Styles.button} onClick={handleLogout}>
             Logout
           </Button>
         </div>

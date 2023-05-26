@@ -23,7 +23,7 @@ export default function Employees() {
       .catch((err) => {
         console.error(err);
       });
-  }, [refresh]);
+  }, [refresh, employees]);
 
   const onFinish = (values: any) => {
     console.log(values);

@@ -23,7 +23,7 @@ export default function Customers() {
       .catch((err) => {
         console.error(err);
       });
-  }, [refresh]);
+  }, [refresh, customers]);
 
   const onFinish = (values: any) => {
     console.log(values);

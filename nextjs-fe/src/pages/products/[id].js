@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 import Head from "next/head";
 import axiosClient from "../../libraries/axiosClient";
-import numeral from 'numeral';
-import styles from "./products.module.css"
+import numeral from "numeral";
+import styles from "./products.module.css";
 
 function ProductDetail(props) {
   const { product } = props;
@@ -16,35 +16,43 @@ function ProductDetail(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {
-        product ? (
-          <div className={styles.product}>
-            <img className={styles.product_images} alt=""
-              src={product.img}>
-            </img>
-            <div className={styles.product_details}>
-              <h2 className={styles.h2}>{product.name}</h2>
-              <h3 className={styles.h3}>Giá: <span>{numeral(product.price).format("0,0")}</span> VNĐ</h3>
-              <h3 className={styles.h3}>Giảm giá: <span>{numeral(product.discount).format("0,0")}</span> %</h3>
+      {product ? (
+        <div className={styles.product}>
+          <img className={styles.product_images} alt="" src={product.img}></img>
+          <div className={styles.product_details}>
+            <h2 className={styles.h2}>{product.name}</h2>
+            <h3 className={styles.h3}>
+              Giá: <span>{numeral(product.price).format("0,0")}</span> VNĐ
+            </h3>
+            <h3 className={styles.h3}>
+              Giảm giá: <span>{numeral(product.discount).format("0,0")}</span> %
+            </h3>
 
-              <div className={styles.about}>
-                <p className={styles.p}>Tồn kho: <span>{product.stock}</span></p>
-                <p className={styles.p}>Mã sản phẩm: <span>{product._id}</span></p>
+            <div className={styles.about}>
+              <p className={styles.p}>
+                Tồn kho: <span>{product.stock}</span>
+              </p>
+              <p className={styles.p}>
+                Mã sản phẩm: <span>{product._id}</span>
+              </p>
+            </div>
+
+            <p className={styles.p}>{product.description}</p>
+            <div className={styles.cta}>
+              <div className={`${styles.btn} ${styles.btn_primary}`}>
+                add to cart
               </div>
-
-              <p className={styles.p}>{product.description}</p>
-              <div className={styles.cta}>
-                <div className={`${styles.btn} ${styles.btn_primary}`}>add to cart</div>
-                <div className={`${styles.btn} ${styles.btn_outline_secondary}`}>
-                  <span className={styles.material_symbols_outlined}>add to wishlist</span>
-                </div>
+              <div className={`${styles.btn} ${styles.btn_outline_secondary}`}>
+                <span className={styles.material_symbols_outlined}>
+                  add to wishlist
+                </span>
               </div>
             </div>
           </div>
-        ) : <span>Loading...</span>
-      }
-
-
+        </div>
+      ) : (
+        <span>Loading...</span>
+      )}
     </>
   );
 }
@@ -56,7 +64,7 @@ export async function getStaticPaths() {
   return {
     paths: [],
     fallback: true,
-  }
+  };
 }
 
 export async function getStaticProps(req) {
@@ -77,4 +85,3 @@ export async function getStaticProps(req) {
     };
   }
 }
-

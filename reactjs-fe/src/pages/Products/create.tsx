@@ -26,7 +26,7 @@ export default function Products() {
       .catch((err) => {
         console.error(err);
       });
-  }, [refresh]);
+  }, [refresh, products]);
 
   // Get categories
   React.useEffect(() => {
@@ -65,7 +65,9 @@ export default function Products() {
         message.success("Thêm mới sản phẩm thành công!", 1.5);
         navigate("/products");
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (

@@ -24,7 +24,7 @@ export default function Categories() {
       .catch((err) => {
         console.error(err);
       });
-  }, [refresh]);
+  }, [refresh, categories]);
 
   const onFinish = (values: any) => {
     console.log(values);
@@ -80,7 +80,7 @@ export default function Categories() {
               span: 16,
             }}
           >
-            <Button type="primary" htmlType="submit" >
+            <Button type="primary" htmlType="submit">
               Lưu thông tin
             </Button>
           </Form.Item>

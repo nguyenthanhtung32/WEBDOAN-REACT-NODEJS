@@ -186,7 +186,7 @@ const { SubMenu } = Menu;
 
 const menuItems = [
   {
-    key: "products",
+    key: "home",
     icon: <HomeOutlined />,
     label: "Home",
   },

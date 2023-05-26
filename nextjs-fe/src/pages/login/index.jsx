@@ -7,6 +7,7 @@ import {
   SlSocialTwitter,
 } from "react-icons/sl";
 import { Alert } from "antd";
+import Link from "next/link";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,15 +22,17 @@ const Login = () => {
     };
 
     try {
-      const response = await axios.post("/employees/login", token);
+      const response = await axios.post("/customers/login", token);
       console.log(response);
 
       localStorage.setItem("token", response.data.token);
-      <Alert message="Đăng nhập thành công!" type="success" showIcon />;
-      setIsLogin(true);
+      //   <Alert message="Đăng nhập thành công!" type="success" showIcon />;
+      alert("đăng nhập thành công");
+      window.location.href = "/";
     } catch (error) {
       console.error(error);
-      <Alert message="Đăng nhập thất bại" type="error" showIcon />;
+      //   <Alert message="Đăng nhập thất bại" type="error" showIcon />;
+      alert("đăng nhập thất bại");
     }
   };
 
@@ -63,24 +66,11 @@ const Login = () => {
         <button className={Styles.button} onClick={(e) => handleSubmit(e)}>
           Login
         </button>
-
-        <p className={Styles.text}>Or SignUp Using</p>
-        <div className={Styles.icons}>
-          <a href="https://www.facebook.com/">
-            <i className={Styles.fa_facebook_f}>
-              <SlSocialFacebook />
-            </i>
-          </a>
-          <a href="https://twitter.com/">
-            <i className={Styles.fa_twitter}>
-              <SlSocialTwitter />
-            </i>
-          </a>
-          <a href="https://mail.google.com/">
-            <i className={Styles.fa_google}>
-              <SlSocialGoogle />
-            </i>
-          </a>
+        <div className="d-flex justify-content-center ">
+          <p className={Styles.text}>Don't have an acount ?</p>
+          <Link href="/signup" className={Styles.text2}>
+            SignUp
+          </Link>
         </div>
       </form>
     </div>
