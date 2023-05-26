@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import styles from "./Footer.module.css";
 
-function Footer() {
+export default function Footer() {
   return (
     <div className={styles.footer_container}>
       <div className={styles.footer_info}>
@@ -69,5 +69,3 @@ function Footer() {
     </div>
   );
 }
-
-export default Footer;
