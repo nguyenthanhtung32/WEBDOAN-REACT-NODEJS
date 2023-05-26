@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import numeral from "numeral";
 import Link from "next/link";
 
+import { getParamsFromObject } from "../../utils";
+
 const apiName = "/products";
 
 const initialState = {
@@ -20,7 +22,7 @@ const initialState = {
 export default function Products({ products }) {
   const router = useRouter();
   const nameCategory = router.query.nameCategory;
-  console.log('nameCategory',nameCategory);
+  console.log("products", products);
 
   const [filter, setFilter] = useState(initialState);
 
@@ -64,11 +66,11 @@ export default function Products({ products }) {
     );
 
     // Tạo query params từ các trường đã lọc
-    const a = filterFields.map((key) => {
-      return [key, filter[key]];
-    });
-    const b = ["productName", nameCategory];
-    a.push(b);
+    // const a = filterFields.map((key) => {
+    //   return [key, filter[key]];
+    // });
+    // const b = ["productName", nameCategory];
+    // a.push(b);
     const searchParams = new URLSearchParams(a);
 
     // Gọi API với các query params đã tạo
@@ -85,7 +87,7 @@ export default function Products({ products }) {
 
   return (
     <div style={{ padding: 24, display: "flex" }}>
-      <div>
+      {/* <div>
         <h1>DANH MỤC</h1>
         <Input
           placeholder="Tồn kho thấp nhất"
@@ -132,10 +134,16 @@ export default function Products({ products }) {
         <Button onClick={onSearch}>
           Tìm Kiếm
         </Button>
-      </div>
+      </div> */}
       <Row gutter={[16, 16]} style={{ marginTop: "24px" }}>
         {products.map((item) => (
-          <Col key={item._id} xs={24} sm={12} md={12} lg={12} xl={12}>
+          <Col
+            key={item._id}
+            /* xs={24} sm={24} md={12} lg={6} xl={6} */ xs={12}
+            sm={9}
+            md={6}
+            lg={3}
+          >
             <Link href={`/products/${item._id}`}>
               <Card
                 key={item._id}
@@ -164,8 +172,8 @@ export default function Products({ products }) {
                 </div>
                 <div style={{ display: "flex", color: "#ff3300" }}>
                   <span>
-                    Giảm giá: <span>{numeral(item.discount).format("0,0")}%</span>
-                    ;
+                    Giảm giá:{" "}
+                    <span>{numeral(item.discount).format("0,0")}%</span>;
                   </span>
                 </div>
               </Card>
@@ -178,17 +186,16 @@ export default function Products({ products }) {
 }
 
 export async function getServerSideProps(context) {
-  const nameCategory = context.params?.nameCategory;
-  let { products} = context;
- 
+  const { nameCategory } = context.query;
+  let products = {};
+
+  const searchString = getParamsFromObject({
+    category: nameCategory,
+  });
+
   try {
-    if (nameCategory) {
-      const response = await axios.get(`${apiName}?category=${nameCategory}`);
-      products = response?.data?.payload || [];
-    } else {
-      const response = await axios.get(`${apiName}`);
-      products = response?.data?.payload || [];
-    }
+    const response = await axios.get(`${apiName}${searchString}`);
+    products = response?.data?.payload || [];
 
     return {
       props: {

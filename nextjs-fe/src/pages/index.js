@@ -1,4 +1,3 @@
-
 import { Card, Carousel, Col, Row } from "antd";
 import axios from "../libraries/axiosClient";
 import React from "react";
@@ -128,8 +127,60 @@ export default function Home() {
       >
         <h2 style={{ marginLeft: "10px" }}>Danh Mục</h2>
         <Row gutter={[16, 16]} style={{ display: "flex", flexWrap: "wrap" }}>
-          {categories.map(
-            (item) => {
+          {categories.map((item) => {
+            return (
+              <Col
+                key={item._id}
+                xs={12}
+                sm={9}
+                md={6}
+                lg={3}
+                style={{ marginBottom: "16px" }}
+              >
+                <Card
+                  onClick={() => {
+                    onClickFilter(item._id);
+                  }}
+                  hoverable
+                  style={{
+                    height: 200,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    transform: "scale(0.8)",
+                  }}
+                  cover={
+                    <img
+                      alt=""
+                      style={{
+                        width: "100%",
+                        height: "100px",
+                        margin: "10px 0 10px 0",
+                      }}
+                      src={item.img}
+                    />
+                  }
+                >
+                  <strong>{item.name}</strong>
+                </Card>
+              </Col>
+            );
+          })}
+        </Row>
+      </div>
+
+      <div
+        style={{
+          border: "1px solid #ccc",
+          margin: "20px 50px 0px 50px",
+          padding: "10px",
+        }}
+      >
+        <h2 style={{ marginLeft: "10px" }}>Flash Sale</h2>
+        <Row gutter={[16, 16]} style={{ display: "flex", flexWrap: "wrap" }}>
+          {products.map((item) => {
+            if (item.discount > 0) {
               return (
                 <Col
                   key={item._id}
@@ -141,11 +192,11 @@ export default function Home() {
                 >
                   <Card
                     onClick={() => {
-                      onClickFilter(item._id);
+                      onClickFilter(item?.name);
                     }}
                     hoverable
                     style={{
-                      height: 200,
+                      height: 250,
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",
@@ -168,66 +219,10 @@ export default function Home() {
                   </Card>
                 </Col>
               );
+            } else {
+              return null;
             }
-          )}
-        </Row>
-      </div>
-
-      <div
-        style={{
-          border: "1px solid #ccc",
-          margin: "20px 50px 0px 50px",
-          padding: "10px",
-        }}
-      >
-        <h2 style={{ marginLeft: "10px" }}>Flash Sale</h2>
-        <Row gutter={[16, 16]} style={{ display: "flex", flexWrap: "wrap" }}>
-          {products.map(
-            (item) => {
-              if (item.discount > 0) {
-                return (
-                  <Col
-                    key={item._id}
-                    xs={12}
-                    sm={9}
-                    md={6}
-                    lg={3}
-                    style={{ marginBottom: "16px" }}
-                  >
-                    <Card
-                      onClick={() => {
-                        onClickFilter(item?.name);
-                      }}
-                      hoverable
-                      style={{
-                        height: 250,
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        transform: "scale(0.8)",
-                      }}
-                      cover={
-                        <img
-                          alt=""
-                          style={{
-                            width: "100%",
-                            height: "100px",
-                            margin: "10px 0 10px 0",
-                          }}
-                          src={item.img}
-                        />
-                      }
-                    >
-                      <strong>{item.name}</strong>
-                    </Card>
-                  </Col>
-                );
-              } else {
-                return null;
-              }
-            }
-          )}
+          })}
         </Row>
       </div>
     </>
