@@ -3,9 +3,23 @@ import Head from "next/head";
 import axiosClient from "../../libraries/axiosClient";
 import numeral from "numeral";
 import styles from "./products.module.css";
+import { useRouter } from "next/router";
 
 function ProductDetail(props) {
   const { product } = props;
+  const router = useRouter();
+
+  const onFinish = (values) => {
+    console.log(values);
+
+    // axios
+    //   .post("/cart", values)
+    //   .then((response) => {
+    router.push("/cart");
+    //     message.success("Thêm vào giỏ hàng thành công!", 1.5);
+    //   })
+    //   .catch((err) => {});
+  };
 
   return (
     <>
@@ -22,7 +36,23 @@ function ProductDetail(props) {
           <div className={styles.product_details}>
             <h2 className={styles.h2}>{product.name}</h2>
             <h3 className={styles.h3}>
-              Giá: <span>{numeral(product.price).format("0,0")}</span> VNĐ
+              Giá:{" "}
+              <span style={{ color: "#ff3300", fontWeight: "bold" }}>
+                {numeral(
+                  product.price - (product.price * product.discount * 1) / 100
+                ).format("0,0")}
+                ₫
+              </span>
+              {product.discount > 0 && (
+                <span
+                  style={{
+                    textDecoration: "line-through",
+                    marginLeft: "8px",
+                  }}
+                >
+                  {numeral(product.price).format("0,0")}₫
+                </span>
+              )}
             </h3>
             <h3 className={styles.h3}>
               Giảm giá: <span>{numeral(product.discount).format("0,0")}</span> %
@@ -39,7 +69,10 @@ function ProductDetail(props) {
 
             <p className={styles.p}>{product.description}</p>
             <div className={styles.cta}>
-              <div className={`${styles.btn} ${styles.btn_primary}`}>
+              <div
+                className={`${styles.btn} ${styles.btn_primary}`}
+                onClick={onFinish}
+              >
                 add to cart
               </div>
               <div className={`${styles.btn} ${styles.btn_outline_secondary}`}>

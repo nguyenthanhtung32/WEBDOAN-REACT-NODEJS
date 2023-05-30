@@ -10,7 +10,6 @@ import { getParamsFromObject } from "../../utils";
 const apiName = "/products";
 
 const initialState = {
-  category: "",
   stockStart: "",
   stockEnd: "",
   priceStart: "",
@@ -19,20 +18,16 @@ const initialState = {
   discountEnd: "",
 };
 
-export default function Products({ products }) {
+export default function Products({ products: initialProducts }) {
   const router = useRouter();
   const nameCategory = router.query.nameCategory;
-  console.log("products", products);
+  const stockStart = router.query.stockStart;
 
   const [filter, setFilter] = useState(initialState);
+  const [products, setProducts] = useState(initialProducts);
+  const [category, setCategory] = useState(nameCategory);
+  const [stock, setStock] = useState(stockStart);
 
-  // const onClickFilter = (description) => {
-  //   router.push("/detail", {
-  //     query: {
-  //       productDetail: description,
-  //     },
-  //   });
-  // };
   const onChangeFilter = (e) => {
     setFilter((prevState) => ({
       ...prevState,
@@ -44,12 +39,12 @@ export default function Products({ products }) {
     const checkInputData = (input, name) => {
       if ((input && isNaN(input)) || (input && input < 0)) {
         message.error(`Dữ liệu nhập vào ô ${name} không hợp lệ!`);
-
         return true;
       }
 
       return false;
     };
+
     // Kiểm tra dữ liệu nhập vào từng ô tìm kiếm
     const isInvalidData =
       checkInputData(filter.stockStart, "Tồn kho") ||
@@ -60,24 +55,40 @@ export default function Products({ products }) {
       checkInputData(filter.discountEnd, "Giảm giá");
 
     if (isInvalidData) return;
+
+    
     // Lọc các trường có giá trị để tạo query params
     const filterFields = Object.keys(filter).filter(
       (key) => filter[key] !== undefined && filter[key] !== ""
     );
 
     // Tạo query params từ các trường đã lọc
-    // const a = filterFields.map((key) => {
-    //   return [key, filter[key]];
-    // });
-    // const b = ["productName", nameCategory];
-    // a.push(b);
-    const searchParams = new URLSearchParams(a);
+    const a = filterFields.map((key) => {
+      return [key, filter[key]];
+    });
+
+    a.push(['category', nameCategory]);
+
+    // Thêm trường tên danh mục vào query params
+    const searchParams = new URLSearchParams();
+    a.forEach(([key, value]) => {
+      if (key === "category") {
+        searchParams.append(key, category);
+      } else {
+        searchParams.append(key, value);
+      }
+    });
+
+    console.log('searchParams', searchParams.toString());
+
+    const queryString = searchParams.toString();
 
     // Gọi API với các query params đã tạo
     axios
-      .get(`${apiName}?${searchParams}`)
+      .get(`${apiName}?${queryString}`)
       .then((response) => {
         const { data } = response;
+        console.log('response', response);
         setProducts(data.payload);
       })
       .catch((err) => {
@@ -87,8 +98,8 @@ export default function Products({ products }) {
 
   return (
     <div style={{ padding: 24, display: "flex" }}>
-      {/* <div>
-        <h1>DANH MỤC</h1>
+      <div>
+        <h1>Tìm Kiếm</h1>
         <Input
           placeholder="Tồn kho thấp nhất"
           name="stockStart"
@@ -125,55 +136,102 @@ export default function Products({ products }) {
           allowClear
         />
         <Input
-          placeholder="Giám giá cao nhất"
+          placeholder="Giâm giá cao nhất"
           name="discountEnd"
           value={filter.discountEnd}
           onChange={onChangeFilter}
           allowClear
         />
-        <Button onClick={onSearch}>
-          Tìm Kiếm
-        </Button>
-      </div> */}
-      <Row gutter={[16, 16]} style={{ marginTop: "24px" }}>
+        <Button onClick={onSearch}>Tìm Kiếm</Button>
+      </div>
+      <Row
+        gutter={[16, 16]}
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          marginTop: "24px",
+          width: "1000px",
+        }}
+      >
         {products.map((item) => (
           <Col
             key={item._id}
-            /* xs={24} sm={24} md={12} lg={6} xl={6} */ xs={12}
-            sm={9}
-            md={6}
-            lg={3}
+            xs={{ span: 24 }}
+            sm={{ span: 12 }}
+            md={{ span: 8 }}
+            lg={{ span: 6 }}
+            style={{ marginBottom: "24px" }}
           >
             <Link href={`/products/${item._id}`}>
               <Card
                 key={item._id}
                 title={item.name}
                 bordered={false}
-                style={{ width: 300, height: 400 }}
+                style={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  width: "100%",
+                }}
                 hoverable
-                // onClick={() => {
-                //   onClickFilter(item?.description);
-                // }}
                 cover={
                   <img
                     alt=""
-                    style={{ width: "auto", height: 150, marginTop: 20 }}
+                    style={{ maxHeight: "250px", objectFit: "contain" }}
                     src={item.img}
                   />
                 }
               >
-                <div style={{ display: "flex" }}>
-                  <strong>{item.description}</strong>
+                <div
+                  style={{
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    {item.description}
+                  </div>
+                  <div style={{ color: "#ff3300", marginLeft: "0" }}>
+                    <span>
+                      {numeral(item.price - item.discount).format("0,0")}₫
+                    </span>
+                    {item.discount > 0 && (
+                      <span
+                        style={{
+                          textDecoration: "line-through",
+                          marginLeft: "8px",
+                        }}
+                      >
+                        {numeral(item.price).format("0,0")}₫
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div style={{ display: "flex", color: "#ff3300" }}>
-                  <span>
-                    Giá: <span>{numeral(item.price).format("0,0")}</span>
-                  </span>
-                </div>
-                <div style={{ display: "flex", color: "#ff3300" }}>
-                  <span>
-                    Giảm giá:{" "}
-                    <span>{numeral(item.discount).format("0,0")}%</span>;
+                <div style={{ textAlign: "center", marginTop: "10px" }}>
+                  <span
+                    style={{
+                      backgroundColor: "#ff3300",
+                      color: "#fff",
+                      padding: "4px 8px",
+                      borderRadius: "4px",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                      fontSize: "12px",
+                    }}
+                  >
+                    Mua ngay
                   </span>
                 </div>
               </Card>
@@ -186,17 +244,17 @@ export default function Products({ products }) {
 }
 
 export async function getServerSideProps(context) {
-  const { nameCategory } = context.query;
+  const { nameCategory,queryString } = context.query;
   let products = {};
 
   const searchString = getParamsFromObject({
     category: nameCategory,
+    queryString : queryString,
   });
 
   try {
     const response = await axios.get(`${apiName}${searchString}`);
-    products = response?.data?.payload || [];
-
+    products = response.data.payload || null;
     return {
       props: {
         products,

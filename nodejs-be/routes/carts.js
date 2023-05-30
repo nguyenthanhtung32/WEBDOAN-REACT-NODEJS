@@ -8,9 +8,7 @@ const ObjectId = require("mongodb").ObjectId;
 // Get all
 router.get("/", async (req, res, next) => {
   try {
-    let results = await Cart.find()
-      .populate("customer")
-      .lean({ virtuals: true });
+    let results = await Cart.find().populate("product").lean({ virtuals: true });
 
     res.json(results);
   } catch (error) {
@@ -53,13 +51,17 @@ router.post("/", function (req, res, next) {
   // Validate
   const validationSchema = yup.object({
     body: yup.object({
-      customerId: yup
+      cartDetails: yup.array().required(),
+      productId: yup
         .string()
         .required()
         .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
           return ObjectId.isValid(value);
         }),
-      cartDetails: yup.array().required(),
+      name: yup.string().required(),
+      img: yup.string().required(),
+      quantity: yup.number().positive().min(1).required(),
+      price: yup.number().positive().min(0).required(),
     }),
   });
   validationSchema
@@ -113,6 +115,18 @@ router.delete("/:id", function (req, res, next) {
         provider: "yup",
       });
     });
+});
+
+router.patch("/:id", async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const patchData = req.body;
+    await Cart.findByIdAndUpdate(id, patchData);
+
+    res.send({ ok: true, message: "Updated" });
+  } catch (error) {
+    res.status(500).send({ ok: false, error });
+  }
 });
 
 module.exports = router;
