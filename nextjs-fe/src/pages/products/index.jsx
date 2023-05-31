@@ -10,7 +10,6 @@ import { getParamsFromObject } from "../../utils";
 const apiName = "/products";
 
 const initialState = {
-  category: "",
   stockStart: "",
   stockEnd: "",
   priceStart: "",
@@ -19,20 +18,14 @@ const initialState = {
   discountEnd: "",
 };
 
-export default function Products({ products }) {
+export default function Products({ products: initialProducts }) {
   const router = useRouter();
   const nameCategory = router.query.nameCategory;
-  console.log("products", products);
 
   const [filter, setFilter] = useState(initialState);
+  const [products, setProducts] = useState(initialProducts);
+  const [category, setCategory] = useState(nameCategory);
 
-  // const onClickFilter = (description) => {
-  //   router.push("/detail", {
-  //     query: {
-  //       productDetail: description,
-  //     },
-  //   });
-  // };
   const onChangeFilter = (e) => {
     setFilter((prevState) => ({
       ...prevState,
@@ -44,12 +37,12 @@ export default function Products({ products }) {
     const checkInputData = (input, name) => {
       if ((input && isNaN(input)) || (input && input < 0)) {
         message.error(`Dữ liệu nhập vào ô ${name} không hợp lệ!`);
-
         return true;
       }
 
       return false;
     };
+
     // Kiểm tra dữ liệu nhập vào từng ô tìm kiếm
     const isInvalidData =
       checkInputData(filter.stockStart, "Tồn kho") ||
@@ -60,24 +53,39 @@ export default function Products({ products }) {
       checkInputData(filter.discountEnd, "Giảm giá");
 
     if (isInvalidData) return;
+
     // Lọc các trường có giá trị để tạo query params
     const filterFields = Object.keys(filter).filter(
       (key) => filter[key] !== undefined && filter[key] !== ""
     );
 
     // Tạo query params từ các trường đã lọc
-    // const a = filterFields.map((key) => {
-    //   return [key, filter[key]];
-    // });
-    // const b = ["productName", nameCategory];
-    // a.push(b);
-    const searchParams = new URLSearchParams(a);
+    const a = filterFields.map((key) => {
+      return [key, filter[key]];
+    });
+
+    a.push(["category", nameCategory]);
+
+    // Thêm trường tên danh mục vào query params
+    const searchParams = new URLSearchParams();
+    a.forEach(([key, value]) => {
+      if (key === "category") {
+        searchParams.append(key, category);
+      } else {
+        searchParams.append(key, value);
+      }
+    });
+
+    console.log("searchParams", searchParams.toString());
+
+    const queryString = searchParams.toString();
 
     // Gọi API với các query params đã tạo
     axios
-      .get(`${apiName}?${searchParams}`)
+      .get(`${apiName}?${queryString}`)
       .then((response) => {
         const { data } = response;
+        console.log("response", response);
         setProducts(data.payload);
       })
       .catch((err) => {
@@ -87,8 +95,8 @@ export default function Products({ products }) {
 
   return (
     <div style={{ padding: 24, display: "flex" }}>
-      {/* <div>
-        <h1>DANH MỤC</h1>
+      <div>
+        <h1>Tìm Kiếm</h1>
         <Input
           placeholder="Tồn kho thấp nhất"
           name="stockStart"
@@ -125,16 +133,14 @@ export default function Products({ products }) {
           allowClear
         />
         <Input
-          placeholder="Giám giá cao nhất"
+          placeholder="Giâm giá cao nhất"
           name="discountEnd"
           value={filter.discountEnd}
           onChange={onChangeFilter}
           allowClear
         />
-        <Button onClick={onSearch}>
-          Tìm Kiếm
-        </Button>
-      </div> */}
+        <Button onClick={onSearch}>Tìm Kiếm</Button>
+      </div>
       <Row
         gutter={[16, 16]}
         style={{
@@ -235,17 +241,17 @@ export default function Products({ products }) {
 }
 
 export async function getServerSideProps(context) {
-  const { nameCategory } = context.query;
+  const { nameCategory, queryString } = context.query;
   let products = {};
 
   const searchString = getParamsFromObject({
     category: nameCategory,
+    queryString: queryString,
   });
 
   try {
     const response = await axios.get(`${apiName}${searchString}`);
-    products = response.data.payload || [];
-
+    products = response.data.payload || null;
     return {
       props: {
         products,

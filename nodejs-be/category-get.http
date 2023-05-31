@@ -1,12 +1,23 @@
-POST http://localhost:9000/employees HTTP/1.1
+POST http://localhost:9000/carts/ HTTP/1.1
 content-type: application/json
 
 { 
-   "firstName" : "Phạm Thị",
-   "lastName" : "C",
-   "phoneNumber" : "0905412512",
-   "address" : "Tổ 14, thôn An Trạch",
-   "email" : "phamthib@gmail.com",
-   "password" : "123456",
-   "birthday" : "2001-06-25"
+   
+   "cartDetails": [
+      {
+      "name": "Samsung Galaxy S23 Ultra",
+      "price": 31990000,
+      "discount": 0,
+      "stock": 30,
+      "description": "8GB/256GB",
+      "img": "https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lfuk4hmkmv3r88",
+      "categoryId": "64512a84b48a290d5980299f",
+      "supplierId": "645146763a679930efa9cfa1"
+      }
+   ],
+   "productId": "645147133a679930efa9cfe3",
+   "name": "Samsung Galaxy S23 Ultra",
+   "img": "https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lfuk4hmkmv3r88",
+   "quantity": 5,
+   "price": 31990000
 }

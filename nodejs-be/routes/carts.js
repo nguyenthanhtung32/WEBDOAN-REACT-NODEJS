@@ -52,9 +52,7 @@ router.post("/", function (req, res, next) {
   const validationSchema = yup.object({
     body: yup.object({
       cartDetails: yup.array().required(),
-      productId: yup
-        .string()
-        .required()
+      productId: yup.string().required()
         .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
           return ObjectId.isValid(value);
         }),

@@ -50,11 +50,6 @@
   color: #ffffff;
   padding: 20px 60px;
 }
-.btn_outline_secondary {
-  border: 1px solid #e1e1e1;
-  padding: 20px 40px;
-  margin-left: 20px;
-}
 .cta {
   display: flex;
   width: 100%;
@@ -107,12 +102,43 @@
     margin-top: 20px;
     justify-content: center;
   }
-  .btn_outline_secondary {
-    margin-left: 0;
-    margin-top: 10px;
-  }
   .btn_primary {
     margin-left: 0;
     margin-top: 10px;
   }
+}
+.quantity {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+.btn_outline {
+  border: 1px solid #e1e1e1;
+  padding: 0px 20px;
+}
+.quantity_btn {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  border: 1px solid #e1e1e1;
+}
+.quantity_btn .btn {
+  font-size: 24px;
+  height: 30px;
+  width: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.quantity_input {
+  height: 30px;
+  width: 50px;
+  text-align: center;
+  border: none;
+  margin: 0 5px;
+  font-size: 18px;
+  font-weight: 600;
 }

@@ -69,8 +69,6 @@ cartSchema.virtual("total").get(function () {
   return (this.price * this.quantity * (100 - this.discount)) / 100;
 });
 
-cartSchema.plugin(mongooseLeanVirtuals);
-
 cartSchema.virtual("product", {
   ref: "Product",
   localField: "productId",

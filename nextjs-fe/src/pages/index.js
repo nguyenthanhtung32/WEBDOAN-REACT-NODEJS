@@ -6,6 +6,7 @@ import numeral from "numeral";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Styles from "@/styles/Home.module.css"
+import Link from "next/link";
 
 const apiName = "/products";
 
@@ -198,44 +199,76 @@ export default function Home() {
                   lg={4}
                   style={{ marginBottom: "16px" }}
                 >
-                  <Card
-                    style={{ height: "100%", border: "1px solid #ccc" }}
-                    onClick={() => {
-                      onClickFilter(item.name);
-                    }}
-                    hoverable
-                    cover={
-                      <img
-                        alt=""
+                  <Link href={`/products/${item._id}`}>
+                    <Card
+                      style={{ height: "100%", border: "1px solid #ccc" }}
+                      hoverable
+                      cover={
+                        <img
+                          alt=""
+                          style={{
+                            width: "100%",
+                            height: "100px",
+                            margin: "10px 0 10px 0",
+                            objectFit: "contain",
+                          }}
+                          src={item.img}
+                        />
+                      }
+                    >
+                      <div
                         style={{
-                          width: "100%",
-                          height: "100px",
-                          margin: "10px 0 10px 0",
-                          objectFit: "contain"
+                          textAlign: "center",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
                         }}
-                        src={item.img}
-                      />
-                    }
-                  >
-                    <div style={{ textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                      <strong>{item.name}</strong>
-                    </div>
-                    <div style={{ textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginTop: "10px" }}>
-                      <span style={{ color: "#ff3300", fontWeight: "bold" }}>
-                        {numeral(item.price - item.discount).format("0,0")}₫
-                      </span>
-                      {item.discount > 0 && (
+                      >
+                        <strong>{item.name}</strong>
+                      </div>
+                      <div
+                        style={{
+                          textAlign: "center",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          marginTop: "10px",
+                        }}
+                      >
+                        <span style={{ color: "#ff3300", fontWeight: "bold" }}>
+                          {numeral(
+                            item.price - (item.price * item.discount * 1) / 100
+                          ).format("0,0")}
+                          ₫
+                        </span>
+                        {item.discount > 0 && (
+                          <span
+                            style={{
+                              textDecoration: "line-through",
+                              marginLeft: "8px",
+                            }}
+                          >
+                            {numeral(item.price).format("0,0")}₫
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ textAlign: "center", marginTop: "10px" }}>
                         <span
                           style={{
-                            textDecoration: "line-through",
-                            marginLeft: "8px",
+                            backgroundColor: "#ff3300",
+                            color: "#fff",
+                            padding: "4px 8px",
+                            borderRadius: "4px",
+                            textTransform: "uppercase",
+                            fontWeight: "bold",
+                            fontSize: "12px",
                           }}
                         >
-                          {numeral(item.price).format("0,0")}₫
+                          Mua ngay
                         </span>
-                      )}
-                    </div>
-                  </Card>
+                      </div>
+                    </Card>
+                  </Link>
                 </Col>
               ))}
           </Row>
@@ -266,7 +299,7 @@ export default function Home() {
                 <h3 >Phan Thị Hoàng Vinh</h3>
                 <p>Quảng Nam.<br></br>+84 906428501</p>
               </div>
-              <div class={Styles.form_details}>
+              <div className={Styles.form_details}>
                 <input
                   type="text" name="name" id="name" placeholder="Name" required></input>
                 <input type="email" name="email" id="email" placeholder="Email" required></input>
