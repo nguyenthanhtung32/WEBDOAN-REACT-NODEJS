@@ -4,12 +4,12 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import numeral from "numeral";
 import Link from "next/link";
-
-import { getParamsFromObject } from "../../utils";
+import Styles from "./all-products.module.css";
 
 const apiName = "/products";
 
 const initialState = {
+  productName: "",
   stockStart: "",
   stockEnd: "",
   priceStart: "",
@@ -18,7 +18,7 @@ const initialState = {
   discountEnd: "",
 };
 
-export default function Products({ products: initialProducts }) {
+export default function AllProducts({ products: initialProducts }) {
   const router = useRouter();
   const nameCategory = router.query.nameCategory;
 
@@ -44,8 +44,7 @@ export default function Products({ products: initialProducts }) {
     };
 
     // Kiểm tra dữ liệu nhập vào từng ô tìm kiếm
-    const isInvalidData =
-      checkInputData(filter.stockStart, "Tồn kho") ||
+    const isInvalidData = checkInputData(filter.stockStart, "Tồn kho") ||
       checkInputData(filter.stockEnd, "Tồn kho") ||
       checkInputData(filter.priceStart, "Giá bán") ||
       checkInputData(filter.priceEnd, "Giá bán") ||
@@ -56,15 +55,13 @@ export default function Products({ products: initialProducts }) {
 
     // Lọc các trường có giá trị để tạo query params
     const filterFields = Object.keys(filter).filter(
-      (key) => filter[key] !== undefined && filter[key] !== ""
+      (key) => filter[key] !== undefined && filter[key] !== "",
     );
 
     // Tạo query params từ các trường đã lọc
     const a = filterFields.map((key) => {
       return [key, filter[key]];
     });
-
-    a.push(["category", nameCategory]);
 
     // Thêm trường tên danh mục vào query params
     const searchParams = new URLSearchParams();
@@ -75,8 +72,6 @@ export default function Products({ products: initialProducts }) {
         searchParams.append(key, value);
       }
     });
-
-    console.log("searchParams", searchParams.toString());
 
     const queryString = searchParams.toString();
 
@@ -94,15 +89,23 @@ export default function Products({ products: initialProducts }) {
   };
 
   return (
-    <div style={{ padding: 24, display: "flex" }}>
-      <div>
-        <h1>Tìm Kiếm</h1>
+    <div className={Styles.container}>
+      <div className={Styles.Search}>
+        <Input
+          placeholder="Tìm kiếm sản phẩm"
+          name="productName"
+          onChange={onChangeFilter}
+          value={filter.productName}
+          allowClear
+          className={Styles.input}
+        />
         <Input
           placeholder="Tồn kho thấp nhất"
           name="stockStart"
           value={filter.stockStart}
           onChange={onChangeFilter}
           allowClear
+          className={Styles.input}
         />
         <Input
           placeholder="Tồn kho cao nhất"
@@ -110,6 +113,7 @@ export default function Products({ products: initialProducts }) {
           value={filter.stockEnd}
           onChange={onChangeFilter}
           allowClear
+          className={Styles.input}
         />
         <Input
           placeholder="Giá thấp nhất"
@@ -117,6 +121,7 @@ export default function Products({ products: initialProducts }) {
           value={filter.priceStart}
           onChange={onChangeFilter}
           allowClear
+          className={Styles.input}
         />
         <Input
           placeholder="Giá cao nhất"
@@ -124,6 +129,7 @@ export default function Products({ products: initialProducts }) {
           value={filter.priceEnd}
           onChange={onChangeFilter}
           allowClear
+          className={Styles.input}
         />
         <Input
           placeholder="Giảm giá thấp nhất"
@@ -131,6 +137,7 @@ export default function Products({ products: initialProducts }) {
           value={filter.discountStart}
           onChange={onChangeFilter}
           allowClear
+          className={Styles.input}
         />
         <Input
           placeholder="Giâm giá cao nhất"
@@ -138,26 +145,24 @@ export default function Products({ products: initialProducts }) {
           value={filter.discountEnd}
           onChange={onChangeFilter}
           allowClear
+          className={Styles.input}
         />
-        <Button onClick={onSearch}>Tìm Kiếm</Button>
+        <div className={Styles.button}>
+          <Button onClick={onSearch}>Tìm Kiếm</Button>
+        </div>
       </div>
       <Row
         gutter={[16, 16]}
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          marginTop: "24px",
-          width: "1000px",
-        }}
+        style={{ display: "flex", flexWrap: "wrap" }}
       >
         {products.map((item) => (
           <Col
             key={item._id}
-            xs={{ span: 24 }}
-            sm={{ span: 12 }}
-            md={{ span: 8 }}
-            lg={{ span: 6 }}
-            style={{ marginBottom: "24px" }}
+            xs={24}
+            sm={9}
+            md={7}
+            lg={4}
+            style={{ marginBottom: "16px" }}
           >
             <Link href={`/products/${item._id}`}>
               <Card
@@ -174,13 +179,11 @@ export default function Products({ products: initialProducts }) {
                   width: "100%",
                 }}
                 hoverable
-                cover={
-                  <img
-                    alt=""
-                    style={{ maxHeight: "250px", objectFit: "contain" }}
-                    src={item.img}
-                  />
-                }
+                cover={<img
+                  alt=""
+                  style={{ maxHeight: "250px", objectFit: "contain" }}
+                  src={item.img}
+                />}
               >
                 <div
                   style={{
@@ -216,7 +219,7 @@ export default function Products({ products: initialProducts }) {
                     )}
                   </div>
                 </div>
-                {/* <div style={{ textAlign: "center", marginTop: "10px" }}>
+                <div style={{ textAlign: "center", marginTop: "10px" }}>
                   <span
                     style={{
                       backgroundColor: "#ff3300",
@@ -230,7 +233,7 @@ export default function Products({ products: initialProducts }) {
                   >
                     Mua ngay
                   </span>
-                </div> */}
+                </div>
               </Card>
             </Link>
           </Col>
@@ -241,16 +244,10 @@ export default function Products({ products: initialProducts }) {
 }
 
 export async function getServerSideProps(context) {
-  const { nameCategory, queryString } = context.query;
-  let products = {};
-
-  const searchString = getParamsFromObject({
-    category: nameCategory,
-    queryString: queryString,
-  });
+  let products = context.query;
 
   try {
-    const response = await axios.get(`${apiName}${searchString}`);
+    const response = await axios.get(`${apiName}`);
     products = response.data.payload || null;
     return {
       props: {

@@ -1,18 +1,22 @@
+import React, { useState, memo } from "react";
 import Link from "next/link";
 import Styles from "./header.module.css";
 import { Input } from "antd";
-import { useState } from "react";
 import { useRouter } from "next/router";
-import { ShoppingCartOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  ShoppingCartOutlined,
+  SearchOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
-export default function Header() {
+function Header() {
   const [searchValue, setSearchValue] = useState("");
   const router = useRouter();
 
   const onSearch = (name) => {
     router.push({
       pathname: "/products",
-      query: { ProductName: name },
+      query: { NamePro: name },
     });
   };
 
@@ -20,29 +24,25 @@ export default function Header() {
     <header className={Styles.header_container}>
       <div className={Styles.left_nav_links}>
         <div>
-          <Link href="/home">
+          <Link href="/">
             <img
               className={Styles.logo}
               src="https://www.milanoplatinum.com/wp-content/uploads/2015/11/THE-MALL_logo_MilanoPlatinum.png"
               alt="Logo"
             />
           </Link>
-        </div>
-        <div className={Styles.search_container}>
-          <Input
-            type="text"
-            placeholder="Tìm kiếm sản phẩm"
-            // value={searchValue}
-            // onChange={(e) => setSearchValue(e.target.value)}
-            className={Styles.search_box}
-          />
-          <button className={Styles.search_button} onClick={onSearch}>
-            <SearchOutlined />
-          </button>
+          <Link href="/" className={Styles.home}>Trang chủ</Link>
+          <Link href="/all-products" className={Styles.home}>Sản phẩm</Link>
+          <Link href="#" className={Styles.home}>Liên hệ</Link>
         </div>
       </div>
       <div className={Styles.right_nav_links}>
         <div>
+          <div className={Styles.search}>
+            <Link href="/all-products">
+              <SearchOutlined />
+            </Link>
+          </div>
           <div className={Styles.cart_container}>
             <Link href="/cart">
               <ShoppingCartOutlined className={Styles.cart_icon} />
@@ -50,10 +50,7 @@ export default function Header() {
           </div>
           <div className={Styles.authentication_links}>
             <Link href="/login" className={Styles.link}>
-              Đăng nhập
-            </Link>
-            <Link href="/register" className={Styles.link}>
-              Đăng ký
+              <UserOutlined />
             </Link>
           </div>
         </div>
@@ -61,3 +58,5 @@ export default function Header() {
     </header>
   );
 }
+
+export default memo(Header);
