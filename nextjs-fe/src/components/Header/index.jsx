@@ -8,7 +8,7 @@ export default function Header() {
     <header className={Styles.header_container}>
       <div className={Styles.left_nav_links}>
         <div>
-          <Link href="/home">
+          <Link href="/">
             <img
               className={Styles.logo}
               src="https://www.milanoplatinum.com/wp-content/uploads/2015/11/THE-MALL_logo_MilanoPlatinum.png"
@@ -32,7 +32,7 @@ export default function Header() {
       <div className={Styles.right_nav_links}>
         <div>
           <div className={Styles.cart_container}>
-            <Link href="/cart">
+            <Link href="/carts">
               <ShoppingCartOutlined className={Styles.cart_icon} />
             </Link>
           </div>

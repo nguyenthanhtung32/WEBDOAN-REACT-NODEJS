@@ -51,15 +51,25 @@ router.post("/", function (req, res, next) {
   // Validate
   const validationSchema = yup.object({
     body: yup.object({
-      cartDetails: yup.array().required(),
-      productId: yup.string().required()
+      customerId: yup.string().required()
         .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
           return ObjectId.isValid(value);
         }),
-      name: yup.string().required(),
-      img: yup.string().required(),
-      quantity: yup.number().positive().min(1).required(),
-      price: yup.number().positive().min(0).required(),
+      products: [{
+        productId: yup.string().required()
+          .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
+            return ObjectId.isValid(value);
+          }),
+        name: yup.string().required(),
+        price: yup.number().positive().min(0).required(),
+        discount: yup.number().positive().min(0).max(75).required(),
+        stock: yup.number().positive().min(0).required(),
+        description: yup.string().required(),
+        img: yup.string().required(),
+        quantity: yup.number().positive().min(1).required(),
+      }],
+
+
     }),
   });
   validationSchema
