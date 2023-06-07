@@ -46,6 +46,20 @@ function Carts() {
     }
   };
 
+  // Handle add to cart
+  const handleAddToCart = async (productId, quantity) => {
+    try {
+      const response = await axios.post(`/carts`, {
+        productId,
+        quantity,
+      });
+      const updatedCart = response.data.payload;
+      setCarts([...carts, updatedCart]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="container">
       <div className="row">
@@ -110,7 +124,12 @@ function Carts() {
                 <hr />
               </div>
             ))}
-            <Button className="checkout-button">Đặt hàng</Button>
+            <Button
+              className="checkout-button"
+              onClick={() => handleAddToCart("PRODUCT_ID", 1)}
+            >
+              Thêm sản phẩm
+            </Button>
           </Card>
         </Col>
       </div>

@@ -252,21 +252,6 @@ export default function Home() {
                           </span>
                         )}
                       </div>
-                      <div style={{ textAlign: "center", marginTop: "10px" }}>
-                        <span
-                          style={{
-                            backgroundColor: "#ff3300",
-                            color: "#fff",
-                            padding: "4px 8px",
-                            borderRadius: "4px",
-                            textTransform: "uppercase",
-                            fontWeight: "bold",
-                            fontSize: "12px",
-                          }}
-                        >
-                          Mua ngay
-                        </span>
-                      </div>
                     </Card>
                   </Link>
                 </Col>

@@ -3,13 +3,34 @@ import Head from "next/head";
 import axiosClient from "../../libraries/axiosClient";
 import numeral from "numeral";
 import styles from "./products.module.css";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { message } from "antd";
 
 function ProductDetail(props) {
   const { product } = props;
   const [quantity, setQuantity] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(false);
+
+  const [cart, setCart] = React.useState([]);
+
+  const handleAddToCart = async (productId, quantity) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(`/carts`, {
+        productId,
+        quantity,
+      });
+      const updatedCart = response.data.payload;
+      setCart([...cart, updatedCart]);
+      setIsLoading(false);
+      message.success("Thêm vào giỏ hàng thành công!");
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+      message.error("Thêm vào giỏ hàng không thành công!");
+    }
+  };
+
 
   const handleQuantityChange = (action) => {
     if (action === "increase") {
@@ -20,31 +41,6 @@ function ProductDetail(props) {
       if (quantity - 1 >= 1) {
         setQuantity(quantity - 1);
       }
-    }
-  };
-
-  const router = useRouter();
-
-  const handleAddToCart = async () => {
-    setIsLoading(true);
-    try {
-      // Call API to add product to cart here
-      const cart = await axiosClient.post(`/carts`, {
-        productId: product._id,
-        name: product.name,
-        price: product.price,
-        discount: product.discount,
-        stock: product.stock,
-        description: product.description,
-        img: product.img,
-      });
-      setIsLoading(false);
-      // Redirect to cart page with query string
-      router.push("/carts");
-      message.success("Thêm sản phẩm vào giỏ hàng thành công", 1.5);
-    } catch (error) {
-      console.log("error", error);
-      setIsLoading(false);
     }
   };
 
@@ -120,6 +116,11 @@ function ProductDetail(props) {
             <div className={styles.cta}>
               <div className={`${styles.btn} ${styles.btn_primary}`} onClick={handleAddToCart}>
                 {isLoading ? "Loading..." : "add to cart"}
+              </div>
+              <div>
+                <Link href="/carts">
+                  <div>Giỏ hàng ({cart.length})</div>
+                </Link>
               </div>
             </div>
           </div>
