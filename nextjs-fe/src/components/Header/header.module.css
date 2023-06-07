@@ -65,10 +65,13 @@
 }
 
 .home {
-    font-size: 20px;
-    margin-left: 15px;
+    font-size: 15px;
+    color: black;
+    position: relative;
+    font-weight: 500;
+    display: inline-block;
+    margin-left: 20px;
     text-decoration: none;
-    color: #1e1e15;
 }
 
 .home:hover {

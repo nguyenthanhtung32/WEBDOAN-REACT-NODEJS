@@ -101,7 +101,7 @@ export default function Categories() {
       dataIndex: "name",
       key: "name",
       render: (text, record, index) => {
-        return <strong style={{ color: "#6c5ce7" }}>{text}</strong>;
+        return <span>{text}</span>;
       },
     },
     {

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import numeral from "numeral";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Styles from "@/styles/Home.module.css";
+import styles from "@/styles/Home.module.css";
 import Link from "next/link";
 
 const apiName = "/products";
@@ -247,8 +247,17 @@ export default function Home() {
                             }}
                           >
                             {numeral(item.price).format("0,0")}₫
+                            
                           </span>
+                          
                         )}
+                        <div className={styles.off_info}>
+                            <div className={styles.giam}>
+                              <h2 className={styles.sm_title}>
+                              Giảm {item.discount}% 
+                              </h2>
+                            </div>
+                          </div>
                       </div>
                     </Card>
                   </Link>
@@ -266,21 +275,21 @@ export default function Home() {
           )}
         </div>
       </div>
-      <section className={Styles.contact}>
-        <div className={`${Styles.contact} ${Styles.container}`}>
+      <section className={styles.contact}>
+        <div className={`${styles.contact} ${styles.container}`}>
           <div class="map">
             <iframe
-              className={Styles.iframe}
+              className={styles.iframe}
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d904.6861084836736!2d108.22204402373808!3d16.069331231775447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314219ca4f97c919%3A0x24a85e2091f793fc!2zVHJ1bmcgVMOibSDEkMOgbyBU4bqhbyBM4bqtcCBUcsOsbmggVmnDqm4gUXXhu5FjIFThur8gLSBTb2Z0ZWNoIEFwdGVjaCAtIMSQw6BvIFThuqFvIE3hu7kgVGh14bqtdCDEkGEgUGjGsMahbmcgVGnhu4duIFF14buRYyBU4bq_IC0gU29mdGVjaCBBcmVuYQ!5e0!3m2!1svi!2s!4v1685118183538!5m2!1svi!2s"
               width="100%"
               height="450"
             ></iframe>
           </div>
           <form action="https://formspree.io/f/xzbowpjq" method="POST">
-            <div className={Styles.form}>
-              <div className={Styles.form_txt}>
-                <h4>INFORMATION</h4>
-                <h1>Contact Us</h1>
+            <div className={styles.form}>
+              <div className={styles.form_txt}>
+                <h2>Thông tin</h2>
+                <h1>Liên hệ với chúng tôi</h1>
                 <span>
                   Như bạn có thể mong đợi của một công ty, chúng tôi chú trọng
                   đến việc chăm sóc và quản lý chặt chẽ.
@@ -294,13 +303,14 @@ export default function Home() {
                   Quảng Nam.<br></br>+84 906428501
                 </p>
               </div>
-              <div class={Styles.form_details}>
+              <div class={styles.form_details}>
                 <input
                   type="text"
                   name="name"
                   id="name"
                   placeholder="Name"
                   required
+                  style={{marginRight : "15px"}}
                 ></input>
                 <input
                   type="email"

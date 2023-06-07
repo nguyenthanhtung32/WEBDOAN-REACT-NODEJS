@@ -23,18 +23,18 @@
     flex-basis: 48%;
 }
 
-.form .form_txt h4 {
+.form .form_txt h2 {
     font-weight: 600;
     color: rgb(250, 115, 115);
     letter-spacing: 1.5px;
-    font-size: 15px;
+    font-size: 30px;
     margin-bottom: 15px;
 }
 
 .form .form_txt h1 {
     font-weight: 600;
     color: var(--black);
-    font-size: 40px;
+    font-size: 30px;
     letter-spacing: 1.5px;
     margin-bottom: 10px;
     color: rgb(64, 66, 68);
@@ -59,20 +59,23 @@
 
 .form .form_details {
     flex-basis: 48%;
+    margin-top: 40px;
 }
 
 .form .form_details input {
-    padding: 15px 20px;
+    /* padding: 15px 20px; */
     color: grey;
     outline: none;
     border: 1px solid grey;
-    margin: 35px 15px;
     font-size: 14px;
+    height: 50px;
+    width: 190px;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
 .form .form_details textarea {
     padding: 15px 20px;
-    margin: 0 15px;
     color: grey;
     outline: none;
     border: 1px solid grey;
@@ -91,4 +94,44 @@
     font-size: 14px;
     letter-spacing: 2px;
     cursor: pointer;
+}
+
+.sm_title {
+    color: #fff;
+    font-size: .75rem;
+    line-height: .875rem;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.off_info{
+    position: absolute;
+    left: 0;
+    top: 0.625rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 1;
+    max-width: 70%;
+    
+}
+
+.giam{
+    padding: 0 0.25rem;
+    height: auto!important;
+    color: rgb(242, 82, 32);
+    text-align: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 0.9375rem;
+    font-size: .5625rem;
+    line-height: .6875rem;
+    font-weight: 500;
+    padding: 0 4px;
+    border-top-right-radius: 0.125rem;
+    border-bottom-right-radius: 0.125rem;
+    background: currentColor;
+    left: -0.1875rem;
 }

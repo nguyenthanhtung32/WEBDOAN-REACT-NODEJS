@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import numeral from "numeral";
 import Link from "next/link";
+import styles from "./products.module.css";
+import { UnorderedListOutlined } from "@ant-design/icons";
 
 import { getParamsFromObject } from "../../utils";
 
@@ -16,7 +18,10 @@ const initialState = {
   priceEnd: "",
   discountStart: "",
   discountEnd: "",
+  category: [],
 };
+
+const allOption = [{ _id: "", name: "Tất cả" }];
 
 export default function Products({ products: initialProducts }) {
   const router = useRouter();
@@ -25,6 +30,7 @@ export default function Products({ products: initialProducts }) {
   const [filter, setFilter] = useState(initialState);
   const [products, setProducts] = useState(initialProducts);
   const [category, setCategory] = useState(nameCategory);
+  const [categories, setCategories] = React.useState(initialProducts);
 
   const onChangeFilter = (e) => {
     setFilter((prevState) => ({
@@ -64,16 +70,10 @@ export default function Products({ products: initialProducts }) {
       return [key, filter[key]];
     });
 
-    a.push(["category", nameCategory]);
-
     // Thêm trường tên danh mục vào query params
     const searchParams = new URLSearchParams();
     a.forEach(([key, value]) => {
-      if (key === "category") {
-        searchParams.append(key, category);
-      } else {
         searchParams.append(key, value);
-      }
     });
 
     console.log("searchParams", searchParams.toString());
@@ -93,16 +93,56 @@ export default function Products({ products: initialProducts }) {
       });
   };
 
+  React.useEffect(() => {
+    axios
+      .get("/categories")
+      .then((response) => {
+        const { data } = response;
+        setCategories([...allOption, ...data.payload]);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   return (
     <div style={{ padding: 24, display: "flex" }}>
-      <div>
-        <h1>Tìm Kiếm</h1>
+      <div className={styles.search_category}>
+        <div
+          style={{
+            display: "flex",
+            marginTop: "10px",
+            justifyContent: "center",
+            marginBottom: "10px",
+          }}
+        >
+          <div className={styles.icon}>
+            <UnorderedListOutlined />
+          </div>
+          <div className={styles.text}>Tìm kiếm</div>
+        </div>
+        <select
+          id="cars"
+          name="category"
+          value={filter.category}
+          onChange={onChangeFilter}
+          className={styles.input_search}
+        >
+          {categories.map((item) => {
+            return (
+              <option key={item._id} value={item._id}>
+                {item.name}
+              </option>
+            );
+          })}
+        </select>
         <Input
           placeholder="Tồn kho thấp nhất"
           name="stockStart"
           value={filter.stockStart}
           onChange={onChangeFilter}
           allowClear
+          className={styles.input_search}
         />
         <Input
           placeholder="Tồn kho cao nhất"
@@ -110,6 +150,7 @@ export default function Products({ products: initialProducts }) {
           value={filter.stockEnd}
           onChange={onChangeFilter}
           allowClear
+          className={styles.input_search}
         />
         <Input
           placeholder="Giá thấp nhất"
@@ -117,6 +158,7 @@ export default function Products({ products: initialProducts }) {
           value={filter.priceStart}
           onChange={onChangeFilter}
           allowClear
+          className={styles.input_search}
         />
         <Input
           placeholder="Giá cao nhất"
@@ -124,6 +166,7 @@ export default function Products({ products: initialProducts }) {
           value={filter.priceEnd}
           onChange={onChangeFilter}
           allowClear
+          className={styles.input_search}
         />
         <Input
           placeholder="Giảm giá thấp nhất"
@@ -131,22 +174,25 @@ export default function Products({ products: initialProducts }) {
           value={filter.discountStart}
           onChange={onChangeFilter}
           allowClear
+          className={styles.input_search}
         />
         <Input
-          placeholder="Giâm giá cao nhất"
+          placeholder="Giảm giá cao nhất"
           name="discountEnd"
           value={filter.discountEnd}
           onChange={onChangeFilter}
           allowClear
+          className={styles.input_search}
         />
-        <Button onClick={onSearch}>Tìm Kiếm</Button>
+        <div className={styles.btn_search}>
+          <Button onClick={onSearch}>Tìm Kiếm</Button>
+        </div>
       </div>
       <Row
-        gutter={[16, 16]}
+        gutter={[4, 4]}
         style={{
           display: "flex",
           flexWrap: "wrap",
-          marginTop: "24px",
           width: "1000px",
         }}
       >
@@ -169,7 +215,7 @@ export default function Products({ products: initialProducts }) {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
-                  borderRadius: "8px",
+                  borderRadius: "0px",
                   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                   width: "100%",
                 }}
@@ -196,22 +242,31 @@ export default function Products({ products: initialProducts }) {
                       overflow: "hidden",
                       whiteSpace: "nowrap",
                       marginBottom: "16px",
+                      fontSize: "18px",
                     }}
                   >
                     {item.description}
                   </div>
-                  <div style={{ color: "#ff3300", marginLeft: "0" }}>
-                    <span>
-                      {numeral(item.price - item.discount).format("0,0")}₫
+                  <div className={styles.price}>
+                    <span style={{ color: "#ff3300", fontWeight: "bold" ,fontSize: "15px"}}>
+                      {numeral(item.price - (item.price * item.discount * 1) / 100).format("0,0")}₫
                     </span>
                     {item.discount > 0 && (
                       <span
                         style={{
                           textDecoration: "line-through",
                           marginLeft: "8px",
+                          fontSize: "13px"
                         }}
                       >
                         {numeral(item.price).format("0,0")}₫
+                        <div className={styles.off_info}>
+                          <div className={styles.giam}>
+                            <h2 className={styles.sm_title}>
+                              {item.discount}% Giảm
+                            </h2>
+                          </div>
+                        </div>
                       </span>
                     )}
                   </div>

@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import numeral from "numeral";
 import Link from "next/link";
-import Styles from "./all-products.module.css";
+import styles from "./search-products.module.css";
+import { UnorderedListOutlined } from "@ant-design/icons";
 
 const apiName = "/products";
 
@@ -89,15 +90,26 @@ export default function AllProducts({ products: initialProducts }) {
   };
 
   return (
-    <div className={Styles.container}>
-      <div className={Styles.Search}>
+    <div style={{ padding: 24, display: "flex" }}>
+      <div className={styles.search_category}>
+        <div
+          style={{
+            display: "flex",
+            marginTop: "10px",
+            justifyContent: "center",
+            marginBottom: "10px",
+          }}
+        >
+          <div className={styles.icon}><UnorderedListOutlined /></div>
+          <div className={styles.text}>Tìm kiếm</div>
+        </div>
         <Input
           placeholder="Tìm kiếm sản phẩm"
           name="productName"
           onChange={onChangeFilter}
           value={filter.productName}
           allowClear
-          className={Styles.input}
+          className={styles.input_search}
         />
         <Input
           placeholder="Tồn kho thấp nhất"
@@ -105,7 +117,7 @@ export default function AllProducts({ products: initialProducts }) {
           value={filter.stockStart}
           onChange={onChangeFilter}
           allowClear
-          className={Styles.input}
+          className={styles.input_search}
         />
         <Input
           placeholder="Tồn kho cao nhất"
@@ -113,7 +125,7 @@ export default function AllProducts({ products: initialProducts }) {
           value={filter.stockEnd}
           onChange={onChangeFilter}
           allowClear
-          className={Styles.input}
+          className={styles.input_search}
         />
         <Input
           placeholder="Giá thấp nhất"
@@ -121,7 +133,7 @@ export default function AllProducts({ products: initialProducts }) {
           value={filter.priceStart}
           onChange={onChangeFilter}
           allowClear
-          className={Styles.input}
+          className={styles.input_search}
         />
         <Input
           placeholder="Giá cao nhất"
@@ -129,7 +141,7 @@ export default function AllProducts({ products: initialProducts }) {
           value={filter.priceEnd}
           onChange={onChangeFilter}
           allowClear
-          className={Styles.input}
+          className={styles.input_search}
         />
         <Input
           placeholder="Giảm giá thấp nhất"
@@ -137,108 +149,109 @@ export default function AllProducts({ products: initialProducts }) {
           value={filter.discountStart}
           onChange={onChangeFilter}
           allowClear
-          className={Styles.input}
+          className={styles.input_search}
         />
         <Input
-          placeholder="Giâm giá cao nhất"
+          placeholder="Giảm giá cao nhất"
           name="discountEnd"
           value={filter.discountEnd}
           onChange={onChangeFilter}
           allowClear
-          className={Styles.input}
+          className={styles.input_search}
         />
-        <div className={Styles.button}>
+        <div className={styles.button}>
           <Button onClick={onSearch}>Tìm Kiếm</Button>
         </div>
       </div>
-      <Row
-        gutter={[16, 16]}
-        style={{ display: "flex", flexWrap: "wrap" }}
-      >
-        {products.map((item) => (
-          <Col
-            key={item._id}
-            xs={24}
-            sm={9}
-            md={7}
-            lg={4}
-            style={{ marginBottom: "16px" }}
-          >
-            <Link href={`/products/${item._id}`}>
-              <Card
-                key={item._id}
-                title={item.name}
-                bordered={false}
-                style={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  borderRadius: "8px",
-                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                  width: "100%",
-                }}
-                hoverable
-                cover={<img
-                  alt=""
-                  style={{ maxHeight: "250px", objectFit: "contain" }}
-                  src={item.img}
-                />}
-              >
-                <div
+      <div className={styles.card}>
+        <Row
+          gutter={[4, 4]}
+          style={{ display: "flex"}}
+        >
+          {products.map((item) => (
+            <Col
+              key={item._id}
+              xs={24}
+              sm={9}
+              md={9}
+              lg={4}
+              style={{ marginBottom: "12px" }}
+            >
+              <Link href={`/products/${item._id}`}>
+                <Card
+                  key={item._id}
+                  title={item.name}
+                  bordered={false}
                   style={{
-                    flexGrow: 1,
+                    height: "100%",
                     display: "flex",
                     flexDirection: "column",
-                    overflow: "hidden",
+                    justifyContent: "space-between",
+                    // borderRadius: "8px",
+                    borderRadius : "0px",
+                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                    width: "100%",
                   }}
+                  hoverable
+                  cover={<img
+                    alt=""
+                    style={{ maxHeight: "250px", objectFit: "contain" }}
+                    src={item.img}
+                  />}
                 >
                   <div
                     style={{
-                      textOverflow: "ellipsis",
+                      flexGrow: 1,
+                      display: "flex",
+                      flexDirection: "column",
                       overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      marginBottom: "16px",
                     }}
                   >
-                    {item.description}
-                  </div>
-                  <div style={{ color: "#ff3300", marginLeft: "0" }}>
-                    <span>
-                      {numeral(item.price - item.discount).format("0,0")}₫
-                    </span>
-                    {item.discount > 0 && (
-                      <span
-                        style={{
-                          textDecoration: "line-through",
-                          marginLeft: "8px",
-                        }}
-                      >
-                        {numeral(item.price).format("0,0")}₫
+                    <div
+                      style={{
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        marginBottom: "16px",
+                        fontSize: "18px",
+                      }}
+                    >
+                      {item.description}
+                    </div>
+                    <div
+                      className={styles.price}
+                    >
+                      <span style={{ color: "#ff3300", fontWeight: "bold" ,  fontSize: "15px"}}>
+                        {numeral(
+                          item.price - (item.price * item.discount * 1) / 100,
+                        ).format("0,0")}₫
                       </span>
-                    )}
+                      {item.discount > 0 && (
+                        <span
+                          style={{
+                            textDecoration: "line-through",
+                            marginLeft: "4px",
+                            fontSize: "11px"
+                          }}
+                        >
+                          {numeral(item.price).format("0,0")}₫
+                          <div className={styles.off_info}>
+                            <div className={styles.giam}>
+                              <h2 className={styles.sm_title}>
+                                {item.discount}% Giảm
+                              </h2>
+                            </div>
+                          </div>
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <div style={{ textAlign: "center", marginTop: "10px" }}>
-                  <span
-                    style={{
-                      backgroundColor: "#ff3300",
-                      color: "#fff",
-                      padding: "4px 8px",
-                      borderRadius: "4px",
-                      textTransform: "uppercase",
-                      fontWeight: "bold",
-                      fontSize: "12px",
-                    }}
-                  >
-                    Mua ngay
-                  </span>
-                </div>
-              </Card>
-            </Link>
-          </Col>
-        ))}
-      </Row>
+                </Card>
+              </Link>
+            </Col>
+          ))}
+        </Row>
+      </div>
     </div>
   );
 }

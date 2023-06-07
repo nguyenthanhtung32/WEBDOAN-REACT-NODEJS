@@ -1,75 +1,3 @@
-// import {
-//     FacebookFilled,
-//     InstagramFilled,
-//     TwitterSquareFilled,
-//     YoutubeFilled,
-//   } from "@ant-design/icons";
-//   import styles from "./Footer.module.css";
-
-//   export default function Footer() {
-//     return (
-//       <div className={styles.footer_container}>
-//         <div className={styles.footer_info}>
-//           <h2>Thông tin</h2>
-//           <ul>
-//             <li>Giới thiệu</li>
-//             <li>Tuyển dụng</li>
-//             <li>Quy chế hoạt động</li>
-//             <li>Chính sách bảo mật</li>
-//             <li>Quyền sở hữu trí tuệ</li>
-//             <li>Điều khoản sử dụng</li>
-//             <li>Liên hệ với chúng tôi</li>
-//           </ul>
-//         </div>
-//         <div className={styles.footer_service}>
-//           <h2>Dịch vụ</h2>
-//           <ul>
-//             <li>Shopee đảm bảo</li>
-//             <li>Vận chuyển</li>
-//             <li>Trung tâm trợ giúp</li>
-//             <li>Hỗ trợ khách hàng</li>
-//             <li>Thanh toán</li>
-//             <li>Shopee Xu</li>
-//             <li>Voucher Shopee</li>
-//             <li>Shopee Blog</li>
-//           </ul>
-//         </div>
-//         <div className={styles.footer_follow}>
-//           <h2>Theo dõi chúng tôi trên</h2>
-//           <ul>
-//             <li>
-//               <FacebookFilled />
-//               Facebook
-//             </li>
-//             <li>
-//               <InstagramFilled />
-//               Instagram
-//             </li>
-//             <li>
-//               <TwitterSquareFilled />
-//               Twitter
-//             </li>
-//             <li>
-//               <YoutubeFilled />
-//               Youtube
-//             </li>
-//           </ul>
-//         </div>
-//         <div className={styles.footer_download}>
-//           <h2>Tải ứng dụng Shopee ngay thôi nào</h2>
-//           <ul>
-//             <li>
-//               <img
-//                 src="https://cdn.wikimobi.vn/2018/07/cuoc-chien-cua-hai-cho-ung-dung-lon-nhat-google-play-store-appstore.jpeg"
-//                 alt="Download"
-//               />
-//             </li>
-//           </ul>
-//         </div>
-//       </div>
-//     );
-//   }
-
 import Link from "next/link";
 import { Col, Container, Nav, Row } from "react-bootstrap";
 import { CiFacebook, CiInstagram, CiTwitter, CiYoutube } from "react-icons/ci";
@@ -88,7 +16,7 @@ function Footer() {
       <Container className="mt-3 mb-3">
         <Row>
           <Col>
-            <h4>About us</h4>
+            <h4>Thông tin chúng tôi</h4>
             <strong>The Mall</strong>
             <p>38 Yên Bái - Đà Nẵng</p>
             <p>
@@ -101,40 +29,37 @@ function Footer() {
             </p>
           </Col>
           <Col>
-            <h4>Help</h4>
+            <h4>Giúp đỡ</h4>
             <Nav className="flex-column">
               <Link style={style} href={"#"}>
                 FAQ
               </Link>
               <Link style={style} href={"#"}>
-                Shipping
+                Vận chuyển
               </Link>
               <Link style={style} href={"#"}>
-                Returns
+                Tình trạng đặt hàng
               </Link>
               <Link style={style} href={"#"}>
-                Order Status
-              </Link>
-              <Link style={style} href={"#"}>
-                24/7 Support
+                24/7 Hổ trợ
               </Link>
             </Nav>
           </Col>
           <Col>
-            <h4>Payment And Delivery</h4>
-            <span>Payment</span>
+            <h4>Thanh toán và vận chuyển</h4>
+            <span>Thanh toán</span>
             <p style={{ fontSize: "2em" }}>
               <AiOutlineCreditCard />
               <RiVisaLine />
             </p>
-            <span>Delivery</span>
+            <span>Vận chuyển</span>
             <p style={{ fontSize: "2em", color: "white" }}>
               <TbTruckDelivery />
               <MdOutlineDeliveryDining />
             </p>
           </Col>
           <Col>
-            <h4>Connect with Us</h4>
+            <h4>Kết nối với chúng tôi</h4>
             <p style={{ fontSize: "2em" }}>
               <Link
                 className="me-3"
