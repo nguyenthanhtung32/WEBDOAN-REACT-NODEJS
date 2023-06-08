@@ -1,9 +1,10 @@
-import React from "react";
+import React, {memo} from "react";
 import Head from "next/head";
-import axiosClient from "../../libraries/axiosClient";
-import numeral from "numeral";
-import styles from "./products.module.css";
 import { useRouter } from "next/router";
+import numeral from "numeral";
+
+import axiosClient from "../../libraries/axiosClient";
+import styles from "./products.module.css";
 
 function ProductDetail(props) {
   const { product } = props;
@@ -97,7 +98,7 @@ function ProductDetail(props) {
                 Mã sản phẩm: <span>{product._id}</span>
               </p>
               <p className={styles.p}>
-                Nhà cung cấp: <span>{product.supplierId}</span>
+                Nhà cung cấp: <span>{product.supplier.name}</span>
               </p>
             </div>
             <p className={styles.p}>{product.description}</p>
@@ -142,7 +143,8 @@ function ProductDetail(props) {
     </>
   );
 }
-export default ProductDetail;
+export default memo(ProductDetail);
+
 export async function getStaticPaths() {
   return {
     paths: [],

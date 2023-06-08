@@ -206,42 +206,64 @@ router.get("/:id", async function (req, res, next) {
     });
 });
 
-router.post("/", function (req, res, next) {
-  // Validate
-  const validationSchema = yup.object({
-    body: yup.object({
-      customerId: yup.string().required()
-        .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
-          return ObjectId.isValid(value);
-        }),
-      products: [{
-        productId: yup.string().required()
-          .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
-            return ObjectId.isValid(value);
-          }),
-          quantity: yup.number().positive().min(1).required(),
-      }],
-    }),
-  });
-  validationSchema
-    .validate({ body: req.body }, { abortEarly: false })
-    .then(async () => {
-      const data = req.body;
-      console.log('req.body',req.body)
-      let newItem = new Cart(data);
-      await newItem.save();
-      res.send({ ok: true, message: "Created", result: newItem });
-    })
-    .catch((err) => {
-      return res.status(400).json({
-        type: err.name,
-        errors: err.errors,
-        message: err.message,
-        provider: "yup",
-      });
-    });
-});
+// router.post("/", function (req, res, next) {
+//   // Validate
+//   const validationSchema = yup.object({
+//     body: yup.object({
+//       customerId: yup.string().required()
+//         .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
+//           return ObjectId.isValid(value);
+//         }),
+//       products: [{
+//         productId: yup.string().required()
+//           .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
+//             return ObjectId.isValid(value);
+//           }),
+//           quantity: yup.number().positive().min(1).required(),
+//       }],
+//     }),
+//   });
+//   validationSchema
+//     .validate({ body: req.body }, { abortEarly: false })
+//     .then(async () => {
+//       const data = req.body;
+//       console.log('req.body',req.body)
+//       let newItem = new Cart(data);
+//       await newItem.save();
+//       res.send({ ok: true, message: "Created", result: newItem });
+//     })
+//     .catch((err) => {
+//       return res.status(400).json({
+//         type: err.name,
+//         errors: err.errors,
+//         message: err.message,
+//         provider: "yup",
+//       });
+//     });
+// });
 
+router.post("/", async (req, res, next) => {
+    try {
+      const { customerId, products } = req.body;
+  
+      // Check if customerId exists
+      const cart = await Cart.findOne({ customerId });
+      if (cart) {
+        return res
+          .status(400)
+          .json({ ok: false, message: "Customer already has cart" });
+      } else {
+        const newCart = new Cart({ customerId, products });
+        const savedCart = await newCart.save();
+  
+        return res
+          .status(200)
+          .json({ ok: true, message: "Cart created", result: savedCart });
+      }
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  });
 
 router.delete("/:id", function (req, res, next) {
   const validationSchema = yup.object().shape({

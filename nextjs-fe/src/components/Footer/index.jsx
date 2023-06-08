@@ -1,3 +1,4 @@
+import React, { memo } from "react";
 import Link from "next/link";
 import { Col, Container, Nav, Row } from "react-bootstrap";
 import { CiFacebook, CiInstagram, CiTwitter, CiYoutube } from "react-icons/ci";
@@ -5,18 +6,19 @@ import { AiOutlineCreditCard } from "react-icons/ai";
 import { RiVisaLine } from "react-icons/ri";
 import { TbTruckDelivery } from "react-icons/tb";
 import { MdOutlineDeliveryDining } from "react-icons/md";
+
 const style = { textDecoration: "none", marginTop: "10px" };
 
 function Footer() {
   return (
     <footer
       className="border-top mt-3"
-      style={{ lineHeight: "20px", backgroundColor: "black", color: "white" }}
+      style={{ lineHeight: "20px", backgroundColor: "#262626", color: "white" }}
     >
       <Container className="mt-3 mb-3">
         <Row>
           <Col>
-            <h4>Thông tin chúng tôi</h4>
+            <h5>Thông tin chúng tôi</h5>
             <strong>The Mall</strong>
             <p>38 Yên Bái - Đà Nẵng</p>
             <p>
@@ -29,7 +31,7 @@ function Footer() {
             </p>
           </Col>
           <Col>
-            <h4>Giúp đỡ</h4>
+            <h5>Giúp đỡ</h5>
             <Nav className="flex-column">
               <Link style={style} href={"#"}>
                 FAQ
@@ -46,7 +48,7 @@ function Footer() {
             </Nav>
           </Col>
           <Col>
-            <h4>Thanh toán và vận chuyển</h4>
+            <h5>Thanh toán và vận chuyển</h5>
             <span>Thanh toán</span>
             <p style={{ fontSize: "2em" }}>
               <AiOutlineCreditCard />
@@ -59,7 +61,7 @@ function Footer() {
             </p>
           </Col>
           <Col>
-            <h4>Kết nối với chúng tôi</h4>
+            <h5>Kết nối với chúng tôi</h5>
             <p style={{ fontSize: "2em" }}>
               <Link
                 className="me-3"
@@ -80,11 +82,12 @@ function Footer() {
           </Col>
         </Row>
       </Container>
-      <div className="text-center p-4" style={{ backgroundColor: "#222222" }}>
-        <span style={{ color: "white" }}>© 2023 Copyright:</span>
+      
+      <div className="text-center p-4" style={{ backgroundColor: "#333333" }}>
+        <span style={{ color: "white" }}>© 2023 Aptech :</span>
         <strong style={{ color: "#bab6b6" }}>@HoangVinh-ThanhTung</strong>
       </div>
     </footer>
   );
 }
-export default Footer;
+export default memo(Footer);

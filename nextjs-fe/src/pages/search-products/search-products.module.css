@@ -1,23 +1,4 @@
-/* .container {
-    margin: 12px 20px;
-}
-
-.Search {
-    width: 100%;
-    border: 1px solid #ccc;
-    height: auto;
-    background-color: #d5d5c3;
-    margin-top: 24px;
-    border-radius: 5px;
-    padding: 10px;
-    display: flex;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-} */
-
 .search_category {
-    /* max-width: 200px; */
-    /* background: #fff; */
     box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3);
     position: relative;
     margin-right: 12px;
@@ -27,8 +8,6 @@
 
 .input_search {
     border-radius: 0px;
-    /* margin-top: 8px; */
-    /* border: 1px solid black; */
     border-top: 1px solid black;
     height: 35px;
 }

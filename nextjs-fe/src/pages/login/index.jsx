@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
+import Link from "next/link";
+import {
+    SlSocialFacebook,
+    SlSocialGoogle,
+    SlSocialTwitter,
+  } from "react-icons/sl";
+  import { Alert } from "antd";
+
 import axios from "../../libraries/axiosClient";
 import styles from "./Login.module.css";
-import {
-  SlSocialFacebook,
-  SlSocialGoogle,
-  SlSocialTwitter,
-} from "react-icons/sl";
-import { Alert } from "antd";
-import Link from "next/link";
 
-const Login = () => {
+function Login(){
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -52,7 +53,7 @@ const Login = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <label htmlFor="password" className={styles.label}>
-          Password
+          Mật khẩu
         </label>
         <input
           type="password"
@@ -62,9 +63,9 @@ const Login = () => {
           className={styles.input}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <span className={styles.span}>Forgot Password</span>
+        <span className={styles.span}>Quên mật khẩu?</span>
         <button className={styles.button} onClick={(e) => handleSubmit(e)}>
-          Login
+          Đăng nhập
         </button>
         <div className="d-flex justify-content-center ">
           <p className={styles.text}>Bạn chưa có tài khoản ?</p>
@@ -75,4 +76,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default memo(Login);

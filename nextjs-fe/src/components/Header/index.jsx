@@ -1,13 +1,14 @@
 import React, { useState, memo } from "react";
 import Link from "next/link";
-import styles from "./header.module.css";
-import { Input } from "antd";
 import { useRouter } from "next/router";
+import { Input } from "antd";
 import {
   ShoppingCartOutlined,
   SearchOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+
+import styles from "./header.module.css";
 
 function Header() {
   const [searchValue, setSearchValue] = useState("");
@@ -36,6 +37,7 @@ function Header() {
           {/* <Link href="/footer" className={styles.home}>Liên hệ</Link> */}
         </div>
       </div>
+
       <div className={styles.right_nav_links}>
         <div>
           <div className={styles.search}>

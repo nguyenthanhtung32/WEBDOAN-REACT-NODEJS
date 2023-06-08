@@ -1,13 +1,15 @@
-import { Button, Card, Col, Input, message, Row } from "antd";
-import axios from "../../libraries/axiosClient";
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { useRouter } from "next/router";
-import numeral from "numeral";
 import Link from "next/link";
-import styles from "./products.module.css";
+import numeral from "numeral";
+import { Button, Card, Col, Input, message, Row } from "antd";
 import { UnorderedListOutlined } from "@ant-design/icons";
 
+import axios from "../../libraries/axiosClient";
 import { getParamsFromObject } from "../../utils";
+import styles from "./products.module.css";
+
+
 
 const apiName = "/products";
 
@@ -23,7 +25,7 @@ const initialState = {
 
 const allOption = [{ _id: "", name: "Tất cả" }];
 
-export default function Products({ products: initialProducts }) {
+function Products({ products: initialProducts }) {
   const router = useRouter();
   const nameCategory = router.query.nameCategory;
 
@@ -73,10 +75,8 @@ export default function Products({ products: initialProducts }) {
     // Thêm trường tên danh mục vào query params
     const searchParams = new URLSearchParams();
     a.forEach(([key, value]) => {
-        searchParams.append(key, value);
+      searchParams.append(key, value);
     });
-
-    console.log("searchParams", searchParams.toString());
 
     const queryString = searchParams.toString();
 
@@ -121,6 +121,7 @@ export default function Products({ products: initialProducts }) {
           </div>
           <div className={styles.text}>Tìm kiếm</div>
         </div>
+
         <select
           id="cars"
           name="category"
@@ -183,6 +184,7 @@ export default function Products({ products: initialProducts }) {
           onChange={onChangeFilter}
           allowClear
           className={styles.input_search}
+          style={{ borderBottom: "1px solid black"}}
         />
         <div className={styles.btn_search}>
           <Button onClick={onSearch}>Tìm Kiếm</Button>
@@ -248,15 +250,24 @@ export default function Products({ products: initialProducts }) {
                     {item.description}
                   </div>
                   <div className={styles.price}>
-                    <span style={{ color: "#ff3300", fontWeight: "bold" ,fontSize: "15px"}}>
-                      {numeral(item.price - (item.price * item.discount * 1) / 100).format("0,0")}₫
+                    <span
+                      style={{
+                        color: "#ff3300",
+                        fontWeight: "bold",
+                        fontSize: "15px",
+                      }}
+                    >
+                      {numeral(
+                        item.price - (item.price * item.discount * 1) / 100
+                      ).format("0,0")}
+                      ₫
                     </span>
                     {item.discount > 0 && (
                       <span
                         style={{
                           textDecoration: "line-through",
                           marginLeft: "8px",
-                          fontSize: "13px"
+                          fontSize: "13px",
                         }}
                       >
                         {numeral(item.price).format("0,0")}₫
@@ -294,6 +305,8 @@ export default function Products({ products: initialProducts }) {
     </div>
   );
 }
+
+export default memo(Products);
 
 export async function getServerSideProps(context) {
   const { nameCategory, queryString } = context.query;

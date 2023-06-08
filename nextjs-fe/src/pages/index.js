@@ -1,16 +1,15 @@
-import { Card, Carousel, Col, Row, Pagination } from "antd";
-import axios from "../libraries/axiosClient";
-import React from "react";
+import React, { memo } from "react";
 import { useRouter } from "next/router";
-import numeral from "numeral";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import styles from "@/styles/Home.module.css";
 import Link from "next/link";
+import numeral from "numeral";
+import { Card, Carousel, Col, Row, Pagination } from "antd";
+
+import axios from "../libraries/axiosClient";
+import styles from "@/styles/Home.module.css";
 
 const apiName = "/products";
 
-export default function Home() {
+function Home() {
   const [categories, setCategories] = React.useState([]);
   const [products, setProducts] = React.useState([]);
 
@@ -23,7 +22,6 @@ export default function Home() {
   const totalPages = Math.ceil(totalProduct / pageSize);
 
   const onClickFilter = (_id) => {
-    console.log("_id", _id);
     router.push({
       pathname: "/products",
       query: {
@@ -58,7 +56,6 @@ export default function Home() {
 
   return (
     <>
-      {/* <Header /> */}
       <div>
         <div
           style={{
@@ -247,17 +244,15 @@ export default function Home() {
                             }}
                           >
                             {numeral(item.price).format("0,0")}₫
-                            
                           </span>
-                          
                         )}
                         <div className={styles.off_info}>
-                            <div className={styles.giam}>
-                              <h2 className={styles.sm_title}>
-                              Giảm {item.discount}% 
-                              </h2>
-                            </div>
+                          <div className={styles.giam}>
+                            <h2 className={styles.sm_title}>
+                              Giảm {item.discount}%
+                            </h2>
                           </div>
+                        </div>
                       </div>
                     </Card>
                   </Link>
@@ -275,6 +270,7 @@ export default function Home() {
           )}
         </div>
       </div>
+
       <section className={styles.contact}>
         <div className={`${styles.contact} ${styles.container}`}>
           <div class="map">
@@ -310,7 +306,7 @@ export default function Home() {
                   id="name"
                   placeholder="Name"
                   required
-                  style={{marginRight : "15px"}}
+                  style={{ marginRight: "15px" }}
                 ></input>
                 <input
                   type="email"
@@ -333,8 +329,8 @@ export default function Home() {
           </form>
         </div>
       </section>
-      {/* <Footer /> */}
     </>
   );
 }
 
+export default memo(Home);

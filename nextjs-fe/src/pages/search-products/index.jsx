@@ -1,11 +1,12 @@
+import React, { useState, memo } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import numeral from "numeral";
+import { UnorderedListOutlined } from "@ant-design/icons";
+
 import { Button, Card, Col, Input, message, Row } from "antd";
 import axios from "../../libraries/axiosClient";
-import React, { useState } from "react";
-import { useRouter } from "next/router";
-import numeral from "numeral";
-import Link from "next/link";
 import styles from "./search-products.module.css";
-import { UnorderedListOutlined } from "@ant-design/icons";
 
 const apiName = "/products";
 
@@ -19,7 +20,7 @@ const initialState = {
   discountEnd: "",
 };
 
-export default function AllProducts({ products: initialProducts }) {
+function AllProducts({ products: initialProducts }) {
   const router = useRouter();
   const nameCategory = router.query.nameCategory;
 
@@ -158,6 +159,7 @@ export default function AllProducts({ products: initialProducts }) {
           onChange={onChangeFilter}
           allowClear
           className={styles.input_search}
+          style={{ borderBottom: "1px solid black"}}
         />
         <div className={styles.button}>
           <Button onClick={onSearch}>Tìm Kiếm</Button>
@@ -255,6 +257,8 @@ export default function AllProducts({ products: initialProducts }) {
     </div>
   );
 }
+
+export default memo(AllProducts);
 
 export async function getServerSideProps(context) {
   let products = context.query;

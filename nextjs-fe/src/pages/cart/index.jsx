@@ -52,15 +52,16 @@ function Carts() {
         <Col span={16}>
           <Card title="Giỏ hàng">
             <div>
-              {carts.map((cart) => (
+              {/* {carts.map((cart) => (
                 <Row className="cart-item" key={cart._id}>
                   <Col span={4} className="cart-item-image">
                     <img alt="" src={cart.img} width="50px" height="50px" />
                   </Col>
                   <Col span={16} className="cart-item-info">
                     <div>
-                      <p>{cart.name}</p>
-                      <p>{cart.description}</p>
+                      <p>{cart.customerId}</p>
+                      <p>{cart?.products?.quantity}</p>
+                      <p>{cart?.products[0]?.discount}</p>
                     </div>
                     <div className="cart-item-quantity">
                       <Input
@@ -72,18 +73,59 @@ function Carts() {
                           handleQuantityChange(
                             cart._id,
                             "",
-                            parseInt(e.target.value)
-                          )
-                        }
+                            parseInt(e.target.value),
+                          )}
                         style={{ marginRight: "10px" }}
                       />
                       <Badge
-                        count={
-                          <DeleteOutlined
-                            style={{ color: "#f5222d" }}
-                            onClick={() => handleRemoveCart(cart._id)}
-                          />
-                        }
+                        count={<DeleteOutlined
+                          style={{ color: "#f5222d" }}
+                          onClick={() => handleRemoveCart(cart._id)}
+                        />}
+                      />
+                    </div>
+                  </Col>
+                  <Col span={4} className="cart-item-price">
+                    <p>{numeral(cart.price).format("0,0")}đ</p>
+                  </Col>
+                </Row>
+              ))} */}
+              {carts.map((cart) => (
+                <Row className="cart-item" key={cart._id}>
+                  <Col span={4} className="cart-item-image">
+                    {/* <img alt="" src={cart.img} width="50px" height="50px" /> */}
+                  </Col>
+                  <Col span={16} className="cart-item-info">
+                    <div>
+                      <p>{cart.customerId}</p>
+                      {cart?.products?.map((product) => (
+                        
+                        <div key={product.product.productId}>
+                            <img alt="" src={product.product.img} width="50px" height="50px" />
+                          <p>Quantity: {product.quantity}</p>
+                          <p>Discount: {product.product.discount}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="cart-item-quantity">
+                      <Input
+                        type="number"
+                        value={cart.quantity}
+                        min={1}
+                        max={10}
+                        onChange={(e) =>
+                          handleQuantityChange(
+                            cart._id,
+                            "",
+                            parseInt(e.target.value),
+                          )}
+                        style={{ marginRight: "10px" }}
+                      />
+                      <Badge
+                        count={<DeleteOutlined
+                          style={{ color: "#f5222d" }}
+                          onClick={() => handleRemoveCart(cart._id)}
+                        />}
                       />
                     </div>
                   </Col>
