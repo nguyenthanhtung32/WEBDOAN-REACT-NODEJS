@@ -2,7 +2,7 @@
   height: 100vh;
   margin: 0 auto;
   position: relative;
-  background: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
+  /* background: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed); */
 }
 
 .form_1 {

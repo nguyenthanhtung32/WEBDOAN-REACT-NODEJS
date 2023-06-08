@@ -1,13 +1,8 @@
 import React, { useState } from "react";
 import axios from "../../libraries/axiosClient";
-import Styles from "./Login.module.css";
-import {
-  SlSocialFacebook,
-  SlSocialGoogle,
-  SlSocialTwitter,
-} from "react-icons/sl";
-import { Alert } from "antd";
+import styles from "./Login.module.css";
 import Link from "next/link";
+import { message } from "antd";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -26,21 +21,19 @@ const Login = () => {
       console.log(response);
 
       localStorage.setItem("token", response.data.token);
-      //   <Alert message="Đăng nhập thành công!" type="success" showIcon />;
-      alert("đăng nhập thành công");
+      message.success("Đăng nhập thành công!", 1.5);
       window.location.href = "/";
     } catch (error) {
       console.error(error);
-      //   <Alert message="Đăng nhập thất bại" type="error" showIcon />;
-      alert("đăng nhập thất bại");
+      message.success("Đăng nhập thất bại!", 1.5);
     }
   };
 
   return (
-    <div className={Styles.container}>
-      <form className={Styles.form_1}>
-        <h1 className={Styles.login}>Login</h1>
-        <label htmlFor="email" className={Styles.label}>
+    <div className={styles.container}>
+      <form className={styles.form_1}>
+        <h1 className={styles.login}>Đăng nhập</h1>
+        <label htmlFor="email" className={styles.label}>
           Email
         </label>
         <input
@@ -48,10 +41,10 @@ const Login = () => {
           name="email"
           id="email"
           required
-          className={Styles.input}
+          className={styles.input}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <label htmlFor="password" className={Styles.label}>
+        <label htmlFor="password" className={styles.label}>
           Password
         </label>
         <input
@@ -59,17 +52,17 @@ const Login = () => {
           name="password"
           id="password"
           required
-          className={Styles.input}
+          className={styles.input}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <span className={Styles.span}>Forgot Password</span>
-        <button className={Styles.button} onClick={(e) => handleSubmit(e)}>
+        <span className={styles.span}>Forgot Password</span>
+        <button className={styles.button} onClick={(e) => handleSubmit(e)}>
           Login
         </button>
         <div className="d-flex justify-content-center ">
-          <p className={Styles.text}>Don't have an acount ?</p>
-          <Link href="/signup" className={Styles.text2}>
-            SignUp
+          <p className={styles.text}>Bạn chưa có tài khoản ?</p>
+          <Link href="/register" className={styles.text2}>
+            Đăng kí
           </Link>
         </div>
       </form>

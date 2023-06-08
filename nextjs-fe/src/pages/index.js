@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import numeral from "numeral";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Styles from "@/styles/Home.module.css"
+import styles from "@/styles/Home.module.css";
 import Link from "next/link";
 
 const apiName = "/products";
@@ -58,13 +58,11 @@ export default function Home() {
 
   return (
     <>
-      <Header />
-
+      {/* <Header /> */}
       <div>
         <div
           style={{
-            margin: "130px 50px 10px 50px",
-            width: "93%",
+            width: "100%",
             height: "100%",
             textAlign: "center",
           }}
@@ -123,54 +121,52 @@ export default function Home() {
           style={{
             border: "1px solid #ccc",
             margin: "20px 50px 0px 50px",
-            background: "white"
+            background: "white",
           }}
         >
           <h2 style={{ marginLeft: "10px" }}>Danh Mục</h2>
           <Row gutter={[16, 16]} style={{ display: "flex", flexWrap: "wrap" }}>
-            {categories.map(
-              (item) => {
-                return (
-                  <Col
-                    key={item._id}
-                    xs={12}
-                    sm={9}
-                    md={6}
-                    lg={3}
-                    style={{ marginBottom: "16px" }}
+            {categories.map((item) => {
+              return (
+                <Col
+                  key={item._id}
+                  xs={12}
+                  sm={9}
+                  md={6}
+                  lg={3}
+                  style={{ marginBottom: "16px" }}
+                >
+                  <Card
+                    onClick={() => {
+                      onClickFilter(item._id);
+                    }}
+                    hoverable
+                    style={{
+                      height: 200,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      transform: "scale(0.8)",
+                      border: "1px solid #ccc",
+                    }}
+                    cover={
+                      <img
+                        alt=""
+                        style={{
+                          width: "100%",
+                          height: "100px",
+                          margin: "10px 0 10px 0",
+                        }}
+                        src={item.img}
+                      />
+                    }
                   >
-                    <Card
-                      onClick={() => {
-                        onClickFilter(item._id);
-                      }}
-                      hoverable
-                      style={{
-                        height: 200,
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        transform: "scale(0.8)",
-                        border: "1px solid #ccc",
-                      }}
-                      cover={
-                        <img
-                          alt=""
-                          style={{
-                            width: "100%",
-                            height: "100px",
-                            margin: "10px 0 10px 0",
-                          }}
-                          src={item.img}
-                        />
-                      }
-                    >
-                      <strong>{item.name}</strong>
-                    </Card>
-                  </Col>
-                );
-              }
-            )}
+                    <strong>{item.name}</strong>
+                  </Card>
+                </Col>
+              );
+            })}
           </Row>
         </div>
 
@@ -179,12 +175,11 @@ export default function Home() {
             border: "1px solid #ccc",
             margin: "20px 50px 0px 50px",
             padding: "10px",
-            background: "white"
+            background: "white",
           }}
         >
           <h2 style={{ marginLeft: "10px" }}>
-            <img
-              src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/fb1088de81e42c4e538967ec12cb5caa.png"></img>
+            <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/fb1088de81e42c4e538967ec12cb5caa.png"></img>
           </h2>
           <Row gutter={[16, 16]} style={{ display: "flex", flexWrap: "wrap" }}>
             {products
@@ -202,6 +197,9 @@ export default function Home() {
                   <Link href={`/products/${item._id}`}>
                     <Card
                       style={{ height: "100%", border: "1px solid #ccc" }}
+                      //   onClick={() => {
+                      //     onClickFilter(item._id);
+                      //   }}
                       hoverable
                       cover={
                         <img
@@ -249,8 +247,17 @@ export default function Home() {
                             }}
                           >
                             {numeral(item.price).format("0,0")}₫
+
                           </span>
+
                         )}
+                        <div className={styles.off_info}>
+                          <div className={styles.giam}>
+                            <h2 className={styles.sm_title}>
+                              Giảm {item.discount}%
+                            </h2>
+                          </div>
+                        </div>
                       </div>
                     </Card>
                   </Link>
@@ -268,35 +275,65 @@ export default function Home() {
           )}
         </div>
       </div>
-      <section className={Styles.contact}>
-        <div className={`${Styles.contact} ${Styles.container}`}>
+      <section className={styles.contact}>
+        <div className={`${styles.contact} ${styles.container}`}>
           <div class="map">
-            <iframe className={Styles.iframe} src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d904.6861084836736!2d108.22204402373808!3d16.069331231775447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314219ca4f97c919%3A0x24a85e2091f793fc!2zVHJ1bmcgVMOibSDEkMOgbyBU4bqhbyBM4bqtcCBUcsOsbmggVmnDqm4gUXXhu5FjIFThur8gLSBTb2Z0ZWNoIEFwdGVjaCAtIMSQw6BvIFThuqFvIE3hu7kgVGh14bqtdCDEkGEgUGjGsMahbmcgVGnhu4duIFF14buRYyBU4bq_IC0gU29mdGVjaCBBcmVuYQ!5e0!3m2!1svi!2s!4v1685118183538!5m2!1svi!2s" width="100%" height="450" ></iframe>
+            <iframe
+              className={styles.iframe}
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d904.6861084836736!2d108.22204402373808!3d16.069331231775447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314219ca4f97c919%3A0x24a85e2091f793fc!2zVHJ1bmcgVMOibSDEkMOgbyBU4bqhbyBM4bqtcCBUcsOsbmggVmnDqm4gUXXhu5FjIFThur8gLSBTb2Z0ZWNoIEFwdGVjaCAtIMSQw6BvIFThuqFvIE3hu7kgVGh14bqtdCDEkGEgUGjGsMahbmcgVGnhu4duIFF14buRYyBU4bq_IC0gU29mdGVjaCBBcmVuYQ!5e0!3m2!1svi!2s!4v1685118183538!5m2!1svi!2s"
+              width="100%"
+              height="450"
+            ></iframe>
           </div>
           <form action="https://formspree.io/f/xzbowpjq" method="POST">
-            <div className={Styles.form}>
-              <div className={Styles.form_txt}>
-                <h4>INFORMATION</h4>
-                <h1>Contact Us</h1>
-                <span >Như bạn có thể mong đợi của một công ty, chúng tôi chú trọng đến việc chăm sóc và quản lý chặt chẽ.</span>
-                <h3 >Nguyễn Thanh Tùng</h3>
-                <p>Đà Nẵng<br></br>+84 905875294</p>
-                <h3 >Phan Thị Hoàng Vinh</h3>
-                <p>Quảng Nam.<br></br>+84 906428501</p>
+            <div className={styles.form}>
+              <div className={styles.form_txt}>
+                <h2>Thông tin</h2>
+                <h1>Liên hệ với chúng tôi</h1>
+                <span>
+                  Như bạn có thể mong đợi của một công ty, chúng tôi chú trọng
+                  đến việc chăm sóc và quản lý chặt chẽ.
+                </span>
+                <h3>Nguyễn Thanh Tùng</h3>
+                <p>
+                  Đà Nẵng<br></br>+84 905875294
+                </p>
+                <h3>Phan Thị Hoàng Vinh</h3>
+                <p>
+                  Quảng Nam.<br></br>+84 906428501
+                </p>
               </div>
-              <div className={Styles.form_details}>
+              <div class={styles.form_details}>
                 <input
-                  type="text" name="name" id="name" placeholder="Name" required></input>
-                <input type="email" name="email" id="email" placeholder="Email" required></input>
-                <textarea name="message" id="message" cols="52" rows="7" placeholder="Message" required></textarea>
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Name"
+                  required
+                  style={{ marginRight: "15px" }}
+                ></input>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="Email"
+                  required
+                ></input>
+                <textarea
+                  name="message"
+                  id="message"
+                  cols="52"
+                  rows="7"
+                  placeholder="Message"
+                  required
+                ></textarea>
                 <button>SEND MESSAGE</button>
               </div>
             </div>
-          </form >
-        </div >
-      </section >
-
-      <Footer />
+          </form>
+        </div>
+      </section>
+      {/* <Footer /> */}
     </>
   );
 }

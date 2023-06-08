@@ -4,7 +4,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import axios from "../../libraries/axiosClient";
 import numeral from "numeral";
 
-function Carts() {
+export default function Cart() {
   const [carts, setCarts] = React.useState([]);
 
   // Load cart on page load
@@ -46,20 +46,6 @@ function Carts() {
     }
   };
 
-  // Handle add to cart
-  const handleAddToCart = async (productId, quantity) => {
-    try {
-      const response = await axios.post(`/carts`, {
-        productId,
-        quantity,
-      });
-      const updatedCart = response.data.payload;
-      setCarts([...carts, updatedCart]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div className="container">
       <div className="row">
@@ -68,13 +54,10 @@ function Carts() {
             <div>
               {carts.map((cart) => (
                 <Row className="cart-item" key={cart._id}>
-                  <Col span={4} className="cart-item-image">
-                    <img alt="" src={cart.img} width="50px" height="50px" />
-                  </Col>
                   <Col span={16} className="cart-item-info">
                     <div>
-                      <p>{cart.name}</p>
-                      <p>{cart.description}</p>
+                      <p>{cart.customerId}</p>
+                      <p>{cart.productId}</p>
                     </div>
                     <div className="cart-item-quantity">
                       <Input
@@ -101,9 +84,6 @@ function Carts() {
                       />
                     </div>
                   </Col>
-                  <Col span={4} className="cart-item-price">
-                    <p>{numeral(cart.price).format("0,0")}đ</p>
-                  </Col>
                 </Row>
               ))}
             </div>
@@ -124,17 +104,10 @@ function Carts() {
                 <hr />
               </div>
             ))}
-            <Button
-              className="checkout-button"
-              onClick={() => handleAddToCart("PRODUCT_ID", 1)}
-            >
-              Thêm sản phẩm
-            </Button>
+            <Button className="checkout-button">Đặt hàng</Button>
           </Card>
         </Col>
       </div>
     </div>
   );
 }
-
-export default Carts;
