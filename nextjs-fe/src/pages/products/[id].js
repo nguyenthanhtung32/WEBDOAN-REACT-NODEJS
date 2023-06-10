@@ -187,12 +187,8 @@ function ProductDetail(props) {
     setIsLoading(true);
     try {
       const token = localStorage.getItem("token");
-
-      console.log('««««« token »»»»»', token);
       const decoded = jwt_decode(token);
-      console.log('««««« decoded »»»»»', decoded);
       const customerId = decoded._id;
-      console.log('««««« customerId »»»»»', customerId);
 
       const response = await axiosClient.post(`/carts`, {
         customerId: customerId,
@@ -202,7 +198,8 @@ function ProductDetail(props) {
         }]
       });
       setIsLoading(false);
-      // router.push("/cart");
+      console.log('««««« response »»»»»', response);
+      router.push("/cart");
     } catch (error) {
       console.log("error", error);
       setIsLoading(false);
