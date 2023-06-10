@@ -21,6 +21,8 @@ const Login = () => {
       console.log(response);
 
       localStorage.setItem("token", response.data.token);
+      axios.defaults.headers.Authorization = `Bearer ${response.data.token}`;
+      console.log("««««« token »»»»»", token);
       message.success("Đăng nhập thành công!", 1.5);
       window.location.href = "/";
     } catch (error) {

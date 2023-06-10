@@ -303,7 +303,7 @@ export default function Home() {
                   Quảng Nam.<br></br>+84 906428501
                 </p>
               </div>
-              <div class={styles.form_details}>
+              <div className={styles.form_details}>
                 <input
                   type="text"
                   name="name"

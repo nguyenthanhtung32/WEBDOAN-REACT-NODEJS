@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// import { REFRESH_TOKEN, TOKEN } from "../constants";
+import { REFRESH_TOKEN, TOKEN } from "../constants";
 
 const axiosClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,

@@ -7,11 +7,10 @@ const { validateSchema, getCartSchema, } = require('../validation/cart');
 
 // Methods: POST / PATCH / GET / DELETE / PUT
 // Get all
-router.get("/", validateSchema(getCartSchema), async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
-    // const { customerId, productId, quantity} = req.query;
-    const conditionFind = {};
-    let results = await Cart.find(conditionFind).lean({ virtuals: true });
+
+    let results = await Cart.find().populate("products").lean({ virtuals: true });
 
     res.json({
       results
@@ -61,11 +60,7 @@ router.post("/", function (req, res, next) {
         .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
           return ObjectId.isValid(value);
         }),
-      productId: yup.string().required()
-        .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
-          return ObjectId.isValid(value);
-        }),
-      quantity: yup.string().min(1).required()
+      products: yup.array().required(),
     }),
   });
   validationSchema

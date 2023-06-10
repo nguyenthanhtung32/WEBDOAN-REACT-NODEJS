@@ -3,6 +3,8 @@ content-type: application/json
 
 { 
    "customerId": "646baa5337ebafb3e60e689e",
-   "productId": "645147133a679930efa9cfe3",
+   "products": [{
+ "productId": "645147133a679930efa9cfe3",
    "quantity": 5
+   }]
 }

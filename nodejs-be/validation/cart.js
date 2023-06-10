@@ -20,12 +20,13 @@ const getCartSchema = yup.object({
             if (!value) return true;
             return ObjectId.isValid(value);
         }),
-
-        productId: yup.string().required().test('Validate ObjectID', '${path} is not valid ObjectID', (value) => {
-            if (!value) return true;
-            return ObjectId.isValid(value);
-        }),
-        quantity: yup.number().required().min(0),
+        products: [{
+            productId: yup.string().required().test('Validate ObjectID', '${path} is not valid ObjectID', (value) => {
+                if (!value) return true;
+                return ObjectId.isValid(value);
+            }),
+            quantity: yup.number().required().min(0),
+        }]
     })
 });
 

@@ -68,7 +68,6 @@ export default function Cart() {
                         onChange={(e) =>
                           handleQuantityChange(
                             cart._id,
-                            "",
                             parseInt(e.target.value)
                           )
                         }
