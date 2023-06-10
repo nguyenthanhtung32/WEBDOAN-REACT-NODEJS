@@ -192,10 +192,8 @@ function ProductDetail(props) {
 
       const response = await axiosClient.post(`/carts`, {
         customerId: customerId,
-        products: [{
-          productId: product._id,
-          quantity: quantity,
-        }]
+        productId: product._id,
+        quantity: quantity,
       });
       setIsLoading(false);
       console.log('««««« response »»»»»', response);

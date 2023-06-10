@@ -1,10 +1,8 @@
-POST http://localhost:9000/carts/ HTTP/1.1
+GET http://localhost:9000/carts/646baa5337ebafb3e60e689e HTTP/1.1
 content-type: application/json
 
-{ 
-   "customerId": "646baa5337ebafb3e60e689e",
-   "products": [{
- "productId": "645147133a679930efa9cfe3",
-   "quantity": 5
-   }]
+{
+    "productId": "645147133a679930efa9cfe3",
+    "quantity": 3,
+    "customerId": "646baa5337ebafb3e60e689e"
 }

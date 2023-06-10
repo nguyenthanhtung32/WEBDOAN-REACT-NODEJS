@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import axios from "../../libraries/axiosClient";
 import styles from "./Login.module.css";
 import Link from "next/link";
@@ -21,6 +21,7 @@ const Login = () => {
       console.log(response);
 
       localStorage.setItem("token", response.data.token);
+      console.log('««««« response.data.token »»»»»',response.data.token );
       axios.defaults.headers.Authorization = `Bearer ${response.data.token}`;
       console.log("««««« token »»»»»", token);
       message.success("Đăng nhập thành công!", 1.5);
@@ -72,4 +73,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default memo(Login);
