@@ -9,18 +9,37 @@ import {
 } from "@ant-design/icons";
 
 import styles from "./header.module.css";
+import axios from "../../libraries/axiosClient";
 
 function Header() {
-  const [searchValue, setSearchValue] = useState("");
+  const [customerId, setCustomerId] = useState(null);
+  const [carts, setCarts] = useState([]);
   const router = useRouter();
 
-  const onSearch = (name) => {
+  React.useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const customerId = router?.query?.customerId;
+        const response = await axios.get(`/carts/${customerId}`);
+        console.log("response", response);
+
+        const data = response.data;
+
+        setCarts(data.payload.results);
+        setCustomerId(customerId);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCart();
+  }, [router?.query?.customerId]);
+
+  const handleCartClick = () => {
     router.push({
-      pathname: "/products",
-      query: { NamePro: name },
+      pathname: "/cart",
+      query: { customerId: customerId },
     });
   };
-
   return (
     <header className={styles.header_container}>
       <div className={styles.left_nav_links}>
@@ -45,10 +64,8 @@ function Header() {
               <SearchOutlined />
             </Link>
           </div>
-          <div className={styles.cart_container}>
-            <Link href="/cart">
-              <ShoppingCartOutlined className={styles.cart_icon} />
-            </Link>
+          <div className={styles.cart_container} onClick={handleCartClick}>
+            <ShoppingCartOutlined className={styles.cart_icon} />
           </div>
           <div className={styles.authentication_links}>
             <Link href="/login" className={styles.link}>

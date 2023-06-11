@@ -1,25 +1,31 @@
-import React from "react";
+import React, { memo } from "react";
 import { Button, Badge, Card, Col, Input, Row } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-import axios from "../../libraries/axiosClient";
 import numeral from "numeral";
+import { useRouter } from "next/router";
 
-function Carts() {
+import axios from "../../libraries/axiosClient";
+
+function Cart() {
+  const router = useRouter();
   const [carts, setCarts] = React.useState([]);
 
-  // Load cart on page load
   React.useEffect(() => {
     const fetchCart = async () => {
       try {
-        const response = await axios.get(`/carts`);
-        const data = response.data || [];
-        setCarts(data);
+        const customerId = router?.query?.customerId;
+        const response = await axios.get(`/carts/${customerId}`);
+        console.log("response", response);
+
+        const data = response.data;
+
+        setCarts(data.payload.results);
       } catch (error) {
         console.log(error);
       }
     };
     fetchCart();
-  }, []);
+  }, [router?.query?.customerId]);
 
   // Handle quantity change
   const handleQuantityChange = async (id, size, quantity) => {
@@ -35,12 +41,20 @@ function Carts() {
     }
   };
 
-  // Handle remove cart
-  const handleRemoveCart = async (id) => {
+  const handleRemoveCart = async (productId) => {
+    console.log("productId", productId);
+    console.log("router?.query?.customerId", router?.query?.customerId);
     try {
-      await axios.delete(`/carts/${id}`);
-      const newCarts = carts.filter((cart) => cart._id !== id);
-      setCarts(newCarts);
+      const customerId = router?.query?.customerId;
+      await axios.delete(`/carts/${customerId}/${productId}`);
+      setCarts((prevCarts) =>
+        prevCarts.map((cart) => ({
+          ...cart,
+          products: cart.products.filter(
+            (product) => product.product._id !== productId,
+          ),
+        }))
+      );
     } catch (error) {
       console.log(error);
     }
@@ -52,106 +66,97 @@ function Carts() {
         <Col span={16}>
           <Card title="Giỏ hàng">
             <div>
-              {/* {carts.map((cart) => (
-                <Row className="cart-item" key={cart._id}>
-                  <Col span={4} className="cart-item-image">
-                    <img alt="" src={cart.img} width="50px" height="50px" />
-                  </Col>
-                  <Col span={16} className="cart-item-info">
-                    <div>
-                      <p>{cart.customerId}</p>
-                      <p>{cart?.products?.quantity}</p>
-                      <p>{cart?.products[0]?.discount}</p>
-                    </div>
-                    <div className="cart-item-quantity">
-                      <Input
-                        type="number"
-                        value={cart.quantity}
-                        min={1}
-                        max={10}
-                        onChange={(e) =>
-                          handleQuantityChange(
-                            cart._id,
-                            "",
-                            parseInt(e.target.value),
-                          )}
-                        style={{ marginRight: "10px" }}
-                      />
-                      <Badge
-                        count={<DeleteOutlined
-                          style={{ color: "#f5222d" }}
-                          onClick={() => handleRemoveCart(cart._id)}
-                        />}
-                      />
-                    </div>
-                  </Col>
-                  <Col span={4} className="cart-item-price">
-                    <p>{numeral(cart.price).format("0,0")}đ</p>
-                  </Col>
-                </Row>
-              ))} */}
-              {carts.map((cart) => (
-                <Row className="cart-item" key={cart._id}>
-                  <Col span={4} className="cart-item-image">
-                    {/* <img alt="" src={cart.img} width="50px" height="50px" /> */}
-                  </Col>
-                  <Col span={16} className="cart-item-info">
-                    <div>
-                      <p>{cart.customerId}</p>
+              {carts?.length > 0 &&
+                carts.map((cart) => (
+                  <Row className="cart-item" key={cart._id}>
+                    <Col span={16} className="cart-item-info">
                       {cart?.products?.map((product) => (
-                        
-                        <div key={product.product.productId}>
-                            <img alt="" src={product.product.img} width="50px" height="50px" />
-                          <p>Quantity: {product.quantity}</p>
-                          <p>Discount: {product.product.discount}</p>
+                        <div
+                          className="cart-item-quantity d-flex"
+                          key={product.productId}
+                        >
+                          <img
+                            alt=""
+                            src={product.product.img}
+                            width="50px"
+                            height="50px"
+                          />
+                          <p>{product.product.name}</p>
+                          <Input
+                            type="number"
+                            value={product.quantity}
+                            min={1}
+                            max={10}
+                            onChange={(e) =>
+                              handleQuantityChange(
+                                product.product._id,
+                                parseInt(e.target.value),
+                              )}
+                            style={{ marginRight: "10px" }}
+                          />
+                          <p>{product.product.price}</p>
+                          <Badge
+                            count={<DeleteOutlined
+                              style={{ color: "#f5222d" }}
+                              onClick={() =>
+                                handleRemoveCart(product.product._id)}
+                            />}
+                          />
                         </div>
                       ))}
-                    </div>
-                    <div className="cart-item-quantity">
-                      <Input
-                        type="number"
-                        value={cart.quantity}
-                        min={1}
-                        max={10}
-                        onChange={(e) =>
-                          handleQuantityChange(
-                            cart._id,
-                            "",
-                            parseInt(e.target.value),
-                          )}
-                        style={{ marginRight: "10px" }}
-                      />
-                      <Badge
-                        count={<DeleteOutlined
-                          style={{ color: "#f5222d" }}
-                          onClick={() => handleRemoveCart(cart._id)}
-                        />}
-                      />
-                    </div>
-                  </Col>
-                  <Col span={4} className="cart-item-price">
-                    <p>{numeral(cart.price).format("0,0")}đ</p>
-                  </Col>
-                </Row>
-              ))}
+                    </Col>
+                  </Row>
+                ))}
             </div>
           </Card>
         </Col>
         <Col span={8}>
           <Card title="Thông tin giỏ hàng">
-            {carts.map((cart) => (
-              <div key={cart._id}>
-                <p>{cart.name}</p>
-                <p>
-                  Số lượng: {cart.quantity}
-                  <p style={{ fontWeight: "bold" }}>
-                    Giá:
-                    {numeral(cart.quantity * cart.price).format("0,0")}₫
-                  </p>
-                </p>
-                <hr />
-              </div>
-            ))}
+            {carts.length > 0 &&
+              carts.map((cart) => {
+                let totalPrice = 0; // khởi tạo biến totalPrice bằng 0
+                return (
+                  <div key={cart._id}>
+                    {cart?.products?.map((product) => {
+                      // tính giá tiền của từng sản phẩm và cộng dồn vào biến totalPrice
+                      totalPrice += product.quantity *
+                        (product.product.price -
+                          (product.product.price * product.product.discount *
+                              1) / 100);
+                      return (
+                        <div key={product.productId}>
+                          <img
+                            alt=""
+                            src={product.product.img}
+                            width="50px"
+                            height="50px"
+                          />
+                          <p>{product.product.name}</p>
+                          <p>Số lượng: {product.quantity}</p>
+                          <p>
+                            Giá gốc : {numeral(
+                              product.quantity * product.product.price,
+                            ).format("0,0")}₫
+                          </p>
+                          <p>Discount : {product.product.discount}%</p>
+                          <p style={{ fontWeight: "bold" }}>
+                            Giá:
+                            {numeral(
+                              product.quantity *
+                                (product.product.price -
+                                  (product.product.price *
+                                      product.product.discount * 1) / 100),
+                            ).format("0,0")}₫
+                          </p>
+                        </div>
+                      );
+                    })}
+                    <p style={{ fontWeight: "bold" }}>
+                      Tổng giá: {numeral(totalPrice).format("0,0")}₫
+                    </p>
+                  </div>
+                );
+              })}
             <Button className="checkout-button">Đặt hàng</Button>
           </Card>
         </Col>
@@ -160,4 +165,4 @@ function Carts() {
   );
 }
 
-export default Carts;
+export default memo(Cart);

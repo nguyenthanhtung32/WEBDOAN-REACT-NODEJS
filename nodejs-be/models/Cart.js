@@ -1,67 +1,109 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+// const { Schema, model } = mongoose;
+
+// const cartSchema = new Schema(
+//   {
+//     customerId: {
+//       type: Schema.Types.ObjectId,
+//       ref: "Customer",
+//       required: true,
+//     },
+//     products: [
+//       {
+//         productId: {
+//           type: Schema.Types.ObjectId,
+//           ref: "Product",
+//           required: true,
+//         },
+//         quantity: { type: Number, required: true },
+//       }
+//     ]
+//   },
+//   {
+//     versionKey: false,
+//     timestamps: true,
+//   }
+// );
+
+// cartSchema.virtual("total").get(function () {
+//   return (this.price * this.quantity * (100 - this.discount)) / 100;
+// });
+
+// cartSchema.virtual("customer", {
+//   ref: "Customer",
+//   localField: "customerId",
+//   foreignField: "_id",
+//   justOne: true,
+// });
+
+// cartSchema.virtual("product", {
+//   ref: "Product",
+//   localField: "products.productId",
+//   foreignField: "_id",
+//   justOne: true,
+// });
+
+// // Virtuals in console.log()
+// cartSchema.set("toObject", { virtuals: true });
+// // Virtuals in JSON
+// cartSchema.set("toJSON", { virtuals: true });
+
+
+// const Cart = model("Cart", cartSchema);
+// module.exports = Cart;
+
+const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
 const cartDetailSchema = new Schema(
   {
-    productId: { type: Schema.Types.ObjectId, ref: "Product" },
-    name: { type: String, required: true },
-    price: { type: Number, required: true, min: 0, default: 0 },
-    discount: { type: Number, min: 0, max: 75, default: 0 },
-    img: { type: String },
+    productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+    quantity: { type: Number, require: true, min: 0 },
   },
   {
     versionKey: false,
-    timestamps: true,
-  }
+  },
 );
 
 // Virtual with Populate
-cartDetailSchema.virtual("product", {
-  ref: "Product",
-  localField: "productId",
-  foreignField: "_id",
+cartDetailSchema.virtual('product', {
+  ref: 'Product',
+  localField: 'productId',
+  foreignField: '_id',
   justOne: true,
 });
 
 // Virtuals in console.log()
-cartDetailSchema.set("toObject", { virtuals: true });
+cartDetailSchema.set('toObject', { virtuals: true });
 // Virtuals in JSON
-cartDetailSchema.set("toJSON", { virtuals: true });
+cartDetailSchema.set('toJSON', { virtuals: true });
 
 // ------------------------------------------------------------------------------------------------
 
 const cartSchema = new Schema(
   {
-    customerId: {
-      type: Schema.Types.ObjectId,
-      ref: "Customer",
-      required: true,
-    },
+    customerId: { type: Schema.Types.ObjectId, ref: 'Customer', required: true },
+
     // Array
-    products: [
-      {
-        product: cartDetailSchema,
-        quantity: { type: Number },
-      },
-    ],
+    products: [cartDetailSchema],
   },
   {
     versionKey: false,
-  }
+  },
 );
 
 // Virtual with Populate
-cartSchema.virtual("customer", {
-  ref: "Customer",
-  localField: "customerId",
-  foreignField: "_id",
+cartSchema.virtual('customer', {
+  ref: 'Customer',
+  localField: 'customerId',
+  foreignField: '_id',
   justOne: true,
 });
 
 // Virtuals in console.log()
-cartSchema.set("toObject", { virtuals: true });
+cartSchema.set('toObject', { virtuals: true });
 // Virtuals in JSON
-cartSchema.set("toJSON", { virtuals: true });
+cartSchema.set('toJSON', { virtuals: true });
 
-const Cart = model("Cart", cartSchema);
+const Cart = model('Cart', cartSchema);
 module.exports = Cart;
