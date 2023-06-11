@@ -3,6 +3,7 @@ import { Button, Badge, Card, Col, Input, Row } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import numeral from "numeral";
 import { useRouter } from "next/router";
+import jwt_decode from "jwt-decode";
 
 import axios from "../../libraries/axiosClient";
 
@@ -13,7 +14,10 @@ function Cart() {
   React.useEffect(() => {
     const fetchCart = async () => {
       try {
-        const customerId = router?.query?.customerId;
+        const token = localStorage.getItem("token");
+        const decoded = jwt_decode(token);
+        const customerId = decoded._id;
+        // const customerId = router?.query?.customerId;
         const response = await axios.get(`/carts/${customerId}`);
         console.log("response", response);
 
@@ -42,21 +46,31 @@ function Cart() {
   };
 
   const handleRemoveCart = async (productId) => {
-    console.log("productId", productId);
-    console.log("router?.query?.customerId", router?.query?.customerId);
-    try {
-      const customerId = router?.query?.customerId;
-      await axios.delete(`/carts/${customerId}/${productId}`);
-      setCarts((prevCarts) =>
-        prevCarts.map((cart) => ({
-          ...cart,
-          products: cart.products.filter(
-            (product) => product.product._id !== productId,
-          ),
-        }))
-      );
-    } catch (error) {
-      console.log(error);
+    console.log('productId',productId);
+    
+    if (
+      window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")
+    ) {
+      try {
+        const newCarts = [...carts];
+        const cartIndex = newCarts.findIndex((cart) =>
+          cart.products.some((product) => product.productId === productId)
+        );
+        const productIndex = newCarts[cartIndex].products.findIndex((product) =>
+          product.productId === productId
+        );
+
+        newCarts[cartIndex].products.splice(productIndex, 1);
+
+        setCarts(newCarts);
+        const token = localStorage.getItem("token");
+        const decoded = jwt_decode(token);
+        const customerId = decoded._id;
+        console.log('customerId',customerId);
+        await axios.delete(`/cart/${customerId}/${productId}`);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

@@ -19,7 +19,9 @@ function Header() {
   React.useEffect(() => {
     const fetchCart = async () => {
       try {
-        const customerId = router?.query?.customerId;
+        const token = localStorage.getItem("token");
+        const decoded = jwt_decode(token);
+        const customerId = decoded._id;
         const response = await axios.get(`/carts/${customerId}`);
         console.log("response", response);
 
@@ -37,7 +39,7 @@ function Header() {
   const handleCartClick = () => {
     router.push({
       pathname: "/cart",
-      query: { customerId: customerId },
+    //   query: { customerId: customerId },
     });
   };
   return (

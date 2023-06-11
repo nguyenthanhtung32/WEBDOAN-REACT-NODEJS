@@ -1,10 +1,11 @@
-import React from "react";
+import React, {memo} from "react";
 import Head from "next/head";
-import axiosClient from "../../libraries/axiosClient";
 import numeral from "numeral";
-import styles from "./products.module.css";
 import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
+
+import styles from "./products.module.css";
+import axiosClient from "../../libraries/axiosClient";
 
 function ProductDetail(props) {
   const router = useRouter();
@@ -43,11 +44,10 @@ function ProductDetail(props) {
       });
       setIsLoading(false);
       console.log("««««« response »»»»»", response);
-      //   router.push("/cart");
-      router.push({
-        pathname: "/cart",
-        query: { customerId: customerId },
-      });
+    //   router.push({
+    //     pathname: "/cart",
+    //     query: { customerId: customerId },
+    //   });
     } catch (error) {
       console.log("error", error);
       setIsLoading(false);
@@ -154,7 +154,7 @@ function ProductDetail(props) {
     </>
   );
 }
-export default ProductDetail;
+export default memo(ProductDetail);
 export async function getStaticPaths() {
   return {
     paths: [],
