@@ -41,10 +41,10 @@ function ProductDetail(props) {
       });
       setIsLoading(false);
       console.log("««««« response »»»»»", response);
-      router.push({
-        pathname: "/cart",
-        // query: { customerId: customerId },
-      });
+    //   router.push({
+    //     pathname: "/cart",
+    //     // query: { customerId: customerId },
+    //   });
     } catch (error) {
       console.log("error", error);
       setIsLoading(false);

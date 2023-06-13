@@ -4,40 +4,45 @@ import jwt_decode from "jwt-decode";
 import axios from "../../libraries/axiosClient";
 
 function Profile() {
-  const [customers, setCustomers] = React.useState([]);
+  const [customer, setCustomer] = React.useState([]);
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
 
   React.useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const decoded = jwt_decode(token);
-        const customerId = decoded._id;
-        // const customerId = router?.query?.customerId;
-        const response = await axios.get(`/carts/${customerId}`);
-       
-
-        const data = response.data;
-
-        setCustomers(data.payload.results);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchCart();
+    const token = localStorage.getItem("token");
+    const decoded = jwt_decode(token);
+    const customerId = decoded._id;
+    axios
+      .get(`/customers/${customerId}`)
+      .then((response) => {
+        const { data } = response;
+        setCustomer(data.result);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
-  console.log("customers", customers);
+
   return (
     <>
-      {customers.map((item) => (
-        <div>
-          <h1>Profile User</h1>
-          <p>Name: {item.lastName} {item.firstName}</p>
-          <p>Email: {item.email}</p>
-          <p>Phone Number: {item.phoneNumber}</p>
-          <p>Address: {item.address}</p>
-        </div>
-      ))}
+      {customer
+        ? (
+          <div key={customer._id}>
+            <h1>Thông tin cá nhân</h1>
+            <p>Họ và tên: {customer.firstName} {customer.lastName}</p>
+            <p>Email: {customer.email}</p>
+            <p>Ngày sinh: {formatDate(customer.birthday)}</p>
+            <p>Số điện thoại: {customer.phoneNumber}</p>
+            <p>Địa chỉ: {customer.address}</p>
+            <p>Ngày tạo tài khoản: {formatDate(customer.createdAt)}</p>
+            <p>Ngày sửa thông tin gần nhất: {formatDate(customer.updatedAt)}</p>
+          </div>
+        )
+        : (<div>Loading...</div>)}
     </>
   );
 }
+
 export default memo(Profile);

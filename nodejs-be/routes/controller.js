@@ -23,7 +23,6 @@ module.exports = {
   getDetail: async (req, res, next) => {
     try {
       const { id } = req.params;
-      console.log("req.params11111111111111111111111111", req.params);
 
       let found = await Cart.findOne({ customerId: id });
 
@@ -50,9 +49,6 @@ module.exports = {
   create: async function (req, res, next) {
     try {
       const { customerId, productId, quantity } = req.body;
-
-      console.log("qqqqqqqqqqqqqqqqqqqqqqqqq");
-      console.log(req.body);
 
       const getCustomer = Customer.findById(customerId);
       const getProduct = Product.findById(productId);

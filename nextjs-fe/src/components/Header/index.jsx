@@ -57,10 +57,11 @@ function Header() {
   };
 
   const handleCartClick = () => {
-    router.push({
-      pathname: "/cart",
-      //   query: { customerId: customerId },
-    });
+    // router.push({
+    //   pathname: "/cart",
+    //   //   query: { customerId: customerId },
+    // });
+    window.location.href = "/cart";
   };
 
   return (
