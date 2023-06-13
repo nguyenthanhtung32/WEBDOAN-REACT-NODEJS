@@ -1,16 +1,16 @@
 import React, { useState, memo } from "react";
 import Link from "next/link";
 import {
-    SlSocialFacebook,
-    SlSocialGoogle,
-    SlSocialTwitter,
-  } from "react-icons/sl";
-  import { Alert } from "antd";
+  SlSocialFacebook,
+  SlSocialGoogle,
+  SlSocialTwitter,
+} from "react-icons/sl";
+import { message } from "antd";
 
 import axios from "../../libraries/axiosClient";
 import styles from "./Login.module.css";
 
-function Login(){
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -24,17 +24,13 @@ function Login(){
 
     try {
       const response = await axios.post("/customers/login", token);
-      console.log(response);
 
       localStorage.setItem("token", response.data.token);
       axios.defaults.headers.Authorization = `Bearer ${response.data.token}`;
-      //   <Alert message="Đăng nhập thành công!" type="success" showIcon />;
-      alert("đăng nhập thành công");
+      message.success("Đăng nhập thành công!", 1.5);
       window.location.href = "/";
     } catch (error) {
-      console.error(error);
-      //   <Alert message="Đăng nhập thất bại" type="error" showIcon />;
-      alert("đăng nhập thất bại");
+      message.warning("Đăng nhập thât bại!", 1.5);
     }
   };
 
@@ -75,6 +71,6 @@ function Login(){
       </form>
     </div>
   );
-};
+}
 
 export default memo(Login);
