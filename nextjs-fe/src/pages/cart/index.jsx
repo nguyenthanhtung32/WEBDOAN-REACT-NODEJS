@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { Button, Badge, Card, Col, Input, Row } from "antd";
+import { Button, Badge, Card, Col, Input, Row, message } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import numeral from "numeral";
 import { useRouter } from "next/router";
@@ -17,9 +17,8 @@ function Cart() {
         const token = localStorage.getItem("token");
         const decoded = jwt_decode(token);
         const customerId = decoded._id;
-        // const customerId = router?.query?.customerId;
+
         const response = await axios.get(`/carts/${customerId}`);
-        console.log("response", response);
 
         const data = response.data;
 
@@ -29,7 +28,7 @@ function Cart() {
       }
     };
     fetchCart();
-  }, [router?.query?.customerId]);
+  }, [router]);
 
   // Handle quantity change
   const handleQuantityChange = async (id, size, quantity) => {
@@ -46,8 +45,6 @@ function Cart() {
   };
 
   const handleRemoveCart = async (productId) => {
-    console.log('productId',productId);
-    
     if (
       window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")
     ) {
@@ -66,8 +63,9 @@ function Cart() {
         const token = localStorage.getItem("token");
         const decoded = jwt_decode(token);
         const customerId = decoded._id;
-        console.log('customerId',customerId);
-        await axios.delete(`/cart/${customerId}/${productId}`);
+
+        await axios.delete(`/carts/${customerId}/${productId}`);
+        message.success("xóa thành công!", 1.5);
       } catch (error) {
         console.log(error);
       }

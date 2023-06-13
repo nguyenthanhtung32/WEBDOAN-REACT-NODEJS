@@ -11,7 +11,7 @@ function ProductDetail(props) {
   const router = useRouter();
 
   const { product } = props;
-  console.log("product", product);
+
   const [quantity, setQuantity] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -33,9 +33,6 @@ function ProductDetail(props) {
       const token = localStorage.getItem("token");
       const decoded = jwt_decode(token);
       const customerId = decoded._id;
-      console.log("customerId", customerId);
-      console.log(product._id);
-      console.log(quantity);
 
       const response = await axiosClient.post(`/carts`, {
         customerId: customerId,
@@ -44,10 +41,10 @@ function ProductDetail(props) {
       });
       setIsLoading(false);
       console.log("««««« response »»»»»", response);
-    //   router.push({
-    //     pathname: "/cart",
-    //     query: { customerId: customerId },
-    //   });
+      router.push({
+        pathname: "/cart",
+        // query: { customerId: customerId },
+      });
     } catch (error) {
       console.log("error", error);
       setIsLoading(false);

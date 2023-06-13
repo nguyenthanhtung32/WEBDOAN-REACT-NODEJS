@@ -1,20 +1,23 @@
 import React, { useState, memo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Input } from "antd";
+import { Input, Button } from "antd";
 import {
   ShoppingCartOutlined,
   SearchOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import jwt_decode from "jwt-decode";
 
 import styles from "./header.module.css";
 import axios from "../../libraries/axiosClient";
 
 function Header() {
-  const [customerId, setCustomerId] = useState(null);
-  const [carts, setCarts] = useState([]);
+  //   const [customerId, setCustomerId] = useState(null);
+  //   const [carts, setCarts] = useState([]);
   const router = useRouter();
+  const [isLogin, setIsLogin] = useState(false);
+  const [carts, setCarts] = React.useState([]);
 
   React.useEffect(() => {
     const fetchCart = async () => {
@@ -22,26 +25,44 @@ function Header() {
         const token = localStorage.getItem("token");
         const decoded = jwt_decode(token);
         const customerId = decoded._id;
+        // const customerId = router?.query?.customerId;
         const response = await axios.get(`/carts/${customerId}`);
-        console.log("response", response);
 
         const data = response.data;
 
         setCarts(data.payload.results);
-        setCustomerId(customerId);
       } catch (error) {
         console.log(error);
       }
     };
     fetchCart();
-  }, [router?.query?.customerId]);
+  }, []);
+
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      setIsLogin(true);
+    }
+  }, [router]);
+
+
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+
+    setIsLogin(false);
+
+    router.push("/");
+  };
 
   const handleCartClick = () => {
     router.push({
       pathname: "/cart",
-    //   query: { customerId: customerId },
+      //   query: { customerId: customerId },
     });
   };
+
   return (
     <header className={styles.header_container}>
       <div className={styles.left_nav_links}>
@@ -66,14 +87,61 @@ function Header() {
               <SearchOutlined />
             </Link>
           </div>
-          <div className={styles.cart_container} onClick={handleCartClick}>
-            <ShoppingCartOutlined className={styles.cart_icon} />
-          </div>
-          <div className={styles.authentication_links}>
-            <Link href="/login" className={styles.link}>
-              <UserOutlined />
-            </Link>
-          </div>
+
+          {isLogin
+            ? (
+              <>
+                <div
+                  setIsLogin={setIsLogin}
+                >
+                  <div
+                    className={styles.cart_container}
+                    onClick={handleCartClick}
+                  >
+                    <ShoppingCartOutlined className={styles.cart_icon} />
+                    {carts?.length > 0
+                      ? (
+                        carts.map((cart) => (
+                          <div key={cart._id}>
+                            <div>
+                                <div className={styles.aaa}>
+                                    {cart.products.length}
+                                </div>
+                            </div>
+                          </div>
+                        ))
+                      )
+                      : (
+                        <div>
+                          <div className={styles.aaa}>{0}</div>
+                        </div>
+                      )}
+                  </div>
+                  <div>
+                    <Link href="/profile" className={styles.link}>
+                      profile
+                    </Link>
+                  </div>
+                </div>
+              </>
+            )
+            : (
+              <>
+                <div className={styles.authentication_links}>
+                  <Link href="/login" className={styles.link}>
+                    <UserOutlined />
+                  </Link>
+                </div>
+              </>
+            )}
+          {isLogin && (
+            <Button
+              type="error"
+              onClick={handleLogout}
+            >
+              Đăng xuất
+            </Button>
+          )}
         </div>
       </div>
     </header>

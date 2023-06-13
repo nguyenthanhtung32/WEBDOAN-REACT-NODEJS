@@ -23,8 +23,11 @@ module.exports = {
   getDetail: async (req, res, next) => {
     try {
       const { id } = req.params;
+      console.log("req.params11111111111111111111111111", req.params);
 
       let found = await Cart.findOne({ customerId: id });
+
+      console.log("found", found);
 
       let results = await Cart.find({ customerId: id })
         .populate("products.product")
@@ -47,6 +50,9 @@ module.exports = {
   create: async function (req, res, next) {
     try {
       const { customerId, productId, quantity } = req.body;
+
+      console.log("qqqqqqqqqqqqqqqqqqqqqqqqq");
+      console.log(req.body);
 
       const getCustomer = Customer.findById(customerId);
       const getProduct = Product.findById(productId);
@@ -144,28 +150,87 @@ module.exports = {
     }
   },
 
+  //   remove: async function (req, res, next) {
+  //     console.log("vvvv");
+  //     try {
+  //       const { customerId, productId } = req.params;
+
+  //       let cart = await Cart.findOne({ customerId });
+
+  //       if (!cart) {
+  //         return res.status(404).json({
+  //           code: 404,
+  //           message: "Giỏ hàng không tồn tại",
+  //         });
+  //       }
+
+  //       if (
+  //         cart.products.length === 1 &&
+  //         cart.products[0].productId === productId
+  //       ) {
+  //         await Cart.deleteOne({ _id: cart._id });
+  //       } else {
+  //         cart.products = cart.products.filter(
+  //           (item) => item.productId !== productId
+  //         );
+  //       }
+  //       await cart.save();
+
+  //       return res.send({
+  //         code: 200,
+  //         message: "Xóa thành công",
+  //       });
+  //     } catch (err) {
+  //       console.error(err);
+  //       return res.status(500).json({ code: 500, error: err.message });
+  //     }
+  //   },
+  //   remove: async function (req, res, next) {
+  //     try {
+  //       const { customerId, productId } = req.params;
+
+  //       let cart = await Cart.findOne({ customerId });
+
+  //       if (!cart) {
+  //         return res.status(404).json({
+  //           code: 404,
+  //           message: "Giỏ hàng không tồn tại",
+  //         });
+  //       }
+
+  //       if (
+  //         cart.products.length === 1 &&
+  //         cart.products[0].productId === productId
+  //       ) {
+  //         await Cart.deleteOne({ _id: cart._id });
+  //       } else {
+  //         await Cart.findOneAndUpdate(cart._id, {
+  //           customerId,
+  //           products: cart.products.filter((item) => item.productId !== productId),
+  //         });
+  //       }
+
+  //       return res.send({
+  //         code: 200,
+  //         message: "Xóa thành công",
+  //       });
+  //     } catch (err) {
+  //       return res.status(500).json({ code: 500, error: err });
+  //     }
+  //   },
   remove: async function (req, res, next) {
     try {
-      const { customerId, productId } = req.body;
+      const { customerId, productId } = req.params;
 
-      let cart = await Cart.findOne({ customerId });
+      let cart = await Cart.findOneAndUpdate(
+        { customerId },
+        { $pull: { products: { productId } } }
+      );
 
       if (!cart) {
         return res.status(404).json({
           code: 404,
           message: "Giỏ hàng không tồn tại",
-        });
-      }
-
-      if (
-        cart.products.length === 1 &&
-        cart.products[0].productId === productId
-      ) {
-        await Cart.deleteOne({ _id: cart._id });
-      } else {
-        await Cart.findOneAndUpdate(cart._id, {
-          customerId,
-          products: cart.product.filter((item) => item.productId !== productId),
         });
       }
 
@@ -177,39 +242,4 @@ module.exports = {
       return res.status(500).json({ code: 500, error: err });
     }
   },
-// remove: async function (req, res, next) {
-//     try {
-//       const { customerId, productId } = req.params;
-  
-//       let cart = await Cart.findOne({ customerId });
-  
-//       if (!cart) {
-//         return res.status(404).json({
-//           code: 404,
-//           message: "Giỏ hàng không tồn tại",
-//         });
-//       }
-  
-//       if (cart.products.length === 1 && cart.products[0].productId === productId) {
-//         await Cart.deleteOne({ _id: cart._id });
-//       } else {
-//         await Cart.findOneAndUpdate(
-//           { _id: cart._id },
-//           {
-//             $pull: {
-//               products: { productId },
-//             },
-//           },
-//         );
-//       }
-  
-//       return res.send({
-//         code: 200,
-//         message: "Xóa sản phẩm thành công",
-//       });
-//     } catch (err) {
-//       return res.status(500).json({ code: 500, error: err });
-//     }
-//   },
-  
 };

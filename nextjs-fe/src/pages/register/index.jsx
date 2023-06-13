@@ -1,4 +1,5 @@
 import React, { useState, memo } from "react";
+import { message } from "antd";
 
 import axios from "../../libraries/axiosClient";
 import styles from "../login/login.module.css";
@@ -28,11 +29,11 @@ function SignUp() {
     try {
       const response = await axios.post("/customers", payload);
       console.log(response);
-      alert("Đăng kí thành công");
+      message.success("Đăng nhập thành công!", 1.5);
       window.location.href = "/login";
     } catch (error) {
       console.error(error);
-      alert("Đăng kí thất bại");
+      message.warning("Đăng nhập thât bại!", 1.5);
     }
   };
 
