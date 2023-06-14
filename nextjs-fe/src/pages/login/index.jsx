@@ -1,10 +1,16 @@
-import React, { memo, useState } from "react";
-import axios from "../../libraries/axiosClient";
-import styles from "./Login.module.css";
+import React, { useState, memo } from "react";
 import Link from "next/link";
+import {
+  SlSocialFacebook,
+  SlSocialGoogle,
+  SlSocialTwitter,
+} from "react-icons/sl";
 import { message } from "antd";
 
-const Login = () => {
+import axios from "../../libraries/axiosClient";
+import styles from "./login.module.css";
+
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,17 +24,14 @@ const Login = () => {
 
     try {
       const response = await axios.post("/customers/login", token);
-      console.log(response);
-
+      //nó bị đoạn ni nề, ko post đc dữ liệu vô token á
       localStorage.setItem("token", response.data.token);
-      console.log('««««« response.data.token »»»»»',response.data.token );
       axios.defaults.headers.Authorization = `Bearer ${response.data.token}`;
-      console.log("««««« token »»»»»", token);
       message.success("Đăng nhập thành công!", 1.5);
       window.location.href = "/";
     } catch (error) {
-      console.error(error);
-      message.success("Đăng nhập thất bại!", 1.5);
+      console.error("error", error);
+      message.warning("Đăng nhập thât bại!", 1.5);
     }
   };
 
@@ -48,7 +51,7 @@ const Login = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <label htmlFor="password" className={styles.label}>
-          Password
+          Mật khẩu
         </label>
         <input
           type="password"
@@ -58,9 +61,9 @@ const Login = () => {
           className={styles.input}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <span className={styles.span}>Forgot Password</span>
+        <span className={styles.span}>Quên mật khẩu?</span>
         <button className={styles.button} onClick={(e) => handleSubmit(e)}>
-          Login
+          Đăng nhập
         </button>
         <div className="d-flex justify-content-center ">
           <p className={styles.text}>Bạn chưa có tài khoản ?</p>
@@ -71,6 +74,6 @@ const Login = () => {
       </form>
     </div>
   );
-};
+}
 
 export default memo(Login);

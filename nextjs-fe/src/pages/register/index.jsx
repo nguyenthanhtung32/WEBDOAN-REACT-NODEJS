@@ -1,9 +1,10 @@
-import { Button, Checkbox, Form, Input } from "antd";
-import { useState } from "react";
+import React, { useState, memo } from "react";
+import { message } from "antd";
+
 import axios from "../../libraries/axiosClient";
 import styles from "../login/login.module.css";
 
-export default function SignUp() {
+function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -28,170 +29,16 @@ export default function SignUp() {
     try {
       const response = await axios.post("/customers", payload);
       console.log(response);
-      alert("Đăng kí thành công");
+      message.success("Đăng kí thành công!", 1.5);
       window.location.href = "/login";
     } catch (error) {
       console.error(error);
-      alert("Đăng kí thất bại");
+      message.warning("Đăng kí thât bại!", 1.5);
     }
   };
+  //ê mi ko có gg chome hả
 
   return (
-    //   <Form
-    //     name="basic"
-    //     labelCol={{ span: 8 }}
-    //     wrapperCol={{ span: 16 }}
-    //     style={{ maxWidth: 600 }}
-    //     initialValues={{ remember: true }}
-    //     autoComplete="off"
-    //   >
-    //     <Form.Item
-    //       label="Họ"
-    //       name="firstName"
-    //       hasFeedback
-    //       required={true}
-    //       rules={[
-    //         {
-    //           required: true,
-    //           message: "Bạn chưa nhập họ",
-    //         },
-    //       ]}
-    //     >
-    //       <Input
-    //         placeholder="Nhập họ"
-    //         name="firstName"
-    //         value={firstName}
-    //         onChange={(e) => setFirstName(e.target.value)}
-    //         allowClear
-    //       />
-    //     </Form.Item>
-
-    //     <Form.Item
-    //       label="Tên"
-    //       name="lastName"
-    //       hasFeedback
-    //       required={true}
-    //       rules={[
-    //         {
-    //           required: true,
-    //           message: "Bạn chưa nhập tên",
-    //         },
-    //       ]}
-    //     >
-    //       <Input
-    //         placeholder="Nhập tên"
-    //         name="lastName"
-    //         value={lastName}
-    //         onChange={(e) => setLastName(e.target.value)}
-    //         allowClear
-    //       />
-    //     </Form.Item>
-
-    //     <Form.Item
-    //       label="Email address"
-    //       name="email"
-    //       rules={[{ required: true, message: "Please input your email!" }]}
-    //     >
-    //       <Input
-    //         placeholder="Enter email"
-    //         name="email"
-    //         value={email}
-    //         onChange={(e) => setEmail(e.target.value)}
-    //         allowClear
-    //       />
-    //     </Form.Item>
-
-    //     <Form.Item
-    //       label="Password"
-    //       name="password"
-    //       rules={[{ required: true, message: "Please input your password!" }]}
-    //     >
-    //       <Input.Password
-    //         type="password"
-    //         name="password"
-    //         value={password}
-    //         onChange={(e) => setPassword(e.target.value)}
-    //         placeholder="Password"
-    //       />
-    //     </Form.Item>
-
-    //     <Form.Item
-    //       label="Địa chỉ"
-    //       name="address"
-    //       hasFeedback
-    //       required={true}
-    //       rules={[
-    //         {
-    //           required: true,
-    //           message: "Bạn chưa nhập địa chỉ",
-    //         },
-    //       ]}
-    //     >
-    //       <Input
-    //         type="Nhập địa chỉ"
-    //         name="address"
-    //         value={address}
-    //         onChange={(e) => setAddress(e.target.value)}
-    //         placeholder="Address"
-    //       />
-    //     </Form.Item>
-
-    //     <Form.Item
-    //       label="Số điện thoại"
-    //       name="phoneNumber"
-    //       hasFeedback
-    //       required={true}
-    //       rules={[
-    //         {
-    //           required: true,
-    //           message: "Bạn chưa nhập số điện thoại",
-    //         },
-    //       ]}
-    //     >
-    //       <Input
-    //         type="Nhập số điện thoại"
-    //         name="phoneNumber"
-    //         value={phoneNumber}
-    //         onChange={(e) => setPhoneNumber(e.target.value)}
-    //         placeholder="Address"
-    //       />
-    //     </Form.Item>
-
-    //     <Form.Item
-    //       label="Ngày sinh"
-    //       name="birthday"
-    //       hasFeedback
-    //       required={true}
-    //       rules={[
-    //         {
-    //           required: true,
-    //           message: "Bạn chưa nhập ngày sinh",
-    //         },
-    //       ]}
-    //     >
-    //       <Input
-    //         type="Nhập ngày sinh của b"
-    //         name="birthday"
-    //         value={birthday}
-    //         onChange={(e) => setBrithday(e.target.value)}
-    //         placeholder="Address"
-    //       />
-    //     </Form.Item>
-
-    //     <Form.Item
-    //       name="remember"
-    //       valuePropName="checked"
-    //       wrapperCol={{ offset: 8, span: 16 }}
-    //     >
-    //       <Checkbox>Remember me</Checkbox>
-    //     </Form.Item>
-
-    //     <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-    //       <Button type="primary" onClick={(e) => handleSubmit(e)}>
-    //         Sign Up
-    //       </Button>
-    //     </Form.Item>
-    //   </Form>
     <div className={styles.container}>
       <form className={styles.form_1}>
         <h1 className={styles.login}>Đăng kí</h1>
@@ -229,7 +76,7 @@ export default function SignUp() {
           onChange={(e) => setEmail(e.target.value)}
         />
         <label htmlFor="password" className={styles.label}>
-          Password
+          Mật khẩu
         </label>
         <input
           type="password"
@@ -279,3 +126,5 @@ export default function SignUp() {
     </div>
   );
 }
+
+export default memo(SignUp);

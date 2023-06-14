@@ -4,7 +4,6 @@
   justify-content: space-between;
   padding: 0 50px;
   background-color: #fff;
-  /* position: fixed; */
   top: 0;
   left: 0;
   width: 100%;
@@ -51,7 +50,6 @@
 .cart_container {
   font-size: 24px;
   margin-left: 20px;
-  /* border-right: 1px solid black; */
 }
 
 .cart_icon {
@@ -76,6 +74,23 @@
 
 .home:hover {
   color: #ee4d2d;
+}
+
+.aaa {
+  position: relative;
+  border-radius: 90%;
+  min-width: 10px;
+  line-height: 1.2em;
+  padding: 0 3px;
+  text-align: center;
+  /* height: 1rem; */
+  border: 2px solid var(--brand-primary-color, #ee4d2d);
+  color: var(--brand-primary-color, #ee4d2d);
+  background-color: #fff;
+  left: -1.1rem;
+  top: -0.7rem;
+  margin-right: -0.875rem;
+  font-size: 12px;
 }
 
 @media only screen and (max-width: 768px) {

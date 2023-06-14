@@ -15,10 +15,13 @@ const {
 
 router.route('/')
   .post(validateSchema(createSchema), create)
-  .delete(validateSchema(removeSchema), remove)
+
 
 router.route('/')
   .get(validateSchema(getDetailSchema), getDetail)
+
+router.route('/:customerId/:productId')
+  .delete(validateSchema(removeSchema), remove)
 
 router.route('/:id')
   .get(validateSchema(getDetailSchema), getDetail)
