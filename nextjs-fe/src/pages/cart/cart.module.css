@@ -1,0 +1,138 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cart_list {
+  display: flex;
+  flex-direction: column;
+}
+
+.cart_item {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.cart_item_image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.cart_item_details {
+  flex: 1;
+  display: flex;
+}
+
+.cart_item_name {
+  width: 250px;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.quantity_input {
+  height: 20px;
+  width: 30px;
+  text-align: center;
+  border: none;
+  margin: 0 5px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.quantity_btn .btn {
+  font-size: 24px;
+  height: 30px;
+  width: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.btn_outline {
+  border: 1px solid #e1e1e1;
+  padding: 0px 20px;
+}
+.cart_item_quantity {
+  font-size: 18px;
+  font-weight: 600;
+  margin-right: 20px;
+}
+.quantity_btn {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  border: 1px solid #e1e1e1;
+}
+
+.cart_item_price {
+  margin: 0 0 10px 0;
+}
+
+.cart_summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cart_summary_item {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.cart_summary_item_image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.cart_summary_item_details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart_summary_item_name {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+}
+
+.cart_summary_item_quantity {
+  margin: 0 0 10px 0;
+}
+
+.cart_summary_item_price {
+  margin: 0 0 10px 0;
+}
+
+.cart_summary_item_discount {
+  margin: 0 0 10px 0;
+}
+
+.cart_summary_item_subtotal {
+  font-weight: bold;
+  margin: 0;
+}
+
+.cart_summary_total {
+  font-weight: bold;
+  margin-top: 20px;
+  text-align: right;
+}
+
+.checkout_button {
+  width: 100%;
+  margin-top: 10px;
+}

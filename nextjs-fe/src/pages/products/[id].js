@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React, { memo } from "react";
 import Head from "next/head";
 import numeral from "numeral";
 import { useRouter } from "next/router";
@@ -6,6 +6,7 @@ import jwt_decode from "jwt-decode";
 
 import styles from "./products.module.css";
 import axiosClient from "../../libraries/axiosClient";
+import { message } from "antd";
 
 function ProductDetail(props) {
   const router = useRouter();
@@ -40,11 +41,7 @@ function ProductDetail(props) {
         quantity: quantity,
       });
       setIsLoading(false);
-      console.log("««««« response »»»»»", response);
-    //   router.push({
-    //     pathname: "/cart",
-    //     // query: { customerId: customerId },
-    //   });
+      message.success("Thêm vào giỏ hàng thành công!", 1.5)
     } catch (error) {
       console.log("error", error);
       setIsLoading(false);
@@ -90,7 +87,7 @@ function ProductDetail(props) {
               )}
             </h3>
             <h4 className={styles.h4}>
-              Giảm giá : <span>{numeral(product.discount).format("0,0")}</span>{" "}
+              Giảm giá : <span>{numeral(product.discount).format("0,0")}</span>
               %
             </h4>
 
