@@ -65,14 +65,14 @@ export default function Customers() {
   // Modal xác nhận xóa sản phẩm
   const deleteConfirmModal = (
     <Modal
-      title="Xóa sản phẩm"
+      title="Xóa khách hàng"
       open={showDeleteConfirm}
       onOk={handleDeleteCustomer}
       onCancel={() => setShowDeleteConfirm(false)}
       okText="Xóa"
       cancelText="Hủy"
     >
-      <p>Bạn có chắc chắn muốn xóa sản phẩm?</p>
+      <p>Bạn có chắc chắn muốn xóa khách hàng?</p>
     </Modal>
   );
 
@@ -166,6 +166,7 @@ export default function Customers() {
       })
       .catch((err) => {});
   };
+  
   return (
     <div style={{ padding: 24 }}>
       {/* TABLE */}

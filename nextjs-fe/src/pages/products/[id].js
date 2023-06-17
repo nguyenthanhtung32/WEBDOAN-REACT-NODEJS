@@ -1,8 +1,9 @@
-import React, {memo} from "react";
+import React, { memo } from "react";
 import Head from "next/head";
 import numeral from "numeral";
 import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
+import {message} from 'antd';
 
 import styles from "./products.module.css";
 import axiosClient from "../../libraries/axiosClient";
@@ -29,8 +30,13 @@ function ProductDetail(props) {
 
   const handleAddToCart = async () => {
     setIsLoading(true);
+    const token = localStorage.getItem("token");
+    if (!token) {
+    //   toast.warning("Cần đăng nhập để mua hàng");
+      router.push("/login"); // Chuyển hướng đến trang đăng ký
+      return;
+    }
     try {
-      const token = localStorage.getItem("token");
       const decoded = jwt_decode(token);
       const customerId = decoded._id;
 
@@ -41,13 +47,11 @@ function ProductDetail(props) {
       });
       setIsLoading(false);
       console.log("««««« response »»»»»", response);
-    //   router.push({
-    //     pathname: "/cart",
-    //     // query: { customerId: customerId },
-    //   });
+      message.success("Thêm sản phẩm thành công!", 1.5);
     } catch (error) {
       console.log("error", error);
       setIsLoading(false);
+      message.warning("Thêm sản phẩm thất bại!", 1.5);
     }
   };
 
@@ -102,7 +106,7 @@ function ProductDetail(props) {
                 Mã sản phẩm: <span>{product._id}</span>
               </p>
               <p className={styles.p}>
-                Nhà cung cấp: <span>{product.supplierId}</span>
+                Nhà cung cấp: <span>{product.supplier.name}</span>
               </p>
             </div>
             <p className={styles.p}>{product.description}</p>

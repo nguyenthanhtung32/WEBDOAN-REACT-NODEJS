@@ -1,7 +1,7 @@
 import React, { useState, memo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Input, Button } from "antd";
+import { Input, Button, Menu } from "antd";
 import {
   ShoppingCartOutlined,
   SearchOutlined,
@@ -12,55 +12,45 @@ import jwt_decode from "jwt-decode";
 import styles from "./header.module.css";
 import axios from "../../libraries/axiosClient";
 
+const { SubMenu } = Menu;
+
 function Header() {
-  //   const [customerId, setCustomerId] = useState(null);
-  //   const [carts, setCarts] = useState([]);
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(false);
   const [carts, setCarts] = React.useState([]);
 
-  React.useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const decoded = jwt_decode(token);
-        const customerId = decoded._id;
-        // const customerId = router?.query?.customerId;
-        const response = await axios.get(`/carts/${customerId}`);
+  //   React.useEffect(() => {
+  //     const fetchCart = async () => {
+  //       try {
+  //         const token = localStorage.getItem("token");
+  //         const decoded = jwt_decode(token);
+  //         const customerId = decoded._id;
+  //         const response = await axios.get(`/carts/${customerId}`);
+  //         const data = response.data;
 
-        const data = response.data;
-
-        setCarts(data.payload.results);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchCart();
-  }, []);
+  //         setCarts(data.payload.results);
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     };
+  //     fetchCart();
+  //   }, []);
 
   React.useEffect(() => {
     const token = localStorage.getItem("token");
-
     if (token) {
       setIsLogin(true);
     }
   }, [router]);
 
-
-
   const handleLogout = () => {
     localStorage.removeItem("token");
-
     setIsLogin(false);
 
     router.push("/");
   };
 
   const handleCartClick = () => {
-    // router.push({
-    //   pathname: "/cart",
-    //   //   query: { customerId: customerId },
-    // });
     window.location.href = "/cart";
   };
 
@@ -75,9 +65,12 @@ function Header() {
               alt="Logo"
             />
           </Link>
-          <Link href="/" className={styles.home}>Trang chủ</Link>
-          <Link href="/search-products" className={styles.home}>Sản phẩm</Link>
-          {/* <Link href="/footer" className={styles.home}>Liên hệ</Link> */}
+          <Link href="/" className={styles.home}>
+            Trang chủ
+          </Link>
+          <Link href="/search-products" className={styles.home}>
+            Sản phẩm
+          </Link>
         </div>
       </div>
 
@@ -92,37 +85,46 @@ function Header() {
           {isLogin
             ? (
               <>
-                <div
-                  setIsLogin={setIsLogin}
+                <div setIsLogin={setIsLogin}>
+                  {/* <div
+                  className={styles.cart_container}
+                  onClick={handleCartClick}
                 >
-                  <div
-                    className={styles.cart_container}
-                    onClick={handleCartClick}
-                  >
-                    <ShoppingCartOutlined className={styles.cart_icon} />
-                    {carts?.length > 0
-                      ? (
-                        carts.map((cart) => (
-                          <div key={cart._id}>
-                            <div>
-                                <div className={styles.aaa}>
-                                    {cart.products.length}
-                                </div>
-                            </div>
-                          </div>
-                        ))
-                      )
-                      : (
+                  <ShoppingCartOutlined className={styles.cart_icon} />
+                  {carts?.length > 0 ? (
+                    carts.map((cart) => (
+                      <div key={cart._id}>
                         <div>
-                          <div className={styles.aaa}>{0}</div>
+                          <div className={styles.aaa}>
+                            {cart.products.length}
+                          </div>
                         </div>
-                      )}
-                  </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div>
+                      <div className={styles.aaa}>{0}</div>
+                    </div>
+                  )}
+                </div> */}
                   <div>
-                    <Link href="/profile" className={styles.link}>
-                      profile
+                    <Link href="/cart" className={styles.cart_container}>
+                      <ShoppingCartOutlined />
                     </Link>
                   </div>
+                  <Menu mode="horizontal">
+                    <SubMenu
+                      key="sub1"
+                      title={<UserOutlined style={{ fontSize: 20 }} />}
+                    >
+                      <Menu.Item key="1">
+                        <Link href="/profile">Trang cá nhân</Link>
+                      </Menu.Item>
+                      <Menu.Item key="2" onClick={handleLogout}>
+                        Đăng xuất
+                      </Menu.Item>
+                    </SubMenu>
+                  </Menu>
                 </div>
               </>
             )
@@ -130,19 +132,15 @@ function Header() {
               <>
                 <div className={styles.authentication_links}>
                   <Link href="/login" className={styles.link}>
-                    <UserOutlined />
+                    Đăng nhập
+                  </Link>
+                  <div className={styles.line}>|</div>
+                  <Link href="/register" className={styles.link}>
+                    Đăng ký
                   </Link>
                 </div>
               </>
             )}
-          {isLogin && (
-            <Button
-              type="error"
-              onClick={handleLogout}
-            >
-              Đăng xuất
-            </Button>
-          )}
         </div>
       </div>
     </header>

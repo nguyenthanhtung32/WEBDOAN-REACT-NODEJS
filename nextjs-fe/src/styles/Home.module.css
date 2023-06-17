@@ -63,7 +63,6 @@
 }
 
 .form .form_details input {
-    /* padding: 15px 20px; */
     color: grey;
     outline: none;
     border: 1px solid grey;
@@ -134,4 +133,10 @@
     border-bottom-right-radius: 0.125rem;
     background: currentColor;
     left: -0.1875rem;
+}
+
+@media only screen and (max-width: 768px) {
+    .form {
+        display: block;
+    }
 }

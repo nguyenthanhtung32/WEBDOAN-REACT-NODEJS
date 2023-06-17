@@ -29,18 +29,18 @@ function SignUp() {
     try {
       const response = await axios.post("/customers", payload);
       console.log(response);
-      message.success("Đăng nhập thành công!", 1.5);
+      message.success("Đăng kí thành công!", 1.5);
       window.location.href = "/login";
     } catch (error) {
       console.error(error);
-      message.warning("Đăng nhập thât bại!", 1.5);
+      message.warning("Đăng kí thât bại!", 1.5);
     }
   };
 
   return (
     <div className={styles.container}>
       <form className={styles.form_1}>
-        <h1 className={styles.login}>Đăng kí</h1>
+        <h3 className={styles.login}>Đăng kí</h3>
         <label htmlFor="name" className={styles.label}>
           Họ
         </label>
