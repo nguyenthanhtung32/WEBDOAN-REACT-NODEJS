@@ -16,17 +16,15 @@ import numeral from "numeral";
 import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
 
-
 import axios from "../../libraries/axiosClient";
 
 function Order() {
   const router = useRouter();
   const { Option } = Select;
-  const [carts, setCarts] = React.useState([]);
+  const [carts, setCarts] = React.useState("");
   const [shippingAddress, setShippingAddress] = React.useState("");
   const [paymentType, setPaymentType] = React.useState("CASH");
   const [description, setDescription] = React.useState("");
-  
 
   React.useEffect(() => {
     const fetchCart = async () => {
@@ -67,7 +65,7 @@ function Order() {
     const order = {
       createdDate: new Date(),
       shippedDate: shippedDate,
-      paymentType: paymentType,
+      paymentType: "CASH",
       shippingAddress: shippingAddress,
       status: "WAITING",
       description: description,
@@ -83,6 +81,7 @@ function Order() {
 
       if (response) {
         message.success("Đặt hàng thành công!", 1.5);
+
         await axios.delete(`/carts/${customerId}`);
         window.location.href = "/checkout";
       } else {
@@ -158,15 +157,16 @@ function Order() {
           value={shippingAddress}
           onChange={(e) => setShippingAddress(e.target.value)}
         />
-         <Input
+        <Input
           placeholder="Lời nhắn cho người bán"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <Select value={paymentType} onChange={setPaymentType}>
+        {/* <Select value={paymentType} onChange={setPaymentType}>
           <Option value="CASH">CASH</Option>
           <Option value="CREDIT CARD" onClick={()=>{router.push("/bank")}}>CREDIT CARD</Option>
-        </Select>
+        </Select> */}
+        <p>Qúy khách vui lòng thanh toán khi nhận hàng</p>
         <Button
           className="checkout-button"
           onClick={() => handleAddOrder()}

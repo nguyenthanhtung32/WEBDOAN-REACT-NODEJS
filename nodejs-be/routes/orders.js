@@ -19,40 +19,67 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async function (req, res, next) {
-  // Validate
-  const validationSchema = yup.object().shape({
-    params: yup.object({
-      id: yup
-        .string()
-        .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
-          return ObjectId.isValid(value);
-        }),
-    }),
-  });
+// router.get("/:id", async function (req, res, next) {
+//   // Validate
+//   const validationSchema = yup.object().shape({
+//     params: yup.object({
+//       id: yup
+//         .string()
+//         .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
+//           return ObjectId.isValid(value);
+//         }),
+//     }),
+//   });
 
-  validationSchema
-    .validate({ params: req.params }, { abortEarly: false })
-    .then(async () => {
-      const id = req.params.id;
+//   validationSchema
+//     .validate({ params: req.params }, { abortEarly: false })
+//     .then(async () => {
+//       const id = req.params.id;
 
-      let found = await Order.findById(id);
+//       let found = await Order.findById(id);
 
-      if (found) {
-        return res.send({ ok: true, result: found });
+//       if (found) {
+//         return res.send({ ok: true, result: found });
+//       }
+
+//       return res.send({ ok: false, message: "Object not found" });
+//     })
+//     .catch((err) => {
+//       return res.status(400).json({
+//         type: err.name,
+//         errors: err.errors,
+//         message: err.message,
+//         provider: "yup",
+//       });
+//     });
+// });
+
+router.get("/:id", async function (req, res, next) { //   // Validate
+    try {
+        const { id } = req.params;
+  
+        let found = await Order.findOne({ customerId: id });
+  
+        let results = await Order.find({ customerId: id })
+          .populate("orderDetails.product")
+          .populate("customer")
+          .populate("employee")
+          .lean({ virtual: true });
+  
+        if (found) {
+          return res.send({ code: 200, payload: { found, results } });
+        }
+  
+        return res.status(410).send({ code: 404, message: "Không tìm thấy" });
+      } catch (err) {
+        res.status(404).json({
+          message: "Get detail fail!!",
+          payload: err,
+        });
       }
-
-      return res.send({ ok: false, message: "Object not found" });
-    })
-    .catch((err) => {
-      return res.status(400).json({
-        type: err.name,
-        errors: err.errors,
-        message: err.message,
-        provider: "yup",
-      });
     });
-});
+
+
 // router.post("/", function (req, res, next) {
 //   // Validate
 //   const validationSchema = yup.object({
