@@ -1,7 +1,8 @@
 const yup = require("yup");
 const express = require("express");
 const router = express.Router();
-const { Order } = require("../models/index");
+const { Order, Product } = require("../models/index");
+
 const ObjectId = require("mongodb").ObjectId;
 
 // Methods: POST / PATCH / GET / DELETE / PUT
@@ -19,129 +20,77 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// router.get("/:id", async function (req, res, next) {
-//   // Validate
-//   const validationSchema = yup.object().shape({
-//     params: yup.object({
-//       id: yup
-//         .string()
-//         .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
-//           return ObjectId.isValid(value);
-//         }),
-//     }),
-//   });
-
-//   validationSchema
-//     .validate({ params: req.params }, { abortEarly: false })
-//     .then(async () => {
-//       const id = req.params.id;
-
-//       let found = await Order.findById(id);
-
-//       if (found) {
-//         return res.send({ ok: true, result: found });
-//       }
-
-//       return res.send({ ok: false, message: "Object not found" });
-//     })
-//     .catch((err) => {
-//       return res.status(400).json({
-//         type: err.name,
-//         errors: err.errors,
-//         message: err.message,
-//         provider: "yup",
-//       });
-//     });
-// });
-
-router.get("/:id", async function (req, res, next) { //   // Validate
-    try {
-        const { id } = req.params;
-  
-        let found = await Order.findOne({ customerId: id });
-  
-        let results = await Order.find({ customerId: id })
-          .populate("orderDetails.product")
-          .populate("customer")
-          .populate("employee")
-          .lean({ virtual: true });
-  
-        if (found) {
-          return res.send({ code: 200, payload: { found, results } });
-        }
-  
-        return res.status(410).send({ code: 404, message: "Không tìm thấy" });
-      } catch (err) {
-        res.status(404).json({
-          message: "Get detail fail!!",
-          payload: err,
-        });
-      }
-    });
-
-
-// router.post("/", function (req, res, next) {
-//   // Validate
-//   const validationSchema = yup.object({
-//     body: yup.object({
-//       orderDetails: yup.array().required(),
-//       createdDate: yup.date().required(),
-//       shippedDate: yup.date().required(),
-//       paymentType: yup.string().max(20).required(),
-//       shippingAddress: yup.string().max(500).required(),
-//       status: yup.string().max(50).required(),
-//       description: yup.string().required(),
-//       customerId: yup
-//         .string()
-//         .required()
-//         .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
-//           return ObjectId.isValid(value);
-//         }),
-//     //   employeeId: yup
-//     //     .string()
-//     //     .required()
-//     //     .test("Validate ObjectID", "${path} is not valid ObjectID", (value) => {
-//     //       return ObjectId.isValid(value);
-//     //     }),
-//     }),
-//   });
-
-//   validationSchema
-//     .validate({ body: req.body }, { abortEarly: false })
-//     .then(async () => {
-//       const data = req.body;
-//       let newItem = new Order(data);
-//       await newItem.save();
-//       res.send({ ok: true, message: "Created", result: newItem });
-//     })
-//     .catch((err) => {
-//       return res.status(400).json({
-//         type: err.name,
-//         errors: err.errors,
-//         message: err.message,
-//         provider: "yup",
-//       });
-//     });
-// });
-
-router.post("/", function (req, res, next) {
+router.get("/:id", async function (req, res, next) {
+  //   // Validate
   try {
-    const data = req.body;
-    console.log("req.body", req.body);
+    const { id } = req.params;
 
-    const newItem = new Order(data);
-    newItem
-      .save()
-      .then((result) => {
-        res.send(result);
-      })
-      .catch((err) => {
-        res.status(400).send({ message: err.message });
-      });
+    let found = await Order.findOne({ customerId: id });
+
+    let results = await Order.find({ customerId: id })
+      .populate("orderDetails.product")
+      .populate("customer")
+      .populate("employee")
+      .lean({ virtual: true });
+
+    if (found) {
+      return res.send({ code: 200, payload: { found, results } });
+    }
+
+    return res.status(410).send({ code: 404, message: "Không tìm thấy" });
   } catch (err) {
-    res.sendStatus(500);
+    res.status(404).json({
+      message: "Get detail fail!!",
+      payload: err,
+    });
   }
 });
+
+// router.post("/", function (req, res, next) {
+//   try {
+//     const data = req.body;
+//     console.log("req.body", req.body);
+
+//     const newItem = new Order(data);
+//     newItem
+//       .save()
+//       .then((result) => {
+//         res.send(result);
+//       })
+//       .catch((err) => {
+//         res.status(400).send({ message: err.message });
+//       });
+//   } catch (err) {
+//     res.sendStatus(500);
+//   }
+// });
+
+router.post("/", async function (req, res, next) {
+    try {
+      const data = req.body;
+      console.log("req.body", req.body);
+  
+      const newItem = new Order(data);
+      const savedItem = await newItem.save();
+  
+      // Giảm số lượng tồn kho sau khi mua hàng thành công
+      await updateProductStock(savedItem);
+  
+      res.send(savedItem);
+    } catch (err) {
+      res.status(500).send({ message: err.message });
+    }
+  });
+  
+  async function updateProductStock(order) {
+    for (const orderDetail of order.orderDetails) {
+      const productId = orderDetail.productId;
+      const quantity = orderDetail.quantity;
+  
+      // Giảm số lượng tồn kho của sản phẩm
+      await Product.updateOne({ _id: productId }, { $inc: { stock: -quantity } });
+    }
+  }
 
 router.delete("/:id", function (req, res, next) {
   const validationSchema = yup.object().shape({
@@ -192,5 +141,6 @@ router.patch("/:id", async function (req, res, next) {
     res.status(500).send({ ok: false, error });
   }
 });
+
 
 module.exports = router;

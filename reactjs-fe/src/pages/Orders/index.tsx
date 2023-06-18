@@ -1,4 +1,13 @@
-import { Button, Form, message, Space, Modal, Input, Table } from "antd";
+import {
+  Button,
+  Form,
+  message,
+  Space,
+  Modal,
+  Input,
+  Table,
+  Select,
+} from "antd";
 import axios from "../../libraries/axiosClient";
 import React from "react";
 import {
@@ -13,7 +22,7 @@ const apiName = "/orders";
 
 export default function Orders() {
   const [orders, setOrders] = React.useState<any[]>([]);
-  const [employees, setEmployees] = React.useState<any[]>([]);
+  const [employees, setEmployees] = React.useState([]);
   const [customers, setCustomers] = React.useState<any[]>([]);
 
   const [refresh, setRefresh] = React.useState<number>(0);
@@ -107,19 +116,19 @@ export default function Orders() {
       key: "paymentType",
     },
     {
-        title: "Order Details",
-        dataIndex: "orderDetails",
-        key: "orderDetails",
-        render : (_text, record) => {
-            return (
-                <span>
-                    Quantity: {record.orderDetails[0].quantity}
-                    <br />
-                    Product: {record.orderDetails[0].productId}
-                </span>
-            );
-        }
+      title: "Order Details",
+      dataIndex: "orderDetails",
+      key: "orderDetails",
+      render: (_text, record) => {
+        return (
+          <span>
+            Quantity: {record.orderDetails[0].quantity}
+            <br />
+            Product: {record.orderDetails[0].productId}
+          </span>
+        );
       },
+    },
     {
       title: "Hành động",
       width: "1%",
@@ -235,15 +244,32 @@ export default function Orders() {
             span: 16,
           }}
         >
-          <Form.Item label="Trạng thái" name="status">
-            <Input />
+          <Form.Item label="Status" name="status">
+            <Select style={{ width: "80%" }}>
+              <Select.Option value="WAITING">WAITING</Select.Option>
+              <Select.Option value="COMPLETED">COMPLETED</Select.Option>
+              <Select.Option value="CANCELED">CANCELED</Select.Option>
+            </Select>
           </Form.Item>
-          <Form.Item label="Hình thức thanh toán" name="paymentType">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Sửa nhân viên" name="employees.name">
-            <Input />
-          </Form.Item>
+          {/* <Form.Item
+              label="Nhà cung cấp"
+              name="employeeId"
+              hasFeedback
+            //   required={true}
+            //   rules={[
+            //     {
+            //       required: true,
+            //       message: "Nhà cung cấp bắt buộc phải chọn",
+            //     },
+            //   ]}
+            >
+              <Select
+                style={{ width: "100%" }}
+                options={employees.map((c : any) => {
+                  return { value: c._id, label: c.firstName };
+                })}
+              />
+            </Form.Item> */}
         </Form>
       </Modal>
     </div>

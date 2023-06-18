@@ -17,7 +17,7 @@ const { SubMenu } = Menu;
 function Header() {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(false);
-  const [carts, setCarts] = React.useState([]);
+  const [carts, setCarts] = React.useState(0);
 
   //   React.useEffect(() => {
   //     const fetchCart = async () => {
@@ -38,6 +38,7 @@ function Header() {
 
   React.useEffect(() => {
     const token = localStorage.getItem("token");
+    
     if (token) {
       setIsLogin(true);
     }
