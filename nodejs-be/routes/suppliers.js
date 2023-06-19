@@ -13,9 +13,13 @@ const { getIdSchema } = require("../validation/getId");
 // Get all
 router.get("/", validateSchema(getSupplierSchema), async (req, res, next) => {
   try {
-    const { limit, skip } = req.query;
+    const { supplierName, limit, skip } = req.query;
 
     const conditionFind = {};
+
+    if (supplierName) {
+      conditionFind.name = new RegExp(`${supplierName}`);
+    }
 
     let results = await Supplier.find(conditionFind).skip(skip).limit(limit).lean({ virtuals: true });
 

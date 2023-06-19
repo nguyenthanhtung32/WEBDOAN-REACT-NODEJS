@@ -114,7 +114,8 @@
   }
 
   .logo {
-    width: 70px;
+    width: 100px;
+    margin-left: 0px;
   }
 
   .right_nav_links {
@@ -127,17 +128,24 @@
   }
 
   .link {
-    margin: 5px;
+    margin: 2px;
+    font-size: 11px;
   }
 
   .home {
-    font-size: 15px;
-    margin-left: 5px;
+    font-size: 11px;
+    margin-left: 6px;
     margin-top: 5px;
   }
 
   .cart_container {
     font-size: 24px;
     margin-left: 0px;
+  }
+  .line {
+    margin: 0 3px;
+  }
+  .search {
+    font-size: 20px;
   }
 }

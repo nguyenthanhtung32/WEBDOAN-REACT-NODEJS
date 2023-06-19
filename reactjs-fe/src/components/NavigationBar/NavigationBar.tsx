@@ -1,73 +1,5 @@
-// import React from "react";
-// import {
-//   HomeOutlined,
-//   SettingOutlined,
-//   UnorderedListOutlined,
-// } from "@ant-design/icons";
-// import type { MenuProps } from "antd";
-// import { Menu } from "antd";
-// import { useNavigate } from "react-router-dom";
-
-// type MenuItem = Required<MenuProps>["items"][number];
-
-// function getItem(
-//   label: React.ReactNode,
-//   key?: React.Key | null,
-//   icon?: React.ReactNode,
-//   children?: MenuItem[],
-//   type?: "group"
-// ): MenuItem {
-//   return {
-//     key,
-//     icon,
-//     children,
-//     label,
-//     type,
-//   } as MenuItem;
-// }
-
-// const App: React.FC = () => {
-//   const navigate = useNavigate();
-//   const [current, setCurrent] = React.useState<string>("home");
-
-//   const items: MenuItem[] = [
-//     getItem("Trang chủ", "/", <HomeOutlined />
-//       //   getItem('Item 1', null, null, [getItem('Option 1', '1'), getItem('Option 2', '2')], 'group'),
-//       //   getItem('Item 2', null, null, [getItem('Option 3', '3'), getItem('Option 4', '4')], 'group'),
-//     ),
-
-//     getItem("Quản lý", "list", <UnorderedListOutlined />, [
-//       getItem("Categories", "categories"),
-//       getItem("Suppliers", "suppliers"),
-//       getItem("Customers", "customers"),
-//       getItem("Employees", "employees"),
-//     ]),
-
-//     getItem("Quản lý Orders", "", <SettingOutlined />, [
-//       getItem("Orders", "orders"),
-//       getItem("OrderDetails", "orderDetails"),
-//     ]),
-//   ];
-
-//   const onClick: MenuProps["onClick"] = (e) => {
-//     setCurrent(e.key?.toString() || "home");
-//     navigate(e.key?.toString() || "home");
-//   };
-
-//   return (
-//     <Menu
-//       onClick={onClick}
-//       style={{ width: 256 }}
-//       mode="vertical"
-//       items={items}
-//       selectedKeys={[current]}
-//     />
-//   );
-// };
-
-// export default App;
 import React from "react";
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
 import {
   HomeOutlined,
   SettingOutlined,
@@ -80,18 +12,18 @@ import Products from "../../pages/Products";
 import Customers from "../../pages/Customers";
 import Employees from "../../pages/Employees";
 import Orders from "../../pages/Orders";
+import OrdersDetail from "../../pages/Orders/detail";
 import CreateProduct from "../../pages/Products/create";
 import CreateCategory from "../../pages/Categories/create";
-import CreateCustomer from "../../pages/Customers/create";
 import CreateSupplier from "../../pages/Suppliers/create";
 import CreateEmployee from "../../pages/Employees/create";
 
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const menuItems = [
   {
-    key: "products",
+    key: "home",
     icon: <HomeOutlined />,
     label: "Home",
   },
@@ -118,19 +50,29 @@ const menuItems = [
   },
 ];
 
-const NavigationBar: React.FC = () => {
+interface IProps {
+  setIsLogin: (value: boolean) => void;
+}
+
+export default function NavigationBar(props: IProps) {
   const navigate = useNavigate();
   const [current, setCurrent] = React.useState<string>("home");
+  const { setIsLogin } = props;
 
   const handleMenuClick = (e: { key: string }) => {
     setCurrent(e.key);
     navigate(`/${e.key}`);
   };
 
+  const handleLogout = () => {
+    setIsLogin(false);
+    navigate(`/`);
+  };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider>
-        <div className="logo"/>
+        <div className="logo" />
         <Menu
           onClick={handleMenuClick}
           theme="dark"
@@ -156,13 +98,16 @@ const NavigationBar: React.FC = () => {
           })}
         </Menu>
       </Sider>
+
       <Layout className="site-layout">
-        <Header className="site-layout-background" style={{ padding: 0 }} />
-        <Content style={{ margin: "16px" }}>
+        <Content style={{ margin: "10px" }}>
           <div
             className="site-layout-background"
             style={{ padding: 24, minHeight: 360 }}
           >
+            <Button className="logout-button" onClick={handleLogout}>
+              Đăng xuất
+            </Button>
             <Routes>
               <Route path="/categories" element={<Categories />} />
               <Route path="/suppliers" element={<Suppliers />} />
@@ -170,11 +115,11 @@ const NavigationBar: React.FC = () => {
               <Route path="/customers" element={<Customers />} />
               <Route path="/employees" element={<Employees />} />
               <Route path="/orders" element={<Orders />} />
+              <Route path="/orderDetails" element={<OrdersDetail />} />
             </Routes>
             <Routes>
               <Route path="/category" element={<CreateCategory />} />
               <Route path="/product" element={<CreateProduct />} />
-              <Route path="/customer" element={<CreateCustomer />} />
               <Route path="/supplier" element={<CreateSupplier />} />
               <Route path="/employee" element={<CreateEmployee />} />
             </Routes>
@@ -183,6 +128,4 @@ const NavigationBar: React.FC = () => {
       </Layout>
     </Layout>
   );
-};
-
-export default NavigationBar;
+}

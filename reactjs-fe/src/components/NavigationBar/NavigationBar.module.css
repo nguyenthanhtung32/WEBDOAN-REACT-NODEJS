@@ -1,3 +1,8 @@
 .container {
- padding: 0 20px;
+  padding: 0 20px;
+}
+.logout-button {
+  float: left;
+  width: 50px;
+  height: 30px;
 }

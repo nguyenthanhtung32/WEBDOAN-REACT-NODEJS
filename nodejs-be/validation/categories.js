@@ -16,6 +16,7 @@ const validateSchema = (schema) => async (req, res, next) => {
 
 const getCategorySchema = yup.object({
     query: yup.object({
+        categoryName: yup.string(),
         skip: yup.number(),
         limit: yup.number(),
     })

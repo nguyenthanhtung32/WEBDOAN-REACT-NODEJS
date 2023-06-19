@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  width: 100%;
+}
+.line {
+  border-bottom: 1px solid #ccc;
+}
+
+.cart_info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+}
+.total {
+  font-weight: bold;
+  color: rgb(255, 72, 0);
+  float: right;
+}

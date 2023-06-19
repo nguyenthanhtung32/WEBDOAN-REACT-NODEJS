@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Input, message} from "antd";
+import { Button, Form, Input, message } from "antd";
 import axios from "../../libraries/axiosClient";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +23,7 @@ export default function Employees() {
       .catch((err) => {
         console.error(err);
       });
-  }, [refresh]);
+  }, [refresh, employees]);
 
   const onFinish = (values: any) => {
     console.log(values);

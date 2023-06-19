@@ -16,6 +16,8 @@ const validateSchema = (schema) => async (req, res, next) => {
 
 const getEmployeeSchema = yup.object({
   query: yup.object({
+    firstNameEmployee: yup.string(),
+    lastNameEmployee: yup.string(),
     skip: yup.number(),
     limit: yup.number(),
   }),

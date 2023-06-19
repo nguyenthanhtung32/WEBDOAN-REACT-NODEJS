@@ -57,7 +57,7 @@ export default function Customers() {
   const handleDeleteCustomer = () => {
     axios.delete(apiName + "/" + deleteCustomerId).then((response) => {
       setRefresh((f) => f + 1);
-      message.success("Xóa sản phẩm thành công!", 1.5);
+      message.success("Xóa khách hàng thành công!", 1.5);
       setShowDeleteConfirm(false);
     });
   };
@@ -65,14 +65,14 @@ export default function Customers() {
   // Modal xác nhận xóa sản phẩm
   const deleteConfirmModal = (
     <Modal
-      title="Xóa sản phẩm"
+      title="Xóa khách hàng"
       open={showDeleteConfirm}
       onOk={handleDeleteCustomer}
       onCancel={() => setShowDeleteConfirm(false)}
       okText="Xóa"
       cancelText="Hủy"
     >
-      <p>Bạn có chắc chắn muốn xóa sản phẩm?</p>
+      <p>Bạn có chắc chắn muốn xóa khách hàng?</p>
     </Modal>
   );
 
@@ -161,11 +161,12 @@ export default function Customers() {
       .then((response) => {
         setRefresh((f) => f + 1);
         updateForm.resetFields();
-        message.success("Cập nhật danh mục thành công!", 1.5);
+        message.success("Cập nhật khách hàng thành công!", 1.5);
         setOpen(false);
       })
       .catch((err) => {});
   };
+
   return (
     <div style={{ padding: 24 }}>
       {/* TABLE */}

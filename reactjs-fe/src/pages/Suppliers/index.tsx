@@ -5,12 +5,18 @@ import {
   AppstoreAddOutlined,
   DeleteOutlined,
   EditOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
-
-import type { ColumnsType } from "antd/es/table";
+import Styles from "./index.module.css";
 import { useNavigate } from "react-router-dom";
 
+import type { ColumnsType } from "antd/es/table";
+
 const apiName = "/suppliers";
+
+const initialState = {
+  supplierName: "",
+};
 
 export default function Suppliers() {
   const [suppliers, setSuppliers] = React.useState<any[]>([]);
@@ -18,6 +24,8 @@ export default function Suppliers() {
   const [refresh, setRefresh] = React.useState<number>(0);
   const [open, setOpen] = React.useState<boolean>(false);
   const [updateId, setUpdateId] = React.useState<number>(0);
+
+  const [filter, setFilter] = React.useState<any>(initialState);
 
   const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [pageSize, setPageSize] = React.useState<number>(10);
@@ -32,6 +40,13 @@ export default function Suppliers() {
   const create = () => {
     navigate("/supplier");
   };
+
+  const onChangeFilter = useCallback((e: any) => {
+    setFilter((prevState: any) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  }, []);
 
   const callApi = useCallback((searchParams: any) => {
     axios
@@ -57,33 +72,55 @@ export default function Suppliers() {
     callApi(filters);
   }, [callApi, currentPage, pageSize]);
 
+  const onSearch = useCallback(() => {
+    // Lọc các trường có giá trị để tạo query params
+    const filterFields = Object.keys(filter).filter(
+      (key) => filter[key] !== undefined && filter[key] !== ""
+    );
+
+    // Tạo query params từ các trường đã lọc
+    const searchParams = new URLSearchParams(
+      filterFields.map((key) => {
+        return [key, filter[key]];
+      })
+    );
+
+    // Gọi API với các query params đã tạo
+    callApi(searchParams);
+  }, [callApi, filter]);
+
   // Hàm hiển thị xác nhận xóa
   const showConfirmDelete = (supplierId: number) => {
     setDeleteSupplierId(supplierId);
     setShowDeleteConfirm(true);
   };
-  // Hàm xóa sản phẩm
+  // Hàm xóa nhà cung cấp
   const handleDeleteSupplier = () => {
     axios.delete(apiName + "/" + deleteSupplierId).then((response) => {
       setRefresh((f) => f + 1);
-      message.success("Xóa sản phẩm thành công!", 1.5);
+      message.success("Xóa nhà cung cấp thành công!", 1.5);
       setShowDeleteConfirm(false);
     });
   };
 
-  // Modal xác nhận xóa sản phẩm
+  // Modal xác nhận xóa nhà cung cấp
   const deleteConfirmModal = (
     <Modal
-      title="Xóa sản phẩm"
+      title="Xóa nhà cung cấp"
       open={showDeleteConfirm}
       onOk={handleDeleteSupplier}
       onCancel={() => setShowDeleteConfirm(false)}
       okText="Xóa"
       cancelText="Hủy"
     >
-      <p>Bạn có chắc chắn muốn xóa sản phẩm?</p>
+      <p>Bạn có chắc chắn muốn xóa nhà cung cấp?</p>
     </Modal>
   );
+
+  const resetFilter = useCallback(() => {
+    setFilter(initialState);
+    callApi(initialState);
+  }, [callApi]);
 
   const columns: ColumnsType<any> = [
     {
@@ -97,9 +134,39 @@ export default function Suppliers() {
       },
     },
     {
-      title: "Tên",
+      title: "Nhà cung cấp",
       dataIndex: "name",
       key: "name",
+      filterDropdown: (
+        <>
+          <Input
+            placeholder="Tìm kiếm nhà cung cấp"
+            name="supplierName"
+            value={filter.supplierName}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+          <Button
+            className={Styles.but}
+            type="primary"
+            onClick={onSearch}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            className={Styles.ton}
+            size="small"
+            style={{ width: 90 }}
+            onClick={resetFilter}
+          >
+            Refresh
+          </Button>
+        </>
+      ),
     },
     {
       title: "Email",

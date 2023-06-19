@@ -23,7 +23,7 @@ export default function Suppliers() {
       .catch((err) => {
         console.error(err);
       });
-  }, [refresh]);
+  }, [refresh, suppliers]);
 
   const onFinish = (values: any) => {
     console.log(values);

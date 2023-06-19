@@ -69,7 +69,6 @@ const orderSchema = new Schema(
     },
     description: {
       type: String,
-      required: true,
     },
     shippingAddress: {
       type: String,
@@ -94,12 +93,11 @@ const orderSchema = new Schema(
     customerId: {
       type: Schema.Types.ObjectId,
       ref: "Customer",
-      required: false,
+      required: true,
     },
     employeeId: {
       type: Schema.Types.ObjectId,
       ref: "Employee",
-      required: false,
     },
 
     // Array

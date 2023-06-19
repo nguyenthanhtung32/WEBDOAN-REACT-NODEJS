@@ -1,18 +1,14 @@
 import { Button, Form, message, Space, Modal, Input, Table } from "antd";
 import axios from "../../libraries/axiosClient";
 import React from "react";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  DownCircleOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 import type { ColumnsType } from "antd/es/table";
 
 const apiName = "/orders";
 
 export default function Orders() {
-  const [orders, setOrders] = React.useState<any[]>([]);
+  const [orderDetails, setOrderDetails] = React.useState<any[]>([]);
   const [employees, setEmployees] = React.useState<any[]>([]);
   const [customers, setCustomers] = React.useState<any[]>([]);
 
@@ -66,12 +62,11 @@ export default function Orders() {
       },
     },
     {
-      title: "Tên khách hàng",
-      dataIndex: "customer.name",
-      key: "customer.name",
+      title: "tên hàng",
+      dataIndex: "orderDetails.quantity",
+      key: "orderDetails.quantity",
       render: (text, record, index) => {
-        const fullNameCustomer = `${record.customer.firstName} ${record.customer.lastName}`;
-        return <span>{fullNameCustomer}</span>;
+        return <span>{record?.orderDetail?.quantity}</span>;
       },
     },
     {
@@ -107,20 +102,6 @@ export default function Orders() {
       key: "paymentType",
     },
     {
-      title: "Order Details",
-      dataIndex: "orderDetails",
-      key: "orderDetails",
-      render: (_text, record) => {
-        return (
-          <span>
-            Quantity: {record.orderDetails[0].quantity}
-            <br />
-            Product: {record.orderDetails[0].productId}
-          </span>
-        );
-      },
-    },
-    {
       title: "Hành động",
       width: "1%",
       render: (text, record, index) => {
@@ -141,15 +122,6 @@ export default function Orders() {
                 showConfirmDelete(record._id);
               }}
             />
-            <Button
-              danger
-              icon={<DownCircleOutlined />}
-              onClick={() => {
-                setOpen(true);
-                // setUpdateId(record._id);
-                updateForm.setFieldsValue(record);
-              }}
-            />
           </Space>
         );
       },
@@ -162,7 +134,7 @@ export default function Orders() {
       .get(apiName)
       .then((response) => {
         const { data } = response;
-        setOrders(data);
+        setOrderDetails(data);
       })
       .catch((err) => {
         console.error(err);
@@ -209,7 +181,7 @@ export default function Orders() {
     <div style={{ padding: 24 }}>
       {/* TABLE */}
       <div>
-        <Table rowKey="_id" dataSource={orders} columns={columns} />
+        <Table rowKey="_id" dataSource={orderDetails} columns={columns} />
         {deleteConfirmModal}
       </div>
       <Modal
@@ -238,10 +210,30 @@ export default function Orders() {
           <Form.Item label="Trạng thái" name="status">
             <Input />
           </Form.Item>
-          <Form.Item label="Hình thức thanh toán" name="paymentType">
+
+          <Form.Item label="Mô tả / Ghi chú" name="description">
             <Input />
           </Form.Item>
-          <Form.Item label="Sửa nhân viên" name="employees.name">
+
+          <Form.Item
+            label="Địa chỉ giao hàng"
+            name="shippingAddress"
+            required={true}
+            rules={[
+              {
+                required: true,
+                message: "Bắt buộc phải nhập địa chỉ giao hàng",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Hình thức thanh toán"
+            name="paymentType"
+            required={true}
+          >
             <Input />
           </Form.Item>
         </Form>

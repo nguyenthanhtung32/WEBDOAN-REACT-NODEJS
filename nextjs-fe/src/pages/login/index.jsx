@@ -37,7 +37,7 @@ function Login() {
   return (
     <div className={styles.container}>
       <form className={styles.form_1}>
-        <h1 className={styles.login}>Đăng nhập</h1>
+        <h3 className={styles.login}>Đăng nhập</h3>
         <label htmlFor="email" className={styles.label}>
           Email
         </label>
@@ -66,7 +66,9 @@ function Login() {
         </button>
         <div className="d-flex justify-content-center ">
           <p className={styles.text}>Bạn chưa có tài khoản ?</p>
-          <Link href="/register" className={styles.text2}>Đăng kí</Link>
+          <Link href="/register" className={styles.text2}>
+            Đăng kí
+          </Link>
         </div>
       </form>
     </div>

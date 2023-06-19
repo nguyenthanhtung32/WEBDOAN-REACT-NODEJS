@@ -16,6 +16,7 @@ const validateSchema = (schema) => async (req, res, next) => {
 
 const getSupplierSchema = yup.object({
   query: yup.object({
+    supplierName: yup.string(),
     skip: yup.number(),
     limit: yup.number(),
   }),

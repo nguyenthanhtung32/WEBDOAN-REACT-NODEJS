@@ -3,10 +3,10 @@ import Head from "next/head";
 import numeral from "numeral";
 import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
+import { message } from 'antd';
 
 import styles from "./products.module.css";
 import axiosClient from "../../libraries/axiosClient";
-import { message } from "antd";
 
 function ProductDetail(props) {
   const router = useRouter();
@@ -30,8 +30,13 @@ function ProductDetail(props) {
 
   const handleAddToCart = async () => {
     setIsLoading(true);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      //   toast.warning("Cần đăng nhập để mua hàng");
+      router.push("/login"); // Chuyển hướng đến trang đăng ký
+      return;
+    }
     try {
-      const token = localStorage.getItem("token");
       const decoded = jwt_decode(token);
       const customerId = decoded._id;
 
@@ -41,10 +46,12 @@ function ProductDetail(props) {
         quantity: quantity,
       });
       setIsLoading(false);
-      message.success("Thêm vào giỏ hàng thành công!", 1.5)
+      console.log("««««« response »»»»»", response);
+      message.success("Thêm sản phẩm thành công!", 1.5);
     } catch (error) {
       console.log("error", error);
       setIsLoading(false);
+      message.warning("Thêm sản phẩm thất bại!", 1.5);
     }
   };
 
@@ -87,7 +94,7 @@ function ProductDetail(props) {
               )}
             </h3>
             <h4 className={styles.h4}>
-              Giảm giá : <span>{numeral(product.discount).format("0,0")}</span>
+              Giảm giá : <span>{numeral(product.discount).format("0,0")}</span>{" "}
               %
             </h4>
 
@@ -99,7 +106,7 @@ function ProductDetail(props) {
                 Mã sản phẩm: <span>{product._id}</span>
               </p>
               <p className={styles.p}>
-                Nhà cung cấp: <span>{product.supplierId}</span>
+                Nhà cung cấp: <span>{product.supplier.name}</span>
               </p>
             </div>
             <p className={styles.p}>{product.description}</p>
@@ -134,7 +141,7 @@ function ProductDetail(props) {
                 style={{ marginRight: "10px" }}
                 onClick={handleAddToCart}
               >
-                {isLoading ? "Loading..." : "add to cart"}
+                {isLoading ? "Loading..." : "Thêm vào giỏ hàng"}
               </div>
               <div className={`${styles.btn} ${styles.btn_primary}`}>
                 {isLoading ? "Loading..." : "Mua Ngay"}
