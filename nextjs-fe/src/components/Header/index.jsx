@@ -124,6 +124,9 @@ function Header() {
                       <Menu.Item key="2" onClick={handleLogout}>
                         Đăng xuất
                       </Menu.Item>
+                      <Menu.Item key="3">
+                      <Link href="/purchase-order">Lịch sử mua hàng</Link>
+                    </Menu.Item>
                     </SubMenu>
                   </Menu>
                 </div>

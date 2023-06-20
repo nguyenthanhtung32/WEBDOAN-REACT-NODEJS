@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../libraries/axiosClient";
 import jwt_decode from "jwt-decode";
+import numeral from "numeral";
 import styles from "./purchase-order.module.css";
 
 const PurchaseOrder = () => {
@@ -22,48 +23,65 @@ const PurchaseOrder = () => {
   }, []);
 
   return (
-    <div className="d-flex">
-      {orders?.length === 0
-        ? (
-          <div>Bạn chưa từng mua hàng</div>
-        )
-        : (
-          orders.map((order) => (
-           
-            <div key={order._id} className={styles.order}>
-              <p className={styles.order__title}>{order.createdDate}</p>
-              <p className={styles.order__status}>{order.status}</p>
-              <p className={styles.order__quantity}>{order.shippedDate}</p>
-              <p className={styles.order__quantity}>{order.description}</p>
-              <p className={styles.order__quantity}>{order.shippingAddress}</p>
-              <p className={styles.order__quantity}>{order.paymentType}</p>
-
-              {order?.orderDetails?.length > 0
-                ? (
-                  <div>
-                    {order.orderDetails.map((product) => (
-                      <div key={product.productId}>
-                        <p>name :{product.product.name}</p>
-                        <img
-                          alt=""
-                          src={product.product.img}
-                          width="50px"
-                          height="50px"
-                        />
-                        <p>Quantity: {product.quantity}</p>
-                        <p>discount: {product.discount}</p>
-                        <p>Gía đã discount: {product.price}</p>
-                        <p>Gía gốc: {product.product.price}</p>
-                      </div>
-                    ))}
-                  </div>
-                )
-                : (
-                  <div>Không có thông tin sản phẩm</div>
-                )}
+    <div className={styles.container}>
+      {orders?.length === 0 ? (
+        <div>Bạn chưa từng mua hàng</div>
+      ) : (
+        orders.map((order) => (
+          <div key={order._id} className={styles.order}>
+            <div className={styles.status}>
+              <div className={styles.title}>Trạng Thái Đơn Hàng</div>
+              <div className={styles.value}>{order.status}</div>
             </div>
-          ))
-        )}
+            <div className={styles.status}>
+              <div className={styles.title}>Địa Chỉ Giao Hàng</div>
+              <div className={styles.value}>{order.shippingAddress}</div>
+            </div>
+            {order.orderDetails.length > 0 ? (
+              <div>
+                {order.orderDetails.map((product) => (
+                  <div className={styles.product} key={product.productId}>
+                    <div className={styles.product_left}>
+                      <img
+                        alt=""
+                        src={product.product.img}
+                        width="100px"
+                        height="100px"
+                      />
+                    </div>
+                    <div className={styles.product_right}>
+                      <div className={styles.product_top}>{product.product.name}</div>
+                        <div className={styles.product_center}>
+                            <div className={styles.product_description}>{product.product.description}</div>
+                            <div className={styles.product_quantity}>x{product.quantity}</div>
+                      </div>
+                      <div className={styles.product_bottom}>
+                        <div className={styles.price}>{numeral(product.product.price).format("0,0")}đ</div>
+                        <div className={styles.priceDiscount}>{numeral(product.price).format("0,0")}đ</div>                      
+                    </div> 
+                    </div>
+                                 
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div>Không có thông tin sản phẩm</div>
+            )}
+            <div className={styles.status}>
+              <div className={styles.title}>Phương Thức Thanh Toán</div>
+              <div className={styles.value}>{order.paymentType}</div>
+            </div>
+            <div className={styles.status}>
+              <div className={styles.title}>Thời Gian Đặt Hàng</div>
+              <div className={styles.value}>{order.createdDate}</div>
+            </div>
+            <div className={styles.status}>
+              <div className={styles.title}>Thời Gian Hoàn Thành</div>
+              <div className={styles.value}>{order.shippedDate}</div>
+            </div>
+          </div>
+        ))
+      )}
     </div>
   );
 };

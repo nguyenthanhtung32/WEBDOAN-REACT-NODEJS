@@ -1,11 +1,16 @@
 import React, { memo } from "react";
+import { CheckCircleOutlined } from "@ant-design/icons";
+import styles from "./checkout.module.css";
+import { Button } from "antd";
 
 function CheckOut() {
   return (
     <>
-      <h1>Hello mình là admin Hoàng Vinh đây!</h1>
-      <h1>CHÚC MỪNG BẠN ĐẶT HÀNG THÀNH CÔNG</h1>
-      <h1>Cảm ơn bạn đã tin tưởng shop chúng tôi</h1>
+      <div className={styles.container}>
+        <CheckCircleOutlined /> Đặt hàng thành công!
+        <Button style={{marginTop: "20px"}} href="/">Trang Chủ</Button>
+      </div>
+     
     </>
   );
 }

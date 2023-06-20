@@ -1,7 +1,8 @@
 .container {
-    padding: 20px 30px 30px 20px;
+    padding: 20px 30px 50px 20px;
     font-weight: 100;
     background: white;
+    padding-bottom: 150px;
   }
   .h1 {
     font-weight: bolder;
@@ -56,13 +57,10 @@
     text-align: center;
   }
   .totals {
-    margin-bottom: 100px;
     .totals_item {
       float: right;
       clear: both;
       width: 100%;
-      margin-bottom: 10px;
-  
       .totals_title {
         float: left;
         clear: both;
@@ -78,6 +76,36 @@
         font-weight: bold;
       }
     }
+  }
+  
+  /* .payment {
+    float: right;
+    clear: both;
+    width: 100%;
+    margin-top: 10px;
+  
+    .paymentTitle {
+      float: left;
+      clear: both;
+      width: 79%;
+      text-align: right;
+      font-weight: bold;
+    }
+  
+    .paymentOptions {
+      float: right;
+      width: 21%;
+      text-align: right;
+      font-weight: bold;
+    }
+  } */
+  
+  .payment {
+    float: left;
+    clear: both;
+    width: 100%;
+    text-align: right;
+    font-weight: bold;
   }
   
   .checkout {

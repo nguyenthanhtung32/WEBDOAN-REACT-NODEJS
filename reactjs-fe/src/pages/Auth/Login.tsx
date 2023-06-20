@@ -6,7 +6,7 @@ import {
   SlSocialGoogle,
   SlSocialTwitter,
 } from "react-icons/sl";
-import { Alert } from "antd";
+import { message } from "antd";
 interface IProps {
   setIsLogin: (value: boolean) => void;
 }
@@ -29,13 +29,11 @@ const Login: React.FC<IProps> = (props) => {
       console.log(response);
 
       localStorage.setItem("token", response.data.token);
-      //   <Alert message="Đăng nhập thành công!" type="success" showIcon />
-      alert("Đăng nhập thành công");
+      message.success("Đăng nhập thành công!", 1.5);
       setIsLogin(true);
     } catch (error) {
       console.error(error);
-      //   <Alert message="Đăng nhập thất bại" type="error" showIcon />
-      alert("Đăng nhập thất bại");
+      message.warning("Đăng nhập thât bại!", 1.5);
     }
   };
 

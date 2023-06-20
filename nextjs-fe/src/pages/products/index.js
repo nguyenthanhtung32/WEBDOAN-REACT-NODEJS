@@ -23,7 +23,7 @@ const initialState = {
   category: [],
 };
 
-const allOption = [{ _id: "", name: "Tất cả" }];
+const allOption = [{ _id: "", name: "tất cả" }];
 
 function Products({ products: initialProducts }) {
   const router = useRouter();
@@ -85,7 +85,6 @@ function Products({ products: initialProducts }) {
       .get(`${apiName}?${queryString}`)
       .then((response) => {
         const { data } = response;
-        console.log("response", response);
         setProducts(data.payload);
       })
       .catch((err) => {

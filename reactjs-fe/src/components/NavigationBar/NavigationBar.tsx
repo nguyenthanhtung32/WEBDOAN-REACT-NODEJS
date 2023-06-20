@@ -46,7 +46,7 @@ const menuItems = [
     label: "Quản lý Orders",
     children: [
       { key: "orders", label: "Orders" },
-      { key: "orderDetails", label: "OrderDetails" },
+
     ],
   },
 ];

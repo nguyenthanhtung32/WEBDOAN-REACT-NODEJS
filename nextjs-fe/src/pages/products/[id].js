@@ -3,7 +3,7 @@ import Head from "next/head";
 import numeral from "numeral";
 import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
-import {message} from 'antd';
+import { message } from "antd";
 
 import styles from "./products.module.css";
 import axiosClient from "../../libraries/axiosClient";
@@ -15,6 +15,8 @@ function ProductDetail(props) {
 
   const [quantity, setQuantity] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [shippingAddress, setShippingAddress] = React.useState("");
+  const [description, setDescription] = React.useState("");
 
   const handleQuantityChange = (action) => {
     if (action === "increase") {
@@ -32,8 +34,8 @@ function ProductDetail(props) {
     setIsLoading(true);
     const token = localStorage.getItem("token");
     if (!token) {
-    //   toast.warning("Cần đăng nhập để mua hàng");
-      router.push("/login"); // Chuyển hướng đến trang đăng ký
+      message.warning("Bạn chưa đăng nhập!", 1.5);
+      router.push("/login");
       return;
     }
     try {
@@ -46,14 +48,42 @@ function ProductDetail(props) {
         quantity: quantity,
       });
       setIsLoading(false);
-      console.log("««««« response »»»»»", response);
-      message.success("Thêm sản phẩm thành công!", 1.5);
+      message.success("Thêm sản phẩm vào giỏ hàng thành công!", 1.5);
     } catch (error) {
       console.log("error", error);
       setIsLoading(false);
-      message.warning("Thêm sản phẩm thất bại!", 1.5);
+      message.warning("Thêm sản phẩm vào giỏ hàng thất bại!", 1.5);
     }
   };
+
+  
+  const handleBuyNow = async () => {
+    setIsLoading(true);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      message.warning("Bạn chưa đăng nhập!", 1.5);
+      router.push("/login");
+      return;
+    }
+    const decoded = jwt_decode(token);
+    const customerId = decoded._id;
+    console.log("customerId", customerId);
+  
+    const orderDetails = [{
+      productId: product._id,
+      quantity: quantity,
+      price: product.price - (product.price * product.discount / 100),
+      discount: product.discount,
+    }];
+  
+    router.push({
+      pathname: "/buy-now",
+      query: {
+        orderDetails: JSON.stringify(orderDetails),
+      },
+    });
+  };
+  
 
   return (
     <>
@@ -143,7 +173,7 @@ function ProductDetail(props) {
               >
                 {isLoading ? "Loading..." : "add to cart"}
               </div>
-              <div className={`${styles.btn} ${styles.btn_primary}`}>
+              <div className={`${styles.btn} ${styles.btn_primary}`} onClick={handleBuyNow}>
                 {isLoading ? "Loading..." : "Mua Ngay"}
               </div>
             </div>

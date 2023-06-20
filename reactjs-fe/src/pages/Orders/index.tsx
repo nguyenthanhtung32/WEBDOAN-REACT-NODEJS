@@ -1,20 +1,9 @@
-import {
-  Button,
-  Form,
-  message,
-  Space,
-  Modal,
-  Input,
-  Table,
-  Select,
-} from "antd";
+import { Button, Form, message, Space, Modal, Table, Select } from "antd";
 import axios from "../../libraries/axiosClient";
 import React from "react";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  DownCircleOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import numeral from "numeral";
 
 import type { ColumnsType } from "antd/es/table";
 
@@ -34,6 +23,16 @@ export default function Orders() {
     React.useState<boolean>(false);
 
   const [updateForm] = Form.useForm();
+    const navigate = useNavigate();
+
+    const onClickFilter = (_id: string | undefined) => {
+    console.log("_id", _id);
+    navigate("/detail", {
+      state: {
+        productDetail: _id,
+      },
+    });
+  };
 
   // Hàm hiển thị xác nhận xóa
   const showConfirmDelete = (orderId: number) => {
@@ -85,8 +84,8 @@ export default function Orders() {
     },
     {
       title: "Tên nhân viên",
-      dataIndex: "employees.name",
-      key: "employees.name",
+      dataIndex: "employee.name",
+      key: "employee.name",
       render: (text, record, index) => {
         const fullNameEmployee = `${record?.employee?.firstName} ${record?.employee?.lastName}`;
         return <span>{fullNameEmployee}</span>;
@@ -111,21 +110,41 @@ export default function Orders() {
       key: "shippingAddress",
     },
     {
+      title: "Ngày giao hàng",
+      dataIndex: "shippedDate",
+      key: "shippedDate",
+    },
+    {
       title: "Hình thức thanh toán",
       dataIndex: "paymentType",
       key: "paymentType",
     },
+    // {
+    //   title: "Order Details",
+    //   dataIndex: "orderDetails",
+    //   key: "orderDetails",
+    //   render: (_text, record) => {
+    //     return (
+    //       <span>
+    //         Quantity: {record.orderDetails[0].quantity}
+    //         <br />
+    //         Product: {record.orderDetails[0].productId}
+    //         <br />
+    //         Discount: {record.orderDetails[0].discount}
+    //       </span>
+    //     );
+    //   },
+    // },
+
     {
-      title: "Order Details",
-      dataIndex: "orderDetails",
-      key: "orderDetails",
+      title: "Giá bán",
+      dataIndex: "price",
+      key: "price",
+      width: "1%",
+      align: "right",
       render: (_text, record) => {
         return (
-          <span>
-            Quantity: {record.orderDetails[0].quantity}
-            <br />
-            Product: {record.orderDetails[0].productId}
-          </span>
+          <span>{numeral(record.orderDetails[0].price).format("0,0")}</span>
         );
       },
     },
@@ -150,15 +169,17 @@ export default function Orders() {
                 showConfirmDelete(record._id);
               }}
             />
-            <Button
-              danger
-              icon={<DownCircleOutlined />}
-              onClick={() => {
-                setOpen(true);
-                // setUpdateId(record._id);
-                updateForm.setFieldsValue(record);
-              }}
-            />
+          </Space>
+        );
+      },
+    },
+    {
+      title: "View",
+      width: "1%",
+      render: (text, record, index) => {
+        return (
+          <Space>
+            <Button onClick={() => {onClickFilter(record._id)}}>View</Button>
           </Space>
         );
       },
@@ -183,12 +204,12 @@ export default function Orders() {
       .get("/employees")
       .then((response) => {
         const { data } = response;
-        setEmployees(data);
+        setEmployees(data.payload);
       })
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [refresh]);
 
   React.useEffect(() => {
     axios
@@ -200,7 +221,7 @@ export default function Orders() {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [refresh]);
 
   const onUpdateFinish = (values: any) => {
     axios
@@ -251,25 +272,25 @@ export default function Orders() {
               <Select.Option value="CANCELED">CANCELED</Select.Option>
             </Select>
           </Form.Item>
-          {/* <Form.Item
-              label="Nhà cung cấp"
-              name="employeeId"
-              hasFeedback
-            //   required={true}
-            //   rules={[
-            //     {
-            //       required: true,
-            //       message: "Nhà cung cấp bắt buộc phải chọn",
-            //     },
-            //   ]}
-            >
-              <Select
-                style={{ width: "100%" }}
-                options={employees.map((c : any) => {
-                  return { value: c._id, label: c.firstName };
-                })}
-              />
-            </Form.Item> */}
+          <Form.Item
+            label="Nhân viên"
+            name="employeeId"
+            hasFeedback
+              required={true}
+              rules={[
+                {
+                  required: true,
+                  message: "Nhân viên bắt buộc phải chọn",
+                },
+              ]}
+          >
+            <Select
+              style={{ width: "100%" }}
+              options={employees.map((c: any) => {
+                return { value: c._id, label: c.firstName + " " + c.lastName };
+              })}
+            />
+          </Form.Item>
         </Form>
       </Modal>
     </div>
