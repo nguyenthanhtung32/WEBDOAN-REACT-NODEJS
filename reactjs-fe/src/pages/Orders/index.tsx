@@ -1,4 +1,13 @@
-import { Button, Form, message, Space, Modal, Input, Table } from "antd";
+import {
+  Button,
+  Form,
+  message,
+  Space,
+  Modal,
+  Input,
+  Table,
+  Select,
+} from "antd";
 import axios from "../../libraries/axiosClient";
 import React from "react";
 import {
@@ -13,7 +22,7 @@ const apiName = "/orders";
 
 export default function Orders() {
   const [orders, setOrders] = React.useState<any[]>([]);
-  const [employees, setEmployees] = React.useState<any[]>([]);
+  const [employees, setEmployees] = React.useState([]);
   const [customers, setCustomers] = React.useState<any[]>([]);
 
   const [refresh, setRefresh] = React.useState<number>(0);
@@ -179,7 +188,7 @@ export default function Orders() {
       .catch((err) => {
         console.error(err);
       });
-  }, [employees]);
+  }, []);
 
   React.useEffect(() => {
     axios
@@ -191,7 +200,7 @@ export default function Orders() {
       .catch((err) => {
         console.error(err);
       });
-  }, [customers]);
+  }, []);
 
   const onUpdateFinish = (values: any) => {
     axios
@@ -199,7 +208,7 @@ export default function Orders() {
       .then((response) => {
         setRefresh((f) => f + 1);
         updateForm.resetFields();
-        message.success("Cập nhật đặt hàng thành công!", 1.5);
+        message.success("Cập nhật danh mục thành công!", 1.5);
         setOpen(false);
       })
       .catch((err) => {});
@@ -214,7 +223,7 @@ export default function Orders() {
       </div>
       <Modal
         open={open}
-        title="Cập nhật đặt hàng"
+        title="Cập nhật danh mục"
         onCancel={() => {
           setOpen(false);
         }}
@@ -235,15 +244,32 @@ export default function Orders() {
             span: 16,
           }}
         >
-          <Form.Item label="Trạng thái" name="status">
-            <Input />
+          <Form.Item label="Status" name="status">
+            <Select style={{ width: "80%" }}>
+              <Select.Option value="WAITING">WAITING</Select.Option>
+              <Select.Option value="COMPLETED">COMPLETED</Select.Option>
+              <Select.Option value="CANCELED">CANCELED</Select.Option>
+            </Select>
           </Form.Item>
-          <Form.Item label="Hình thức thanh toán" name="paymentType">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Sửa nhân viên" name="employees.name">
-            <Input />
-          </Form.Item>
+          {/* <Form.Item
+              label="Nhà cung cấp"
+              name="employeeId"
+              hasFeedback
+            //   required={true}
+            //   rules={[
+            //     {
+            //       required: true,
+            //       message: "Nhà cung cấp bắt buộc phải chọn",
+            //     },
+            //   ]}
+            >
+              <Select
+                style={{ width: "100%" }}
+                options={employees.map((c : any) => {
+                  return { value: c._id, label: c.firstName };
+                })}
+              />
+            </Form.Item> */}
         </Form>
       </Modal>
     </div>

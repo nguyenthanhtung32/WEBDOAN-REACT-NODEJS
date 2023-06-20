@@ -119,7 +119,10 @@ function Header() {
                     <Menu.Item key="1">
                       <Link href="/profile">Trang cá nhân</Link>
                     </Menu.Item>
-                    <Menu.Item key="2" onClick={handleLogout}>
+                    <Menu.Item key="2">
+                      <Link href="/purchase-order">Lịch sử mua hàng</Link>
+                    </Menu.Item>
+                    <Menu.Item key="3" onClick={handleLogout}>
                       Đăng xuất
                     </Menu.Item>
                   </SubMenu>

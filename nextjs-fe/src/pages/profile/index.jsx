@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import jwt_decode from "jwt-decode";
 
 import axios from "../../libraries/axiosClient";
-import { Button, Input } from "antd";
+import { Button, Input, message } from "antd";
 import styles from "./profile.module.css";
 
 function Profile() {
@@ -51,9 +51,12 @@ function Profile() {
         phoneNumber,
         birthday,
       })
-      .then((response) => {
-        const { data } = response;
-        setCustomer(data.result);
+      .then(() => {
+        axios.get(`/customers/${customerId}`).then((response) => {
+          const { data } = response;
+          setCustomer(data.result);
+          message.success("Cập nhật thông tin thành công!", 1.5);
+        });
       })
       .catch((err) => {
         console.error(err);

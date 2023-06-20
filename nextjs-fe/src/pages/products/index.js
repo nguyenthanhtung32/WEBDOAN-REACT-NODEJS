@@ -20,18 +20,15 @@ const initialState = {
   priceEnd: "",
   discountStart: "",
   discountEnd: "",
-  category: [],
+  category: "",
 };
 
 const allOption = [{ _id: "", name: "Tất cả" }];
 
 function Products({ products: initialProducts }) {
-  const router = useRouter();
-  const nameCategory = router.query.nameCategory;
 
   const [filter, setFilter] = useState(initialState);
   const [products, setProducts] = useState(initialProducts);
-  const [category, setCategory] = useState(nameCategory);
   const [categories, setCategories] = React.useState(initialProducts);
 
   const onChangeFilter = (e) => {

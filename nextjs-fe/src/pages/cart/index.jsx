@@ -83,96 +83,101 @@ function Cart() {
 
   return (
     <div className={styles.container}>
-      <Col span={13} className={styles.left}>
-        <Card title="Giỏ hàng">
-          <div>
-            {carts.length > 0 &&
-              carts.map((cart) => (
-                <Row key={cart._id}>
-                  <Col className={styles.col}>
-                    {cart.products.length > 0 ? (
-                      cart.products.map((product) => (
-                        <>
-                          {" "}
-                          <div
-                            className={styles.cart_item_info}
-                            key={product.productId}
-                          >
-                            <div>
-                              <img
-                                alt=""
-                                src={product.product.img}
-                                width="100px"
-                                height="100px"
-                              />
-                            </div>
-
-                            <div>
-                              <p className={styles.product_name}>
-                                {product.product.name}
-                              </p>
-                            </div>
-
-                            <div>
-                              <Input
-                                className={styles.quantity}
-                                type="number"
-                                value={product.quantity}
-                                min={1}
-                                max={10}
-                                onChange={(e) =>
-                                  handleQuantityChange(
-                                    product.product._id,
-                                    parseInt(e.target.value)
-                                  )
-                                }
-                                style={{ marginRight: "10px" }}
-                              />
-                            </div>
-
-                            <div>
-                              <p className={styles.price}>
-                                {numeral(product.product.price).format("0,0")}
-                              </p>
-                            </div>
-                            <div>
-                              <Button
-                                danger
-                                icon={<DeleteOutlined />}
-                                onClick={() =>
-                                  handleRemoveCart(product.product._id)
-                                }
-                              />
-                            </div>
-                          </div>
-                          <p className={styles.line}> </p>
-                        </>
-                      ))
-                    ) : (
-                      <Result
-                        title="There are no products in your cart yet"
-                        extra={
-                          <Button
-                            type="submit"
-                            style={{
-                              backgroundColor: "#1C86EE",
-                              color: "#fff",
-                            }}
-                            key="console"
-                          >
-                            <Link href="/products">Keep Shopping</Link>
-                          </Button>
-                        }
-                      />
-                    )}
-                  </Col>
-                </Row>
-              ))}
-          </div>
-        </Card>
-      </Col>
-      <Col span={6} className={styles.right}>
-        <Card title="Thông tin giỏ hàng">
+      <h1 className={styles.h1}>Giỏ Hàng</h1>
+      <div className={styles.shopping_cart}>
+        <div className={styles.column_title}>
+          <div className={styles.product_image}>Hình Ảnh</div>
+          <div className={styles.product_details}>Sản Phẩm</div>
+          <div className={styles.product_price}>Giá Tiền</div>
+          <div className={styles.product_discount}>Giảm Giá</div>
+          <div className={styles.product_quantity}>Số Lượng</div>
+          <div className={styles.product_removal}>Thao Tác</div>
+          <div className={styles.product_line_price}>Thành Tiền</div>
+        </div>
+        <div>
+          {carts.length > 0 &&
+            carts.map((cart) => (
+              <div key={cart._id}>
+                {cart.products.length > 0 ? (
+                  cart.products.map((product) => (
+                    <div class={styles.product} key={product.productId}>
+                      <div className={styles.product_image}>
+                        <img
+                          alt=""
+                          src={product.product.img}
+                          width="100px"
+                          height="100px"
+                        />
+                      </div>
+                      <div className={styles.product_details}>
+                        <div className="product_title">
+                          {product.product.name}
+                        </div>
+                        <div className="product_description">
+                          {product.product.description}
+                        </div>
+                      </div>
+                      <div className={styles.product_price}>
+                        đ{numeral(product.product.price).format("0,0")}
+                      </div>
+                      <div className={styles.product_discount}>
+                        {numeral(product.product.discount).format("0,0")}%
+                      </div>
+                      <div class={styles.product_quantity}>
+                        <input
+                          type="number"
+                          value={product.quantity}
+                          min="1"
+                          onChange={(e) =>
+                            handleQuantityChange(
+                              product.product._id,
+                              parseInt(e.target.value)
+                            )
+                          }
+                        />
+                      </div>
+                      <div class={styles.product_removal}>
+                        <Button
+                          className={styles.remove_product}
+                          danger
+                          icon={<DeleteOutlined />}
+                          onClick={() => handleRemoveCart(product.product._id)}
+                        />
+                      </div>
+                      <div class={styles.product_line_price}>
+                        đ
+                        {numeral(
+                          product.quantity *
+                            (product.product.price -
+                              (product.product.price *
+                                product.product.discount *
+                                1) /
+                                100)
+                        ).format("0,0")}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <Result
+                    title="Không có sản phẩm trong giỏ hàng"
+                    extra={
+                      <Button
+                        type="submit"
+                        style={{
+                          backgroundColor: "#1C86EE",
+                          color: "#fff",
+                        }}
+                        key="console"
+                      >
+                        <Link href="/products">Tiếp Tục Mua Sắm</Link>
+                      </Button>
+                    }
+                  />
+                )}
+              </div>
+            ))}
+        </div>
+        <div className={styles.totals}>
           {carts.length > 0 &&
             carts.map((cart) => {
               let totalPrice = 0; // khởi tạo biến totalPrice bằng 0
@@ -185,58 +190,21 @@ function Cart() {
                       (product.product.price -
                         (product.product.price * product.product.discount * 1) /
                           100);
-                    return (
-                      <>
-                        <div
-                          key={product.productId}
-                          className={styles.cart_info}
-                        >
-                          <img
-                            alt=""
-                            src={product.product.img}
-                            width="100px"
-                            height="100px"
-                          />
-                          <p>{product.product.name}</p>
-                          <p>Số lượng: {product.quantity}</p>
-                          <p>
-                            Giá gốc:{" "}
-                            {numeral(
-                              product.quantity * product.product.price
-                            ).format("0,0")}
-                            ₫
-                          </p>
-                          <p>Discount: {product.product.discount}%</p>
-                          <p style={{ fontWeight: "bold" }}>
-                            Giá:{" "}
-                            {numeral(
-                              product.quantity *
-                                (product.product.price -
-                                  (product.product.price *
-                                    product.product.discount *
-                                    1) /
-                                    100)
-                            ).format("0,0")}
-                            ₫
-                          </p>
-                        </div>
-                      </>
-                    );
                   })}
-                  <p className={styles.total}>
-                    Tổng giá: {numeral(totalPrice).format("0,0")}₫
-                  </p>
+                  <div className={styles.totals_item}>
+                    <div className={styles.totals_title}>Tổng Tiền</div>
+                    <div className={styles.totals_value}>
+                      đ{numeral(totalPrice).format("0,0")}
+                    </div>
+                  </div>
                 </div>
               );
             })}
-          <Button
-            className={styles.checkout_button}
-            onClick={() => handleAddOrder()}
-          >
+          <button className={styles.checkout} onClick={() => handleAddOrder()}>
             Đặt hàng
-          </Button>
-        </Card>
-      </Col>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
