@@ -64,9 +64,16 @@ router.get(
 //GET ALL
 router.get("/", validateSchema(getEmployeeSchema), async (req, res, next) => {
   try {
-    const { limit, skip } = req.query;
+    const { firstNameEmployee, lastNameEmployee, limit, skip } = req.query;
 
     const conditionFind = {};
+
+    if (firstNameEmployee) {
+      conditionFind.firstName = new RegExp(`${firstNameEmployee}`);
+    }
+    if (lastNameEmployee) {
+      conditionFind.lastName = new RegExp(`${lastNameEmployee}`);
+    }
 
     let results = await Employee.find(conditionFind).skip(skip).limit(limit).lean({ virtuals: true });
 

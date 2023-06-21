@@ -12,10 +12,9 @@ import Products from "../../pages/Products";
 import Customers from "../../pages/Customers";
 import Employees from "../../pages/Employees";
 import Orders from "../../pages/Orders";
-import OrdersDetail from "../../pages/Orders/detail";
+import OrdersDetail from "../../pages/Orders/orderDetails";
 import CreateProduct from "../../pages/Products/create";
 import CreateCategory from "../../pages/Categories/create";
-import CreateCustomer from "../../pages/Customers/create";
 import CreateSupplier from "../../pages/Suppliers/create";
 import CreateEmployee from "../../pages/Employees/create";
 
@@ -44,10 +43,6 @@ const menuItems = [
     key: "orders",
     icon: <SettingOutlined />,
     label: "Quản lý Orders",
-    children: [
-      { key: "orders", label: "Orders" },
-
-    ],
   },
 ];
 
@@ -121,7 +116,6 @@ export default function NavigationBar(props: IProps) {
             <Routes>
               <Route path="/category" element={<CreateCategory />} />
               <Route path="/product" element={<CreateProduct />} />
-              <Route path="/customer" element={<CreateCustomer />} />
               <Route path="/supplier" element={<CreateSupplier />} />
               <Route path="/employee" element={<CreateEmployee />} />
             </Routes>

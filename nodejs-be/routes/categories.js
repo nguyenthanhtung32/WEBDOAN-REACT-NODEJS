@@ -13,9 +13,13 @@ const { getIdSchema } = require("../validation/getId");
 // Get all
 router.get("/", validateSchema(getCategorySchema), async (req, res, next) => {
   try {
-    const { limit, skip } = req.query;
+    const { categoryName, limit, skip } = req.query;
 
     const conditionFind = {};
+
+    if (categoryName) {
+      conditionFind.name = new RegExp(`${categoryName}`);
+    }
 
     let results = await Category.find(conditionFind).skip(skip).limit(limit).lean({ virtuals: true });
 

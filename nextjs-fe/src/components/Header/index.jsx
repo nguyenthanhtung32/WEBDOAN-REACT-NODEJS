@@ -19,22 +19,22 @@ function Header() {
   const [isLogin, setIsLogin] = useState(false);
   const [carts, setCarts] = React.useState(0);
 
-  //   React.useEffect(() => {
-  //     const fetchCart = async () => {
-  //       try {
-  //         const token = localStorage.getItem("token");
-  //         const decoded = jwt_decode(token);
-  //         const customerId = decoded._id;
-  //         const response = await axios.get(`/carts/${customerId}`);
-  //         const data = response.data;
+    // React.useEffect(() => {
+    //   const fetchCart = async () => {
+    //     try {
+    //       const token = localStorage.getItem("token");
+    //       const decoded = jwt_decode(token);
+    //       const customerId = decoded._id;
+    //       const response = await axios.get(`/carts/${customerId}`);
+    //       const data = response.data;
 
-  //         setCarts(data.payload.results);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     };
-  //     fetchCart();
-  //   }, []);
+    //       setCarts(data.payload.results);
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //   };
+    //   fetchCart();
+    // }, []);
 
   React.useEffect(() => {
     const token = localStorage.getItem("token");

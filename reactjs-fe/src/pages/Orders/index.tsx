@@ -1,11 +1,19 @@
-import { Button, Form, message, Space, Modal, Table, Select } from "antd";
-import axios from "../../libraries/axiosClient";
 import React from "react";
+import {
+  Button,
+  Form,
+  message,
+  Space,
+  Modal,
+  Table,
+  Select,
+  Input,
+} from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import numeral from "numeral";
-
 import type { ColumnsType } from "antd/es/table";
+
+import axios from "../../libraries/axiosClient";
 
 const apiName = "/orders";
 
@@ -17,17 +25,21 @@ export default function Orders() {
   const [refresh, setRefresh] = React.useState<number>(0);
   const [open, setOpen] = React.useState<boolean>(false);
   const [updateId, setUpdateId] = React.useState<number>(0);
-
   const [deleteOrderId, setOrderId] = React.useState<number>(0);
   const [showDeleteConfirm, setShowDeleteConfirm] =
     React.useState<boolean>(false);
 
   const [updateForm] = Form.useForm();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const onClickFilter = (_id: string | undefined) => {
+  const formatDate = (dateString: any) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
+  const onClickFilter = (_id: string | undefined) => {
     console.log("_id", _id);
-    navigate("/detail", {
+    navigate("/orderDetails", {
       state: {
         productDetail: _id,
       },
@@ -39,6 +51,7 @@ export default function Orders() {
     setOrderId(orderId);
     setShowDeleteConfirm(true);
   };
+
   // Hàm xóa sản phẩm
   const handleDeleteOrders = () => {
     axios.delete(apiName + "/" + deleteOrderId).then((response) => {
@@ -96,7 +109,7 @@ export default function Orders() {
       dataIndex: "status",
       key: "status",
       render: (text, record, index) => {
-        return <strong style={{ color: "#6c5ce7" }}>{text}</strong>;
+        return <strong style={{ color: "red" }}>{text}</strong>;
       },
     },
     {
@@ -113,40 +126,14 @@ export default function Orders() {
       title: "Ngày giao hàng",
       dataIndex: "shippedDate",
       key: "shippedDate",
+      render: (text, record, index) => {
+        return <span key={text._id}>{formatDate(text)}</span>;
+      },
     },
     {
       title: "Hình thức thanh toán",
       dataIndex: "paymentType",
       key: "paymentType",
-    },
-    // {
-    //   title: "Order Details",
-    //   dataIndex: "orderDetails",
-    //   key: "orderDetails",
-    //   render: (_text, record) => {
-    //     return (
-    //       <span>
-    //         Quantity: {record.orderDetails[0].quantity}
-    //         <br />
-    //         Product: {record.orderDetails[0].productId}
-    //         <br />
-    //         Discount: {record.orderDetails[0].discount}
-    //       </span>
-    //     );
-    //   },
-    // },
-
-    {
-      title: "Giá bán",
-      dataIndex: "price",
-      key: "price",
-      width: "1%",
-      align: "right",
-      render: (_text, record) => {
-        return (
-          <span>{numeral(record.orderDetails[0].price).format("0,0")}</span>
-        );
-      },
     },
     {
       title: "Hành động",
@@ -174,12 +161,18 @@ export default function Orders() {
       },
     },
     {
-      title: "View",
+      title: "Xem chi tiết",
       width: "1%",
       render: (text, record, index) => {
         return (
           <Space>
-            <Button onClick={() => {onClickFilter(record._id)}}>View</Button>
+            <Button
+              onClick={() => {
+                onClickFilter(record._id);
+              }}
+            >
+              View
+            </Button>
           </Space>
         );
       },
@@ -211,17 +204,17 @@ export default function Orders() {
       });
   }, [refresh]);
 
-  React.useEffect(() => {
-    axios
-      .get("/customers")
-      .then((response) => {
-        const { data } = response;
-        setCustomers(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, [refresh]);
+//   React.useEffect(() => {
+//     axios
+//       .get("/customers")
+//       .then((response) => {
+//         const { data } = response;
+//         setCustomers(data);
+//       })
+//       .catch((err) => {
+//         console.error(err);
+//       });
+//   }, [refresh]);
 
   const onUpdateFinish = (values: any) => {
     axios
@@ -237,7 +230,6 @@ export default function Orders() {
 
   return (
     <div style={{ padding: 24 }}>
-      {/* TABLE */}
       <div>
         <Table rowKey="_id" dataSource={orders} columns={columns} />
         {deleteConfirmModal}
@@ -276,13 +268,13 @@ export default function Orders() {
             label="Nhân viên"
             name="employeeId"
             hasFeedback
-              required={true}
-              rules={[
-                {
-                  required: true,
-                  message: "Nhân viên bắt buộc phải chọn",
-                },
-              ]}
+            required={true}
+            rules={[
+              {
+                required: true,
+                message: "Nhân viên bắt buộc phải chọn",
+              },
+            ]}
           >
             <Select
               style={{ width: "100%" }}
@@ -290,6 +282,9 @@ export default function Orders() {
                 return { value: c._id, label: c.firstName + " " + c.lastName };
               })}
             />
+          </Form.Item>
+          <Form.Item label="Ngày giao" name="shippedDate">
+            <Input />
           </Form.Item>
         </Form>
       </Modal>

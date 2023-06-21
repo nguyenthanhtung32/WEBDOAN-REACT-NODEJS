@@ -25,7 +25,7 @@ function Home() {
     router.push({
       pathname: "/products",
       query: {
-        nameCategory: _id,
+        _id: _id,
       },
     });
   };
@@ -52,7 +52,7 @@ function Home() {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [refresh]);
 
   return (
     <>

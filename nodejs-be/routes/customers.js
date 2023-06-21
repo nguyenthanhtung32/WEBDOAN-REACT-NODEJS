@@ -63,9 +63,16 @@ router.get(
 // Get all
 router.get("/", validateSchema(getCustomerSchema), async (req, res, next) => {
   try {
-    const { skip, limit } = req.query;
+    const { firstNameCustomer, lastNameCustomer, skip, limit } = req.query;
 
     const conditionFind = {};
+
+    if (firstNameCustomer) {
+      conditionFind.firstName = new RegExp(`${firstNameCustomer}`);
+    }
+    if (lastNameCustomer) {
+      conditionFind.lastName = new RegExp(`${lastNameCustomer}`);
+    }
 
     let results = await Customer.find(conditionFind)
       .skip(skip)

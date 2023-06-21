@@ -68,7 +68,7 @@ const Login: React.FC<IProps> = (props) => {
           Login
         </button>
 
-        <p className={Styles.text}>Or SignUp Using</p>
+        <p className={Styles.text}>----Hoặc----</p>
         <div className={Styles.icons}>
           <a href="https://www.facebook.com/">
             <i className={Styles.fa_facebook_f}>

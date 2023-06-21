@@ -46,6 +46,35 @@ router.get("/:id", async function (req, res, next) {
   }
 });
 
+
+
+router.get("/abc/:id", async function (req, res, next) {
+    //   // Validate
+    try {
+      const { id } = req.params;
+  
+      let found = await Order.findOne({ _id: id });
+  
+      let results = await Order.find({ _id: id })
+        .populate("orderDetails.product")
+        // .populate("customer")
+        // .populate("employee")
+        .lean({ virtual: true });
+  
+      if (found) {
+        return res.send({ code: 200, payload: { found, results } });
+      }
+  
+      return res.status(410).send({ code: 404, message: "Không tìm thấy" });
+    } catch (err) {
+      res.status(404).json({
+        message: "Get detail fail!!",
+        payload: err,
+      });
+    }
+  });
+
+
 // router.post("/", function (req, res, next) {
 //   try {
 //     const data = req.body;

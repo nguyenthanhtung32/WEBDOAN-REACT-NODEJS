@@ -5,12 +5,18 @@ import {
   AppstoreAddOutlined,
   DeleteOutlined,
   EditOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
+import Styles from "./index.module.css";
 import { useNavigate } from "react-router-dom";
 
 import type { ColumnsType } from "antd/es/table";
 
 const apiName = "/categories";
+
+const initialState = {
+  categoryName: "",
+};
 
 export default function Categories() {
   const [categories, setCategories] = React.useState<any[]>([]);
@@ -18,6 +24,8 @@ export default function Categories() {
   const [refresh, setRefresh] = React.useState<number>(0);
   const [open, setOpen] = React.useState<boolean>(false);
   const [updateId, setUpdateId] = React.useState<number>(0);
+
+  const [filter, setFilter] = React.useState<any>(initialState);
 
   const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [pageSize, setPageSize] = React.useState<number>(10);
@@ -32,6 +40,13 @@ export default function Categories() {
   const create = () => {
     navigate("/category");
   };
+
+  const onChangeFilter = useCallback((e: any) => {
+    setFilter((prevState: any) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  }, []);
 
   const callApi = useCallback((searchParams: any) => {
     axios
@@ -57,33 +72,55 @@ export default function Categories() {
     callApi(filters);
   }, [callApi, currentPage, pageSize]);
 
+  const onSearch = useCallback(() => {
+    // Lọc các trường có giá trị để tạo query params
+    const filterFields = Object.keys(filter).filter(
+      (key) => filter[key] !== undefined && filter[key] !== ""
+    );
+
+    // Tạo query params từ các trường đã lọc
+    const searchParams = new URLSearchParams(
+      filterFields.map((key) => {
+        return [key, filter[key]];
+      })
+    );
+
+    // Gọi API với các query params đã tạo
+    callApi(searchParams);
+  }, [callApi, filter]);
+
   // Hàm hiển thị xác nhận xóa
   const showConfirmDelete = (CategoryId: number) => {
     setDeleteCategoryId(CategoryId);
     setShowDeleteConfirm(true);
   };
-  // Hàm xóa sản phẩm
+  // Hàm xóa danh mục
   const handleDeleteCategory = () => {
     axios.delete(apiName + "/" + deleteCategoryId).then((response) => {
       setRefresh((f) => f + 1);
-      message.success("Xóa sản phẩm thành công!", 1.5);
+      message.success("Xóa danh mục thành công!", 1.5);
       setShowDeleteConfirm(false);
     });
   };
 
-  // Modal xác nhận xóa sản phẩm
+  // Modal xác nhận xóa danh mục
   const deleteConfirmModal = (
     <Modal
-      title="Xóa sản phẩm"
+      title="Xóa danh mục"
       open={showDeleteConfirm}
       onOk={handleDeleteCategory}
       onCancel={() => setShowDeleteConfirm(false)}
       okText="Xóa"
       cancelText="Hủy"
     >
-      <p>Bạn có chắc chắn muốn xóa sản phẩm?</p>
+      <p>Bạn có chắc chắn muốn xóa danh mục?</p>
     </Modal>
   );
+
+  const resetFilter = useCallback(() => {
+    setFilter(initialState);
+    callApi(initialState);
+  }, [callApi]);
 
   const columns: ColumnsType<any> = [
     {
@@ -103,6 +140,36 @@ export default function Categories() {
       render: (text, record, index) => {
         return <span>{text}</span>;
       },
+      filterDropdown: (
+        <>
+          <Input
+            placeholder="Tìm kiếm danh mục"
+            name="categoryName"
+            value={filter.categoryName}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+          <Button
+            className={Styles.but}
+            type="primary"
+            onClick={onSearch}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            className={Styles.ton}
+            size="small"
+            style={{ width: 90 }}
+            onClick={resetFilter}
+          >
+            Refresh
+          </Button>
+        </>
+      ),
     },
     {
       title: "Mô tả / Ghi chú",

@@ -133,9 +133,9 @@
       }
     }
   
-    .product_quantity:before {
+    /* .product_quantity:before {
       content: "x";
-    }
+    } */
   
     .product_removal {
       width: auto;
@@ -166,7 +166,7 @@
     .totals {
       .totals_item {
         .div {
-          width: 60%;
+          width:60%;
         }
   
         .totals_value {

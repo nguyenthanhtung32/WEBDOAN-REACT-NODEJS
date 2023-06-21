@@ -49,7 +49,9 @@ function Order() {
       };
     });
     
-    const shippedDate = new Date("2023-07-07T00:00:00.000Z");
+    const createDate = new Date();
+    const shippedDate = new Date(createDate);
+    shippedDate.setDate(createDate.getDate() + 3);
 
     const order = {
       createdDate: new Date(),

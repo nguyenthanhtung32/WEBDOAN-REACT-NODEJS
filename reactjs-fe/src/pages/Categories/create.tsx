@@ -24,7 +24,7 @@ export default function Categories() {
       .catch((err) => {
         console.error(err);
       });
-  }, [refresh]);
+  }, [refresh, categories]);
 
   const onFinish = (values: any) => {
     console.log(values);
