@@ -105,26 +105,24 @@ function Cart() {
                         <img
                           alt=""
                           src={product.product.img}
-                          width="100px"
-                          height="100px"
+                          width="50px"
+                          height="50px"
                         />
                       </div>
                       <div className={styles.product_details}>
                         <div className="product_title">
                           {product.product.name}
                         </div>
-                        <div className="product_description">
-                          {product.product.description}
-                        </div>
                       </div>
                       <div className={styles.product_price}>
-                        đ{numeral(product.product.price).format("0,0")}
+                        {numeral(product.product.price).format("0,0")} đ
                       </div>
                       <div className={styles.product_discount}>
                         {numeral(product.product.discount).format("0,0")}%
                       </div>
                       <div class={styles.product_quantity}>
                         <input
+                        style={{width: "80%"}}
                           type="number"
                           value={product.quantity}
                           min="1"
@@ -145,7 +143,6 @@ function Cart() {
                         />
                       </div>
                       <div class={styles.product_line_price}>
-                        đ
                         {numeral(
                           product.quantity *
                             (product.product.price -
@@ -153,7 +150,8 @@ function Cart() {
                                 product.product.discount *
                                 1) /
                                 100)
-                        ).format("0,0")}
+                        ).format("0,0")}{" "}
+                        đ
                       </div>
                     </div>
                   ))
@@ -194,7 +192,7 @@ function Cart() {
                   <div className={styles.totals_item}>
                     <div className={styles.totals_title}>Tổng Tiền</div>
                     <div className={styles.totals_value}>
-                      đ{numeral(totalPrice).format("0,0")}
+                      {numeral(totalPrice).format("0,0")} đ
                     </div>
                   </div>
                 </div>

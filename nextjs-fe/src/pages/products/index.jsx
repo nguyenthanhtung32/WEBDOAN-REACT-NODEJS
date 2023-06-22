@@ -9,26 +9,27 @@ import axios from "../../libraries/axiosClient";
 import { getParamsFromObject } from "../../utils";
 import styles from "./products.module.css";
 
-
-
 const apiName = "/products";
-
-const initialState = {
-  stockStart: "",
-  stockEnd: "",
-  priceStart: "",
-  priceEnd: "",
-  discountStart: "",
-  discountEnd: "",
-  category: "",
-};
 
 const allOption = [{ _id: "", name: "Tất cả" }];
 
 function Products({ products: initialProducts }) {
+  const router = useRouter();
+  const _id = router.query._id;
+
+  const initialState = {
+    stockStart: "",
+    stockEnd: "",
+    priceStart: "",
+    priceEnd: "",
+    discountStart: "",
+    discountEnd: "",
+    category: _id,
+  };
 
   const [filter, setFilter] = useState(initialState);
   const [products, setProducts] = useState(initialProducts);
+  const [category, setCategory] = useState(_id);
   const [categories, setCategories] = React.useState(initialProducts);
 
   const onChangeFilter = (e) => {
@@ -82,7 +83,6 @@ function Products({ products: initialProducts }) {
       .get(`${apiName}?${queryString}`)
       .then((response) => {
         const { data } = response;
-        console.log("response", response);
         setProducts(data.payload);
       })
       .catch((err) => {
@@ -181,7 +181,7 @@ function Products({ products: initialProducts }) {
           onChange={onChangeFilter}
           allowClear
           className={styles.input_search}
-          style={{ borderBottom: "1px solid black"}}
+          style={{ borderBottom: "1px solid black" }}
         />
         <div className={styles.btn_search}>
           <Button onClick={onSearch}>Tìm Kiếm</Button>
@@ -306,11 +306,11 @@ function Products({ products: initialProducts }) {
 export default memo(Products);
 
 export async function getServerSideProps(context) {
-  const { nameCategory, queryString } = context.query;
+  const { _id, queryString } = context.query;
   let products = {};
 
   const searchString = getParamsFromObject({
-    category: nameCategory,
+    category: _id,
     queryString: queryString,
   });
 

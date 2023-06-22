@@ -139,9 +139,9 @@ function Profile() {
               ></Input>
             </div>
           </div>
-          <Button className={styles.btn} onClick={handleSave}>
+          <button className={styles.btn} onClick={handleSave}>
             Lưu
-          </Button>
+          </button>
         </div>
       ) : (
         <div>Loading...</div>

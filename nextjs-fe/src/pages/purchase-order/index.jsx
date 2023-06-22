@@ -50,17 +50,27 @@ const PurchaseOrder = () => {
                       />
                     </div>
                     <div className={styles.product_right}>
-                      <div className={styles.product_top}>{product.product.name}</div>
-                        <div className={styles.product_center}>
-                            <div className={styles.product_description}>{product.product.description}</div>
-                            <div className={styles.product_quantity}>x{product.quantity}</div>
+                      <div className={styles.product_top}>
+                        {product.product.name}
+                      </div>
+                      <div className={styles.product_center}>
+                        <div className={styles.product_description}>
+                          {product.product.description}
+                        </div>
+                        <div className={styles.product_quantity}>
+                          x{product.quantity}
+                        </div>
                       </div>
                       <div className={styles.product_bottom}>
-                        <div className={styles.price}> đ{numeral(product.product.price).format("0,0")}</div>
-                        <div className={styles.priceDiscount}>đ{numeral(product.price).format("0,0")}</div>                      
-                    </div> 
+                        <div className={styles.price}>
+                          {" "}
+                          đ{numeral(product.product.price).format("0,0")}
+                        </div>
+                        <div className={styles.priceDiscount}>
+                          đ{numeral(product.price).format("0,0")}
+                        </div>
+                      </div>
                     </div>
-                                 
                   </div>
                 ))}
               </div>

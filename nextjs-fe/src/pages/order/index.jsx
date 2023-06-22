@@ -9,7 +9,6 @@ import axios from "../../libraries/axiosClient";
 
 function Order() {
   const router = useRouter();
-  const { Option } = Select;
   const [carts, setCarts] = React.useState([]);
   const [shippingAddress, setShippingAddress] = React.useState("");
   const [paymentType, setPaymentType] = React.useState("CASH");
@@ -49,7 +48,9 @@ function Order() {
       };
     });
 
-    const shippedDate = new Date("2023-07-07T00:00:00.000Z");
+    const createDate = new Date();
+    const shippedDate = new Date(createDate);
+    shippedDate.setDate(createDate.getDate() + 3);
 
     const order = {
       createdDate: new Date(),
@@ -63,20 +64,16 @@ function Order() {
       orderDetails: orderDetails,
     };
 
-    console.log("order", order);
     try {
       const response = await axios.post("/orders", order);
-      console.log("response", response);
 
       if (response) {
         message.success("Đặt hàng thành công!", 1.5);
         await axios.delete(`/carts/${customerId}`);
         window.location.href = "/checkout";
-      } else {
-        message.success("Đặt hàng thất bại!", 1.5);
       }
     } catch (error) {
-      console.error(error);
+      message.error("Vui lòng nhập địa chỉ!", 1.5);
     }
   };
 
@@ -116,20 +113,17 @@ function Order() {
                         <img
                           alt=""
                           src={product.product.img}
-                          width="100px"
-                          height="100px"
+                          width="50px"
+                          height="50px"
                         />
                       </div>
                       <div className={styles.product_details}>
                         <div className="product_title">
                           {product.product.name}
                         </div>
-                        <div className="product_description">
-                          {product.product.description}
-                        </div>
                       </div>
                       <div className={styles.product_price}>
-                        đ{numeral(product.product.price).format("0,0")}
+                        {numeral(product.product.price).format("0,0")}đ
                       </div>
                       <div className={styles.product_discount}>
                         {numeral(product.product.discount).format("0,0")}%
@@ -149,7 +143,6 @@ function Order() {
                       </div>
 
                       <div class={styles.product_line_price}>
-                        đ
                         {numeral(
                           product.quantity *
                             (product.product.price -
@@ -157,7 +150,8 @@ function Order() {
                                 product.product.discount *
                                 1) /
                                 100)
-                        ).format("0,0")}
+                        ).format("0,0")}{" "}
+                        đ
                       </div>
                     </div>
                   );
@@ -181,24 +175,7 @@ function Order() {
             );
           })}
         <div className={styles.payment}>
-          Qúy khách vui lòng thanh toán khi nhận hàng
-          {/* <div className={styles.paymentTitle}></div> */}
-          {/* <Select
-            className={styles.paymentOptions}
-            value={paymentType}
-            onChange={setPaymentType}
-            style={{ width: "150px" }}
-          >
-            <Option value="CASH">CASH</Option>
-            <Option
-              value="CREDIT CARD"
-              onClick={() => {
-                router.push("/bank");
-              }}
-            >
-              CREDIT CARD
-            </Option>
-          </Select> */}
+          Quý khách vui lòng thanh toán khi nhận hàng
         </div>
 
         <button className={styles.checkout} onClick={() => handleAddOrder()}>

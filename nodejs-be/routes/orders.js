@@ -46,6 +46,35 @@ router.get("/:id", async function (req, res, next) {
   }
 });
 
+
+
+router.get("/abc/:id", async function (req, res, next) {
+  //   // Validate
+  try {
+    const { id } = req.params;
+
+    let found = await Order.findOne({ _id: id });
+
+    let results = await Order.find({ _id: id })
+      .populate("orderDetails.product")
+      // .populate("customer")
+      // .populate("employee")
+      .lean({ virtual: true });
+
+    if (found) {
+      return res.send({ code: 200, payload: { found, results } });
+    }
+
+    return res.status(410).send({ code: 404, message: "Không tìm thấy" });
+  } catch (err) {
+    res.status(404).json({
+      message: "Get detail fail!!",
+      payload: err,
+    });
+  }
+});
+
+
 // router.post("/", function (req, res, next) {
 //   try {
 //     const data = req.body;
@@ -66,31 +95,31 @@ router.get("/:id", async function (req, res, next) {
 // });
 
 router.post("/", async function (req, res, next) {
-    try {
-      const data = req.body;
-      console.log("req.body", req.body);
-  
-      const newItem = new Order(data);
-      const savedItem = await newItem.save();
-  
-      // Giảm số lượng tồn kho sau khi mua hàng thành công
-      await updateProductStock(savedItem);
-  
-      res.send(savedItem);
-    } catch (err) {
-      res.status(500).send({ message: err.message });
-    }
-  });
-  
-  async function updateProductStock(order) {
-    for (const orderDetail of order.orderDetails) {
-      const productId = orderDetail.productId;
-      const quantity = orderDetail.quantity;
-  
-      // Giảm số lượng tồn kho của sản phẩm
-      await Product.updateOne({ _id: productId }, { $inc: { stock: -quantity } });
-    }
+  try {
+    const data = req.body;
+    console.log("req.body", req.body);
+
+    const newItem = new Order(data);
+    const savedItem = await newItem.save();
+
+    // Giảm số lượng tồn kho sau khi mua hàng thành công
+    await updateProductStock(savedItem);
+
+    res.send(savedItem);
+  } catch (err) {
+    res.status(500).send({ message: err.message });
   }
+});
+
+async function updateProductStock(order) {
+  for (const orderDetail of order.orderDetails) {
+    const productId = orderDetail.productId;
+    const quantity = orderDetail.quantity;
+
+    // Giảm số lượng tồn kho của sản phẩm
+    await Product.updateOne({ _id: productId }, { $inc: { stock: -quantity } });
+  }
+}
 
 router.delete("/:id", function (req, res, next) {
   const validationSchema = yup.object().shape({

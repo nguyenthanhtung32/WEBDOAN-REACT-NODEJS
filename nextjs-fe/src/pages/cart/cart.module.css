@@ -85,93 +85,81 @@
   border: 0;
   margin-top: 20px;
   padding: 6px 25px;
-  background-color: #6b6;
+  background-color: rgb(242, 82, 32);
   color: #fff;
   font-size: 25px;
   border-radius: 3px;
 }
 
 .checkout:hover {
-  background-color: #494;
+  background-color: rgb(244, 121, 84);
   cursor: pointer;
 }
 
-@media screen and (max-width: 650px) {
-  .shopping_cart {
-    margin: 0;
-    padding-top: 20px;
-    border-top: 1px solid #ccc;
-  }
-
-  .column_labels {
-    display: none;
-  }
-
-  .product_image {
-    float: right;
-    width: auto;
-    .img {
-      margin: 0 0 10px 10px;
-    }
-  }
-
-  .product_details {
-    float: none;
-    margin-bottom: 10px;
-    width: auto;
-  }
-
-  .product_price {
-    clear: both;
-    width: 70px;
-  }
-
-  .product_quantity {
-    width: 100px;
-    .input {
-      margin-left: 20px;
-    }
-  }
-
-  .product_quantity:before {
-    content: "x";
-  }
-
-  .product_removal {
-    width: auto;
-  }
-
+@media screen and (max-width: 812px) {
+  .product_image,
+  .product_details,
+  .product_price,
+  .product_discount,
+  .product_quantity,
+  .product_removal,
   .product_line_price {
-    float: right;
-    width: 70px;
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin: 10px 2px;
+  }
+  .totals {
+    width: 100%;
+    height: 30px;
+    display: block;
+    text-align: center;
+    margin-bottom: 100px;
+  }
+  .checkout {
+    font-size: 10px;
+    padding: 4px 10px;
   }
 }
 
-@media screen and (max-width: 350px) {
-  .product_removal {
-    float: right;
-  }
-
-  .product_line_price {
-    float: right;
-    clear: left;
-    width: auto;
-    margin-top: 10px;
-  }
-
-  .product .product_line_price:before {
-    content: "Item Total: $";
-  }
-
+@media screen and (max-width: 667px) {
+  .product_image,
+  .product_details,
+  .product_price,
+  .product_discount,
+  .product_quantity,
+  .product_removal,
+  .product_line_price,
   .totals {
-    .totals_item {
-      .div {
-        width: 60%;
-      }
+    width: 100%;
+    display: block;
+    text-align: center;
+    font-size: xx-small;
+    margin: 10px 2px;
+  }
+  .checkout {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+}
 
-      .totals_value {
-        width: 40%;
-      }
-    }
+@media screen and (max-width: 844px) {
+  .product_image,
+  .product_details,
+  .product_price,
+  .product_discount,
+  .product_quantity,
+  .product_removal,
+  .product_line_price,
+  .totals {
+    width: 100%;
+    display: block;
+    text-align: center;
+    font-size: xx-small;
+    margin: 10px 2px;
+  }
+  .checkout {
+    font-size: 10px;
+    padding: 4px 10px;
   }
 }

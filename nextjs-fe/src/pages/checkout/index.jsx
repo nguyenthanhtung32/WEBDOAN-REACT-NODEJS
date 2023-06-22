@@ -7,10 +7,13 @@ function CheckOut() {
   return (
     <>
       <div className={styles.container}>
-        <CheckCircleOutlined /> Đặt hàng thành công!
-        <Button style={{marginTop: "20px"}} href="/">Trang Chủ</Button>
+        <div>
+          <CheckCircleOutlined  className={styles.icon}/> Đặt hàng thành công!
+        </div>
+        <button className={styles.btn} href="/">
+          Trang Chủ
+        </button>
       </div>
-     
     </>
   );
 }

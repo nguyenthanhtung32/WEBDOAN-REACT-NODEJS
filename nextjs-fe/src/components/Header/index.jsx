@@ -17,27 +17,28 @@ const { SubMenu } = Menu;
 function Header() {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(false);
-  const [carts, setCarts] = React.useState([]);
+  const [carts, setCarts] = React.useState(0);
 
-  //   React.useEffect(() => {
-  //     const fetchCart = async () => {
-  //       try {
-  //         const token = localStorage.getItem("token");
-  //         const decoded = jwt_decode(token);
-  //         const customerId = decoded._id;
-  //         const response = await axios.get(`/carts/${customerId}`);
-  //         const data = response.data;
+  // React.useEffect(() => {
+  //   const fetchCart = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const decoded = jwt_decode(token);
+  //       const customerId = decoded._id;
+  //       const response = await axios.get(`/carts/${customerId}`);
+  //       const data = response.data;
 
-  //         setCarts(data.payload.results);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     };
-  //     fetchCart();
-  //   }, []);
+  //       setCarts(data.payload.results);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchCart();
+  // }, []);
 
   React.useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (token) {
       setIsLogin(true);
     }
@@ -133,11 +134,11 @@ function Header() {
             <>
               <div className={styles.authentication_links}>
                 <Link href="/login" className={styles.link}>
-                  Đăng Nhập
+                  Đăng nhập
                 </Link>
                 <div className={styles.line}>|</div>
                 <Link href="/register" className={styles.link}>
-                  Đăng Ký
+                  Đăng ký
                 </Link>
               </div>
             </>

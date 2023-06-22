@@ -3,14 +3,16 @@
   font-weight: 100;
   background: white;
   display: flex;
+  flex-wrap: wrap;
 }
 .order {
-  margin: 0 20px;
+  margin: 10px 20px;
   padding: 10px;
   background-color: #f9f9f9;
   width: 100%;
   font-size: 14px;
   border: 1px solid black;
+  width: 30%;
 }
 
 .status {
@@ -84,6 +86,7 @@
     text-align: right;
     text-decoration: line-through;
     color: #525252;
+    padding-right: 10px;
   }
   .priceDiscount {
     width: 25%;
