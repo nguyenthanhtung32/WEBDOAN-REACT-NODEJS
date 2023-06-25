@@ -19,10 +19,8 @@ const upload = multer({
   storage: multer.diskStorage({
     contentType: multer.AUTO_CONTENT_TYPE,
     destination: function (req, file, callback) {
-      // const { id, collectionName } = req.params;
 
       const PATH = `${UPLOAD_DIRECTORY}/media/${file.fieldname}`;
-      // console.log('PATH', PATH);
       if (!fs.existsSync(PATH)) {
         // Create a directory
         fs.mkdirSync(PATH, { recursive: true });

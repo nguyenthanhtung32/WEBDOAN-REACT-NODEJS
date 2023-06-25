@@ -21,9 +21,9 @@ router.post(
   passport.authenticate("local", { session: false }),
   async (req, res, next) => {
     try {
-      const { email /* , password */ } = req.body;
+      const { email } = req.body;
 
-      const employee = await Employee.findOne({ email /* , password */ });
+      const employee = await Employee.findOne({ email });
 
       if (!employee) return res.status(404).send({ message: "Not found" });
 

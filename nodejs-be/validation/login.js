@@ -1,5 +1,4 @@
 const yup = require("yup");
-//const ObjectId = require('mongodb').ObjectId;
 
 const validateSchema = (schema) => async (req, res, next) => {
     try {

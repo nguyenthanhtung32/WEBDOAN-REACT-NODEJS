@@ -1,3 +1,5 @@
+import React, { useCallback, memo } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Form,
@@ -9,20 +11,17 @@ import {
   Space,
   Table,
 } from "antd";
-import axios from "../../libraries/axiosClient";
-import React, { useCallback } from "react";
 import {
   AppstoreAddOutlined,
   DeleteOutlined,
   EditOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import Styles from "./index.module.css";
-import { useNavigate } from "react-router-dom";
-
 import type { ColumnsType } from "antd/es/table";
-
 import numeral from "numeral";
+
+import axios from "../../libraries/axiosClient";
+import Styles from "./index.module.css";
 
 const apiName = "/products";
 
@@ -37,9 +36,9 @@ const initialState = {
   discountStart: "",
   discountEnd: "",
 };
-const allOption = [{ _id: "", name: "----All----" }];
+const allOption = [{ _id: "", name: "Tất cả" }];
 
-export default function Products() {
+function Products() {
   const [products, setProducts] = React.useState<any[]>([]);
   const [categories, setCategories] = React.useState<any[]>([]);
   const [suppliers, setSuppliers] = React.useState<any[]>([]);
@@ -60,6 +59,7 @@ export default function Products() {
 
   const [updateForm] = Form.useForm();
   const navigate = useNavigate();
+
   const create = () => {
     navigate("/product");
   };
@@ -310,12 +310,12 @@ export default function Products() {
       width: "1%",
       align: "right",
       render: (text, record, index) => {
-        return <span>{numeral(text).format("0,0")}</span>;
+        return <span>{numeral(text).format("0,0")}đ</span>;
       },
       filterDropdown: (
         <>
           <Input
-            placeholder="Giá thấp nhất"
+            placeholder="Thấp nhất"
             name="priceStart"
             value={filter.priceStart}
             onChange={onChangeFilter}
@@ -323,7 +323,7 @@ export default function Products() {
             allowClear
           />
           <Input
-            placeholder="Giá cao nhất"
+            placeholder="Cao nhất"
             name="priceEnd"
             value={filter.priceEnd}
             onChange={onChangeFilter}
@@ -365,7 +365,7 @@ export default function Products() {
       filterDropdown: (
         <>
           <Input
-            placeholder="Giảm giá thấp nhất"
+            placeholder="Thấp nhất"
             name="discountStart"
             value={filter.discountStart}
             onChange={onChangeFilter}
@@ -373,7 +373,7 @@ export default function Products() {
             allowClear
           />
           <Input
-            placeholder="Giảm giá cao nhất"
+            placeholder="Cao nhất"
             name="discountEnd"
             value={filter.discountEnd}
             onChange={onChangeFilter}
@@ -415,7 +415,7 @@ export default function Products() {
       filterDropdown: (
         <>
           <Input
-            placeholder="Tồn kho thấp nhất"
+            placeholder="Thấp nhất"
             name="stockStart"
             value={filter.stockStart}
             onChange={onChangeFilter}
@@ -423,7 +423,7 @@ export default function Products() {
             allowClear
           />
           <Input
-            placeholder="Tồn kho cao nhất"
+            placeholder="Cao nhất"
             name="stockEnd"
             value={filter.stockEnd}
             onChange={onChangeFilter}
@@ -564,6 +564,7 @@ export default function Products() {
         }}
       />
       {deleteConfirmModal}
+
       {/* EDIT FORM */}
       <Modal
         open={open}
@@ -672,14 +673,16 @@ export default function Products() {
           </Form.Item>
 
           <Form.Item label="Giảm giá" name="discount" hasFeedback>
-            <InputNumber style={{ width: 200 }} />
+            <InputNumber style={{ width: 200 }} min={0} max={75} />
           </Form.Item>
 
           <Form.Item label="Tồn kho" name="stock" hasFeedback>
-            <InputNumber style={{ width: 200 }} />
+            <InputNumber style={{ width: 200 }} min={0} />
           </Form.Item>
         </Form>
       </Modal>
     </div>
   );
 }
+
+export default memo(Products);

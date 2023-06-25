@@ -1,29 +1,25 @@
+import React, { memo } from "react";
+import { useNavigate } from "react-router-dom";
+import type { ColumnsType } from "antd/es/table";
 import {
   Button,
   Form,
   message,
   Space,
   Modal,
-  Input,
   Table,
   Select,
+  Input,
 } from "antd";
-import axios from "../../libraries/axiosClient";
-import React from "react";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  DownCircleOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
-import type { ColumnsType } from "antd/es/table";
+import axios from "../../libraries/axiosClient";
 
 const apiName = "/orders";
 
-export default function Orders() {
+function Orders() {
   const [orders, setOrders] = React.useState<any[]>([]);
   const [employees, setEmployees] = React.useState([]);
-  const [customers, setCustomers] = React.useState<any[]>([]);
 
   const [refresh, setRefresh] = React.useState<number>(0);
   const [open, setOpen] = React.useState<boolean>(false);
@@ -34,12 +30,28 @@ export default function Orders() {
     React.useState<boolean>(false);
 
   const [updateForm] = Form.useForm();
+  const navigate = useNavigate();
+
+  const formatDate = (dateString: any) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
+  const onClickFilter = (_id: string | undefined) => {
+    console.log("_id", _id);
+    navigate("/orderDetails", {
+      state: {
+        productDetail: _id,
+      },
+    });
+  };
 
   // Hàm hiển thị xác nhận xóa
   const showConfirmDelete = (orderId: number) => {
     setOrderId(orderId);
     setShowDeleteConfirm(true);
   };
+
   // Hàm xóa sản phẩm
   const handleDeleteOrders = () => {
     axios.delete(apiName + "/" + deleteOrderId).then((response) => {
@@ -85,8 +97,8 @@ export default function Orders() {
     },
     {
       title: "Tên nhân viên",
-      dataIndex: "employees.name",
-      key: "employees.name",
+      dataIndex: "employee.name",
+      key: "employee.name",
       render: (text, record, index) => {
         const fullNameEmployee = `${record?.employee?.firstName} ${record?.employee?.lastName}`;
         return <span>{fullNameEmployee}</span>;
@@ -97,7 +109,7 @@ export default function Orders() {
       dataIndex: "status",
       key: "status",
       render: (text, record, index) => {
-        return <strong style={{ color: "#6c5ce7" }}>{text}</strong>;
+        return <strong style={{ color: "red" }}>{text}</strong>;
       },
     },
     {
@@ -111,23 +123,17 @@ export default function Orders() {
       key: "shippingAddress",
     },
     {
+      title: "Ngày giao hàng",
+      dataIndex: "shippedDate",
+      key: "shippedDate",
+      render: (text, record, index) => {
+        return <span key={text._id}>{formatDate(text)}</span>;
+      },
+    },
+    {
       title: "Hình thức thanh toán",
       dataIndex: "paymentType",
       key: "paymentType",
-    },
-    {
-      title: "Order Details",
-      dataIndex: "orderDetails",
-      key: "orderDetails",
-      render: (_text, record) => {
-        return (
-          <span>
-            Quantity: {record.orderDetails[0].quantity}
-            <br />
-            Product: {record.orderDetails[0].productId}
-          </span>
-        );
-      },
     },
     {
       title: "Hành động",
@@ -150,15 +156,23 @@ export default function Orders() {
                 showConfirmDelete(record._id);
               }}
             />
+          </Space>
+        );
+      },
+    },
+    {
+      title: "Xem chi tiết",
+      width: "1%",
+      render: (text, record, index) => {
+        return (
+          <Space>
             <Button
-              danger
-              icon={<DownCircleOutlined />}
               onClick={() => {
-                setOpen(true);
-                // setUpdateId(record._id);
-                updateForm.setFieldsValue(record);
+                onClickFilter(record._id);
               }}
-            />
+            >
+              View
+            </Button>
           </Space>
         );
       },
@@ -183,24 +197,12 @@ export default function Orders() {
       .get("/employees")
       .then((response) => {
         const { data } = response;
-        setEmployees(data);
+        setEmployees(data.payload);
       })
       .catch((err) => {
         console.error(err);
       });
-  }, []);
-
-  React.useEffect(() => {
-    axios
-      .get("/customers")
-      .then((response) => {
-        const { data } = response;
-        setCustomers(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+  }, [refresh]);
 
   const onUpdateFinish = (values: any) => {
     axios
@@ -208,7 +210,7 @@ export default function Orders() {
       .then((response) => {
         setRefresh((f) => f + 1);
         updateForm.resetFields();
-        message.success("Cập nhật danh mục thành công!", 1.5);
+        message.success("Cập nhật đơn hàng thành công!", 1.5);
         setOpen(false);
       })
       .catch((err) => {});
@@ -216,14 +218,14 @@ export default function Orders() {
 
   return (
     <div style={{ padding: 24 }}>
-      {/* TABLE */}
       <div>
         <Table rowKey="_id" dataSource={orders} columns={columns} />
         {deleteConfirmModal}
       </div>
+
       <Modal
         open={open}
-        title="Cập nhật danh mục"
+        title="Cập nhật đơn hàng"
         onCancel={() => {
           setOpen(false);
         }}
@@ -251,27 +253,32 @@ export default function Orders() {
               <Select.Option value="CANCELED">CANCELED</Select.Option>
             </Select>
           </Form.Item>
-          {/* <Form.Item
-              label="Nhà cung cấp"
-              name="employeeId"
-              hasFeedback
-            //   required={true}
-            //   rules={[
-            //     {
-            //       required: true,
-            //       message: "Nhà cung cấp bắt buộc phải chọn",
-            //     },
-            //   ]}
-            >
-              <Select
-                style={{ width: "100%" }}
-                options={employees.map((c : any) => {
-                  return { value: c._id, label: c.firstName };
-                })}
-              />
-            </Form.Item> */}
+          <Form.Item
+            label="Nhân viên"
+            name="employeeId"
+            hasFeedback
+            required={true}
+            rules={[
+              {
+                required: true,
+                message: "Nhân viên bắt buộc phải chọn",
+              },
+            ]}
+          >
+            <Select
+              style={{ width: "100%" }}
+              options={employees.map((c: any) => {
+                return { value: c._id, label: c.firstName + " " + c.lastName };
+              })}
+            />
+          </Form.Item>
+          <Form.Item label="Ngày giao" name="shippedDate">
+            <Input />
+          </Form.Item>
         </Form>
       </Modal>
     </div>
   );
 }
+
+export default memo(Orders);

@@ -21,7 +21,6 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/:id", async function (req, res, next) {
-  //   // Validate
   try {
     const { id } = req.params;
 
@@ -49,7 +48,6 @@ router.get("/:id", async function (req, res, next) {
 
 
 router.get("/abc/:id", async function (req, res, next) {
-  //   // Validate
   try {
     const { id } = req.params;
 
@@ -57,8 +55,6 @@ router.get("/abc/:id", async function (req, res, next) {
 
     let results = await Order.find({ _id: id })
       .populate("orderDetails.product")
-      // .populate("customer")
-      // .populate("employee")
       .lean({ virtual: true });
 
     if (found) {
@@ -74,25 +70,6 @@ router.get("/abc/:id", async function (req, res, next) {
   }
 });
 
-
-// router.post("/", function (req, res, next) {
-//   try {
-//     const data = req.body;
-//     console.log("req.body", req.body);
-
-//     const newItem = new Order(data);
-//     newItem
-//       .save()
-//       .then((result) => {
-//         res.send(result);
-//       })
-//       .catch((err) => {
-//         res.status(400).send({ message: err.message });
-//       });
-//   } catch (err) {
-//     res.sendStatus(500);
-//   }
-// });
 
 router.post("/", async function (req, res, next) {
   try {

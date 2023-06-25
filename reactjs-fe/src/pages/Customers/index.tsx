@@ -1,11 +1,21 @@
 import React, { useCallback } from "react";
 import { Button, Form, Input, Table, message, Space, Modal } from "antd";
 import axios from "../../libraries/axiosClient";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
+import Styles from "./index.module.css";
 
 import type { ColumnsType } from "antd/es/table";
 
 const apiName = "/customers";
+
+const initialState = {
+  firstNameCustomer: "",
+  lastNameCustomer: "",
+};
 
 export default function Customers() {
   const [customers, setCustomers] = React.useState<any[]>([]);
@@ -13,6 +23,8 @@ export default function Customers() {
   const [refresh, setRefresh] = React.useState<number>(0);
   const [open, setOpen] = React.useState<boolean>(false);
   const [updateId, setUpdateId] = React.useState<number>(0);
+
+  const [filter, setFilter] = React.useState<any>(initialState);
 
   const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [pageSize, setPageSize] = React.useState<number>(10);
@@ -23,6 +35,18 @@ export default function Customers() {
     React.useState<boolean>(false);
 
   const [updateForm] = Form.useForm();
+
+  const formatDate = (dateString: any) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
+  const onChangeFilter = useCallback((e: any) => {
+    setFilter((prevState: any) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  }, []);
 
   const callApi = useCallback((searchParams: any) => {
     axios
@@ -47,6 +71,23 @@ export default function Customers() {
     };
     callApi(filters);
   }, [callApi, currentPage, pageSize]);
+
+  const onSearch = useCallback(() => {
+    // Lọc các trường có giá trị để tạo query params
+    const filterFields = Object.keys(filter).filter(
+      (key) => filter[key] !== undefined && filter[key] !== ""
+    );
+
+    // Tạo query params từ các trường đã lọc
+    const searchParams = new URLSearchParams(
+      filterFields.map((key) => {
+        return [key, filter[key]];
+      })
+    );
+
+    // Gọi API với các query params đã tạo
+    callApi(searchParams);
+  }, [callApi, filter]);
 
   // Hàm hiển thị xác nhận xóa
   const showConfirmDelete = (customerId: number) => {
@@ -76,6 +117,11 @@ export default function Customers() {
     </Modal>
   );
 
+  const resetFilter = useCallback(() => {
+    setFilter(initialState);
+    callApi(initialState);
+  }, [callApi]);
+
   const columns: ColumnsType<any> = [
     {
       title: "Id",
@@ -91,11 +137,71 @@ export default function Customers() {
       title: "Họ",
       dataIndex: "firstName",
       key: "firstName",
+      filterDropdown: (
+        <>
+          <Input
+            placeholder="Tìm kiếm nhân viên"
+            name="firstNameCustomer"
+            value={filter.firstNameCustomer}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+          <Button
+            className={Styles.but}
+            type="primary"
+            onClick={onSearch}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            className={Styles.ton}
+            size="small"
+            style={{ width: 90 }}
+            onClick={resetFilter}
+          >
+            Refresh
+          </Button>
+        </>
+      ),
     },
     {
       title: "Tên",
       dataIndex: "lastName",
       key: "lastName",
+      filterDropdown: (
+        <>
+          <Input
+            placeholder="Tìm kiếm nhân viên"
+            name="lastNameCustomer"
+            value={filter.lastNameCustomer}
+            onChange={onChangeFilter}
+            className={Styles.input}
+            allowClear
+          />
+          <Button
+            className={Styles.but}
+            type="primary"
+            onClick={onSearch}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            className={Styles.ton}
+            size="small"
+            style={{ width: 90 }}
+            onClick={resetFilter}
+          >
+            Refresh
+          </Button>
+        </>
+      ),
     },
     {
       title: "Số Điện Thoại",
@@ -116,6 +222,9 @@ export default function Customers() {
       title: "Ngày Sinh",
       dataIndex: "birthday",
       key: "birthday",
+      render: (text, record, index) => {
+        return <span key={text._id}>{formatDate(text)}</span>;
+      },
     },
     {
       width: "1%",

@@ -122,7 +122,7 @@ router.get("/:id", async (req, res, next) => {
     });
 });
 
-// ------------------------------------------------------------------------------------------------
+
 // Create new data
 router.post("/", function (req, res, next) {
   // Validate
@@ -168,7 +168,7 @@ router.post("/", function (req, res, next) {
         });
     });
 });
-// ------------------------------------------------------------------------------------------------
+
 // Delete data
 router.delete("/:id", function (req, res, next) {
   const validationSchema = yup.object().shape({

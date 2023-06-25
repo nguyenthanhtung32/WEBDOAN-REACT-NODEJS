@@ -1,18 +1,19 @@
-import React from "react";
-import { Button, Layout, Menu } from "antd";
+import React, { memo } from "react";
+import { Layout, Menu } from "antd";
 import {
   HomeOutlined,
   SettingOutlined,
   UnorderedListOutlined,
 } from "@ant-design/icons";
 import { Route, Routes, useNavigate } from "react-router-dom";
+
 import Categories from "../../pages/Categories";
 import Suppliers from "../../pages/Suppliers";
 import Products from "../../pages/Products";
 import Customers from "../../pages/Customers";
 import Employees from "../../pages/Employees";
 import Orders from "../../pages/Orders";
-import OrdersDetail from "../../pages/Orders/detail";
+import OrdersDetail from "../../pages/Orders/orderDetails";
 import CreateProduct from "../../pages/Products/create";
 import CreateCategory from "../../pages/Categories/create";
 import CreateSupplier from "../../pages/Suppliers/create";
@@ -25,57 +26,43 @@ const menuItems = [
   {
     key: "home",
     icon: <HomeOutlined />,
-    label: "Home",
+    label: "Trang chủ",
   },
   {
     key: "list",
     icon: <UnorderedListOutlined />,
     label: "Quản lý",
     children: [
-      { key: "categories", label: "Categories" },
-      { key: "suppliers", label: "Suppliers" },
-      { key: "products", label: "Products" },
-      { key: "customers", label: "Customers" },
-      { key: "employees", label: "Employees" },
+      { key: "categories", label: "Danh mục" },
+      { key: "suppliers", label: "Nhà cung cấp" },
+      { key: "products", label: "Sản phẩm" },
+      { key: "customers", label: "Khách hàng" },
+      { key: "employees", label: "Nhân viên" },
     ],
   },
   {
     key: "orders",
     icon: <SettingOutlined />,
-    label: "Quản lý Orders",
-    children: [
-      { key: "orders", label: "Orders" },
-      { key: "orderDetails", label: "OrderDetails" },
-    ],
+    label: "Quản lý đơn hàng",
   },
 ];
 
-interface IProps {
-  setIsLogin: (value: boolean) => void;
-}
-
-export default function NavigationBar(props: IProps) {
+function NavigationBar() {
   const navigate = useNavigate();
   const [current, setCurrent] = React.useState<string>("home");
-  const { setIsLogin } = props;
 
   const handleMenuClick = (e: { key: string }) => {
     setCurrent(e.key);
     navigate(`/${e.key}`);
   };
 
-  const handleLogout = () => {
-    setIsLogin(false);
-    navigate(`/`);
-  };
-
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Sider>
-        <div className="logo" />
+      <Sider style={{ backgroundColor: "white" }}>
         <Menu
+          style={{ marginTop: "20px" }}
           onClick={handleMenuClick}
-          theme="dark"
+          //   theme="dark"
           mode="inline"
           defaultSelectedKeys={["home"]}
           selectedKeys={[current]}
@@ -101,13 +88,7 @@ export default function NavigationBar(props: IProps) {
 
       <Layout className="site-layout">
         <Content style={{ margin: "10px" }}>
-          <div
-            className="site-layout-background"
-            style={{ padding: 24, minHeight: 360 }}
-          >
-            <Button className="logout-button" onClick={handleLogout}>
-              Đăng xuất
-            </Button>
+          <div className="site-layout-background" style={{ minHeight: 360 }}>
             <Routes>
               <Route path="/categories" element={<Categories />} />
               <Route path="/suppliers" element={<Suppliers />} />
@@ -129,3 +110,5 @@ export default function NavigationBar(props: IProps) {
     </Layout>
   );
 }
+
+export default memo(NavigationBar);

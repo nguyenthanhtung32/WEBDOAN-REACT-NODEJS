@@ -71,6 +71,9 @@ function ProductDetail(props) {
     const orderDetails = [
       {
         productId: product._id,
+        img: product.img,
+        name: product.name,
+        description: product.description,
         quantity: quantity,
         price: product.price - (product.price * product.discount) / 100,
         discount: product.discount,

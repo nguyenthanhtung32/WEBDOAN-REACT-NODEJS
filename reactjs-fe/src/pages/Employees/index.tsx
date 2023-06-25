@@ -1,15 +1,16 @@
-import React, { useCallback } from "react";
+import React, { useCallback, memo } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, Table, message, Space, Modal } from "antd";
-import axios from "../../libraries/axiosClient";
 import {
   AppstoreAddOutlined,
   DeleteOutlined,
   EditOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import Styles from "./index.module.css";
 import type { ColumnsType } from "antd/es/table";
-import { useNavigate } from "react-router-dom";
+
+import axios from "../../libraries/axiosClient";
+import Styles from "./index.module.css";
 
 const apiName = "/employees/";
 
@@ -18,7 +19,7 @@ const initialState = {
   lastNameEmployee: "",
 };
 
-export default function Employees() {
+function Employees() {
   const [employees, setEmployees] = React.useState<any[]>([]);
 
   const [refresh, setRefresh] = React.useState<number>(0);
@@ -37,6 +38,12 @@ export default function Employees() {
 
   const [updateForm] = Form.useForm();
   const navigate = useNavigate();
+
+  const formatDate = (dateString: any) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
   const create = () => {
     navigate("/employee");
   };
@@ -222,6 +229,9 @@ export default function Employees() {
       title: "Ngày Sinh",
       dataIndex: "birthday",
       key: "birthday",
+      render: (text, record, index) => {
+        return <span key={text._id}>{formatDate(text)}</span>;
+      },
     },
     {
       width: "1%",
@@ -260,6 +270,7 @@ export default function Employees() {
       ),
     },
   ];
+
   React.useEffect(() => {
     // Call api
     axios
@@ -279,14 +290,13 @@ export default function Employees() {
       .then((response) => {
         setRefresh((f) => f + 1);
         updateForm.resetFields();
-        message.success("Update Successfully", 1.5);
+        message.success("Cập nhật nhân viên thành công!", 1.5);
         setOpen(false);
       })
       .catch((err) => {});
   };
   return (
     <div style={{ padding: 24 }}>
-      {/* TABLE */}
       <Table
         rowKey="_id"
         dataSource={employees}
@@ -300,7 +310,7 @@ export default function Employees() {
         }}
       />
       {deleteConfirmModal}
-      {/* EDIT FORM */}
+
       <Modal
         open={open}
         title="Cập Nhật Khách Hàng"
@@ -379,3 +389,5 @@ export default function Employees() {
     </div>
   );
 }
+
+export default memo(Employees);

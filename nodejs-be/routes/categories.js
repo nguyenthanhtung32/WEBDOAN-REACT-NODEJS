@@ -84,7 +84,6 @@ router.post("/", async function (req, res, next) {
     });
 });
 
-// ------------------------------------------------------------------------------------------------
 // Delete data
 router.delete("/:id", function (req, res, next) {
   const validationSchema = yup.object().shape({

@@ -27,7 +27,6 @@ orderDetailSchema.set("toObject", { virtuals: true });
 // Virtual in JSON
 orderDetailSchema.set("toJSON", { virtuals: true });
 
-// ------------------------------------------------------------------------------------------------
 
 const orderSchema = new Schema(
   {

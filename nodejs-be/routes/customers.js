@@ -18,12 +18,11 @@ const encodeToken = require("../helpers/jwtHelper");
 router.post(
   "/login",
   validateSchema(loginSchema),
-  /* passport.authenticate("local", { session: false }) */
   async (req, res, next) => {
     try {
-      const { email /* , password */ } = req.body;
+      const { email } = req.body;
 
-      const customer = await Customer.findOne({ email /* , password */ });
+      const customer = await Customer.findOne({ email });
 
       if (!customer) return res.status(404).send({ message: "Not found" });
 
@@ -114,36 +113,6 @@ router.get("/:id", validateSchema(getIdSchema), async (req, res, next) => {
 
 // Create new data
 router.post("/", async function (req, res, next) {
-  // Validate
-  //   const validationSchema = yup.object({
-  //     body: yup.object({
-  //       firstName: yup.string().required(),
-  //       lastName: yup.string().required(),
-  //       phoneNumber: yup.string().required(),
-  //       email: yup.string().required(),
-  //       address: yup.string().required(),
-  //       birthday: yup.string().required(),
-  //     }),
-  //   });
-
-  //   validationSchema
-  //     .validate({ body: req.body }, { abortEarly: false })
-  //     .then(async () => {
-  //       try {
-  //         const data = req.body;
-  //         const newItem = new Customer(data);
-  //         let result = await newItem.save();
-
-  //         return res.send({ ok: true, message: "Created", result });
-  //       } catch (err) {
-  //         return res.status(500).json({ error: err });
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       return res
-  //         .status(400)
-  //         .json({ type: err.name, errors: err.errors, provider: "yup" });
-  //     });
   try {
     const data = req.body;
 
@@ -162,37 +131,8 @@ router.post("/", async function (req, res, next) {
   }
 });
 
-// ------------------------------------------------------------------------------------------------
 // Delete data
 router.delete("/:id", function (req, res, next) {
-  //   const validationSchema = yup.object().shape({
-  //     params: yup.object({
-  //       id: yup.string().test('Validate ObjectID', '${path} is not valid ObjectID', (value) => {
-  //         return ObjectId.isValid(value);
-  //       }),
-  //     }),
-  //   });
-
-  //   validationSchema
-  //     .validate({ params: req.params }, { abortEarly: false })
-  //     .then(async () => {
-  //       try {
-  //         const id = req.params.id;
-
-  //         let found = await Customer.findByIdAndDelete(id);
-
-  //         if (found) {
-  //           return res.send({ ok: true, result: found });
-  //         }
-
-  //         return res.status(410).send({ ok: false, message: 'Object not found' });
-  //       } catch (err) {
-  //         return res.status(500).json({ error: err });
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       return res.status(400).json({ type: err.name, errors: err.errors, message: err.message, provider: 'yup' });
-  //     });
   try {
     const { id } = req.params;
     Customer.findByIdAndDelete(id)

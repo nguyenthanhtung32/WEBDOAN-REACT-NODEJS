@@ -24,7 +24,6 @@ cartDetailSchema.set('toObject', { virtuals: true });
 // Virtuals in JSON
 cartDetailSchema.set('toJSON', { virtuals: true });
 
-// ------------------------------------------------------------------------------------------------
 
 const cartSchema = new Schema(
   {

@@ -1,11 +1,12 @@
-import React from "react";
-import { Button, Form, Input, message } from "antd";
-import axios from "../../libraries/axiosClient";
+import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button, Form, Input, message } from "antd";
+
+import axios from "../../libraries/axiosClient";
 
 const apiName = "/employees";
 
-export default function Employees() {
+function Employees() {
   const [employees, setEmployees] = React.useState<any[]>([]);
   const [refresh, setRefresh] = React.useState<number>(0);
   const navigate = useNavigate();
@@ -123,3 +124,5 @@ export default function Employees() {
     </div>
   );
 }
+
+export default memo(Employees);
