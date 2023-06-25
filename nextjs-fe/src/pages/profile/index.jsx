@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import jwt_decode from "jwt-decode";
 
 import axios from "../../libraries/axiosClient";
-import { Button, Input, message } from "antd";
+import { Input, message } from "antd";
 import styles from "./profile.module.css";
 
 function Profile() {
