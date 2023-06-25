@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import axios from "../../libraries/axiosClient";
-import Styles from "./Login.module.css";
+import React, { useState, memo } from "react";
+import { message } from "antd";
 import {
   SlSocialFacebook,
   SlSocialGoogle,
   SlSocialTwitter,
 } from "react-icons/sl";
-import { message } from "antd";
+
+import axios from "../../libraries/axiosClient";
+import Styles from "./Login.module.css";
 interface IProps {
   setIsLogin: (value: boolean) => void;
 }
@@ -26,14 +27,13 @@ const Login: React.FC<IProps> = (props) => {
 
     try {
       const response = await axios.post("/employees/login", token);
-      console.log(response);
-
+    
       localStorage.setItem("token", response.data.token);
       message.success("Đăng nhập thành công!", 1.5);
       setIsLogin(true);
     } catch (error) {
       console.error(error);
-      message.warning("Đăng nhập thât bại!", 1.5);
+      message.warning("Đăng nhập thất bại!", 1.5);
     }
   };
 
@@ -91,4 +91,4 @@ const Login: React.FC<IProps> = (props) => {
   );
 };
 
-export default Login;
+export default memo(Login);

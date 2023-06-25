@@ -1,16 +1,17 @@
-import { Button, Form, Input, message } from "antd";
-import axios from "../../libraries/axiosClient";
-import React from "react";
+import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button, Form, Input, message } from "antd";
+
+import axios from "../../libraries/axiosClient";
 
 const apiName = "/categories";
 
-export default function Categories() {
+function Categories() {
   const [categories, setCategories] = React.useState<any[]>([]);
   const [refresh, setRefresh] = React.useState<number>(0);
-  const navigate = useNavigate();
 
   const [createForm] = Form.useForm();
+  const navigate = useNavigate();
 
   // Call api to get data
   React.useEffect(() => {
@@ -27,8 +28,6 @@ export default function Categories() {
   }, [refresh, categories]);
 
   const onFinish = (values: any) => {
-    console.log(values);
-
     axios
       .post(apiName, values)
       .then((response) => {
@@ -42,8 +41,7 @@ export default function Categories() {
 
   return (
     <div style={{ padding: 24 }}>
-      <div style={{}}>
-        {/* CREAT FORM */}
+      <div>
         <Form
           form={createForm}
           name="create-form"
@@ -80,7 +78,7 @@ export default function Categories() {
               span: 16,
             }}
           >
-            <Button type="primary" htmlType="submit" >
+            <Button type="primary" htmlType="submit">
               Lưu thông tin
             </Button>
           </Form.Item>
@@ -89,3 +87,5 @@ export default function Categories() {
     </div>
   );
 }
+
+export default memo(Categories);

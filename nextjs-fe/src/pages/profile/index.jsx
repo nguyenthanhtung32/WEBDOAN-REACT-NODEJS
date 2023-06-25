@@ -1,8 +1,8 @@
 import React, { memo } from "react";
 import jwt_decode from "jwt-decode";
+import { Button, Input, message } from "antd";
 
 import axios from "../../libraries/axiosClient";
-import { Button, Input, message } from "antd";
 import styles from "./profile.module.css";
 
 function Profile() {
@@ -65,87 +65,97 @@ function Profile() {
 
   return (
     <>
-      {customer ? (
-        <div key={customer._id} className={styles.profile_container}>
-          <h1 className={styles.profile_heading}>Thông tin cá nhân</h1>
-          <div className={styles.flex}>
-            <div className={styles.profile_field}>
-              <p className={styles.profile_label}>Họ</p>
-              <Input
-                className={styles.profile_input}
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              ></Input>
+      {customer
+        ? (
+          <div key={customer._id} className={styles.profile_container}>
+            <h1 className={styles.profile_heading}>Thông tin cá nhân</h1>
+            <div className={styles.flex}>
+              <div className={styles.profile_field}>
+                <p className={styles.profile_label}>Họ</p>
+                <Input
+                  className={styles.profile_input}
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                >
+                </Input>
+              </div>
+              <div className={styles.profile_field}>
+                <p className={styles.profile_label}>Tên</p>
+                <Input
+                  className={styles.profile_input}
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                >
+                </Input>
+              </div>
             </div>
-            <div className={styles.profile_field}>
-              <p className={styles.profile_label}>Tên</p>
-              <Input
-                className={styles.profile_input}
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              ></Input>
-            </div>
-          </div>
 
-          <div className={styles.profile_field}>
-            <p className={styles.profile_label}>Email</p>
-            <Input
-              className={styles.profile_input}
-              value={customer.email}
-              disabled={true}
-            ></Input>
-          </div>
-          <div className={styles.profile_field}>
-            <p className={styles.profile_label}>Số điện thoại</p>
-            <Input
-              className={styles.profile_input}
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            ></Input>
-          </div>
-          <div className={styles.profile_field}>
-            <p className={styles.profile_label}>Ngày sinh</p>
-            <Input
-              className={styles.profile_input}
-              value={formatDate(customer.birthday)}
-              onChange={(e) => setBirthday(e.target.value)}
-            ></Input>
-          </div>
-          <div className={styles.profile_field}>
-            <p className={styles.profile_label}>Địa chỉ</p>
-            <Input
-              className={styles.profile_input}
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            ></Input>
-          </div>
-          <div className={styles.flex}>
             <div className={styles.profile_field}>
-              <p className={styles.profile_label}>Ngày tạo tài khoản</p>
+              <p className={styles.profile_label}>Email</p>
               <Input
                 className={styles.profile_input}
-                value={formatDate(customer.createdAt)}
+                value={customer.email}
                 disabled={true}
-              ></Input>
+              >
+              </Input>
             </div>
             <div className={styles.profile_field}>
-              <p className={styles.profile_label}>
-                Ngày sửa thông tin gần nhất
-              </p>
+              <p className={styles.profile_label}>Số điện thoại</p>
               <Input
                 className={styles.profile_input}
-                value={formatDate(customer.updatedAt)}
-                disabled={true}
-              ></Input>
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              >
+              </Input>
             </div>
+            <div className={styles.profile_field}>
+              <p className={styles.profile_label}>Ngày sinh</p>
+              <Input
+                className={styles.profile_input}
+                value={formatDate(customer.birthday)}
+                onChange={(e) => setBirthday(e.target.value)}
+              >
+              </Input>
+            </div>
+            <div className={styles.profile_field}>
+              <p className={styles.profile_label}>Địa chỉ</p>
+              <Input
+                className={styles.profile_input}
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              >
+              </Input>
+            </div>
+            <div className={styles.flex}>
+              <div className={styles.profile_field}>
+                <p className={styles.profile_label}>Ngày tạo tài khoản</p>
+                <Input
+                  className={styles.profile_input}
+                  value={formatDate(customer.createdAt)}
+                  disabled={true}
+                >
+                </Input>
+              </div>
+              <div className={styles.profile_field}>
+                <p className={styles.profile_label}>
+                  Ngày sửa thông tin gần nhất
+                </p>
+                <Input
+                  className={styles.profile_input}
+                  value={formatDate(customer.updatedAt)}
+                  disabled={true}
+                >
+                </Input>
+              </div>
+            </div>
+            <Button className={styles.btn} onClick={handleSave}>
+              Lưu
+            </Button>
           </div>
-          <Button className={styles.btn} onClick={handleSave}>
-            Lưu
-          </Button>
-        </div>
-      ) : (
-        <div>Loading...</div>
-      )}
+        )
+        : (
+          <div>Loading...</div>
+        )}
     </>
   );
 }

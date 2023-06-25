@@ -2,7 +2,7 @@ import React, { useState, memo } from "react";
 import { message } from "antd";
 
 import axios from "../../libraries/axiosClient";
-import styles from "../login/login.module.css";
+import styles from "./index.module.css";
 
 function SignUp() {
   const [email, setEmail] = useState("");

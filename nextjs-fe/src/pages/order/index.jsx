@@ -3,17 +3,18 @@ import { Input, message, Select } from "antd";
 import numeral from "numeral";
 import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
-import styles from "./order.module.css";
 
+import styles from "./order.module.css";
 import axios from "../../libraries/axiosClient";
 
 function Order() {
-  const router = useRouter();
-  const { Option } = Select;
   const [carts, setCarts] = React.useState([]);
   const [shippingAddress, setShippingAddress] = React.useState("");
   const [paymentType, setPaymentType] = React.useState("CASH");
   const [description, setDescription] = React.useState("");
+
+  const router = useRouter();
+  const { Option } = Select;
 
   React.useEffect(() => {
     const fetchCart = async () => {
@@ -38,7 +39,6 @@ function Order() {
     const token = localStorage.getItem("token");
     const decoded = jwt_decode(token);
     const customerId = decoded._id;
-    console.log("customerId", customerId);
 
     const orderDetails = carts[0].products.map((p) => {
       return {
@@ -48,7 +48,7 @@ function Order() {
         discount: p.product.discount,
       };
     });
-    
+
     const createDate = new Date();
     const shippedDate = new Date(createDate);
     shippedDate.setDate(createDate.getDate() + 3);
@@ -83,7 +83,7 @@ function Order() {
   return (
     <>
       <div className={styles.container}>
-        <h1 className={styles.h1}>Thanh Toán</h1>
+        <h3 className={styles.h1}>Thanh Toán</h3>
         <Input
           style={{ marginTop: "10px" }}
           placeholder="Nhập địa chỉ giao hàng"
@@ -105,8 +105,7 @@ function Order() {
               <div key={cart._id}>
                 {cart?.products?.map((product) => {
                   // tính giá tiền của từng sản phẩm và cộng dồn vào biến totalPrice
-                  totalPrice +=
-                    product.quantity *
+                  totalPrice += product.quantity *
                     (product.product.price -
                       (product.product.price * product.product.discount * 1) /
                         100);
@@ -142,20 +141,19 @@ function Order() {
                           onChange={(e) =>
                             handleQuantityChange(
                               product.product._id,
-                              parseInt(e.target.value)
-                            )
-                          }
+                              parseInt(e.target.value),
+                            )}
                         />
                       </div>
 
-                      <div class={styles.product_line_price}>  
+                      <div class={styles.product_line_price}>
                         {numeral(
                           product.quantity *
                             (product.product.price -
                               (product.product.price *
-                                product.product.discount *
-                                1) /
-                                100)
+                                  product.product.discount *
+                                  1) /
+                                100),
                         ).format("0,0")} đ
                       </div>
                     </div>

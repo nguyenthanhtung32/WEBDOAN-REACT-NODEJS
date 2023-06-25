@@ -1,16 +1,16 @@
-import React, { useCallback } from "react";
+import React, { useCallback, memo } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, Table, message, Space, Modal } from "antd";
-import axios from "../../libraries/axiosClient";
 import {
   AppstoreAddOutlined,
   DeleteOutlined,
   EditOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import Styles from "./index.module.css";
-import { useNavigate } from "react-router-dom";
-
 import type { ColumnsType } from "antd/es/table";
+
+import axios from "../../libraries/axiosClient";
+import Styles from "./index.module.css";
 
 const apiName = "/suppliers";
 
@@ -18,7 +18,7 @@ const initialState = {
   supplierName: "",
 };
 
-export default function Suppliers() {
+function Suppliers() {
   const [suppliers, setSuppliers] = React.useState<any[]>([]);
 
   const [refresh, setRefresh] = React.useState<number>(0);
@@ -37,6 +37,7 @@ export default function Suppliers() {
 
   const [updateForm] = Form.useForm();
   const navigate = useNavigate();
+
   const create = () => {
     navigate("/supplier");
   };
@@ -260,6 +261,7 @@ export default function Suppliers() {
         }}
       />
       {deleteConfirmModal}
+
       {/* EDIT FORM */}
       <Modal
         open={open}
@@ -321,3 +323,5 @@ export default function Suppliers() {
     </div>
   );
 }
+
+export default memo(Suppliers);

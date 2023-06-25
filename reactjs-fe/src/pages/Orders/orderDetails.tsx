@@ -1,15 +1,14 @@
-import { Button, Form, message, Space, Modal, Table, Select } from "antd";
-import axios from "../../libraries/axiosClient";
-import React from "react";
+import React, { memo } from "react";
+import { useLocation } from "react-router-dom";
+import { Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import numeral from "numeral";
 
-import { useLocation } from "react-router-dom";
+import axios from "../../libraries/axiosClient";
 
 const apiName = "/orders";
 
-export default function OrderDetail() {
-  
+function OrderDetail() {
   const [products, setProducts] = React.useState<any[]>([]);
 
   const location = useLocation();
@@ -25,7 +24,7 @@ export default function OrderDetail() {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  });
 
   const columns: ColumnsType<any> = [
     {
@@ -36,9 +35,7 @@ export default function OrderDetail() {
         <Space direction="vertical">
           {orderDetails.map((detail: any) => (
             <div key={detail._id}>
-              <span>
-               {detail.product.name}
-              </span>
+              <span>{detail.product.name}</span>
               <br />
             </div>
           ))}
@@ -46,68 +43,61 @@ export default function OrderDetail() {
       ),
     },
     {
-        title: "Số lượng",
-        dataIndex: "orderDetails",
-        key: "orderDetails",
-        render: (orderDetails) => (
-          <Space direction="vertical">
-            {orderDetails.map((detail: any) => (
-              <div key={detail._id}>
-                <span>
-                  {detail.quantity}
-                  
-                </span>
-                <br />
-              </div>
-            ))}
-          </Space>
-        ),
-      },
-      {
-        title: "Discount",
-        dataIndex: "orderDetails",
-        key: "orderDetails",
-        render: (orderDetails) => (
-          <Space direction="vertical">
-            {orderDetails.map((detail: any) => (
-              <div key={detail._id}>
-                <span>
-                  {detail.discount}%
-                  
-                </span>
-                <br />
-              </div>
-            ))}
-          </Space>
-        ),
-      },
-      {
-        title: "Giá",
-        dataIndex: "orderDetails",
-        key: "orderDetails",
-        render: (orderDetails) => (
-          <Space direction="vertical">
-            {orderDetails.map((detail: any) => (
-              <div key={detail._id}>
-                <span>
-                {numeral( detail.price).format("0,0")}đ
-                 
-                </span>
-                <br />
-              </div>
-            ))}
-          </Space>
-        ),
-      },
-      
+      title: "Số lượng",
+      dataIndex: "orderDetails",
+      key: "orderDetails",
+      render: (orderDetails) => (
+        <Space direction="vertical">
+          {orderDetails.map((detail: any) => (
+            <div key={detail._id}>
+              <span>{detail.quantity}</span>
+              <br />
+            </div>
+          ))}
+        </Space>
+      ),
+    },
+    {
+      title: "Discount",
+      dataIndex: "orderDetails",
+      key: "orderDetails",
+      render: (orderDetails) => (
+        <Space direction="vertical">
+          {orderDetails.map((detail: any) => (
+            <div key={detail._id}>
+              <span>{detail.discount}%</span>
+              <br />
+            </div>
+          ))}
+        </Space>
+      ),
+    },
+    {
+      title: "Giá",
+      dataIndex: "orderDetails",
+      key: "orderDetails",
+      render: (orderDetails) => (
+        <Space direction="vertical">
+          {orderDetails.map((detail: any) => (
+            <div key={detail._id}>
+              <span>
+                {numeral(detail.quantity * detail.price).format("0,0")} đ
+              </span>
+              <br />
+            </div>
+          ))}
+        </Space>
+      ),
+    },
   ];
-  
 
   return (
     <>
-    <div>
+      <div>
         <Table rowKey="_id" dataSource={products} columns={columns} />
       </div>
     </>
   );
 }
+
+export default memo(OrderDetail);

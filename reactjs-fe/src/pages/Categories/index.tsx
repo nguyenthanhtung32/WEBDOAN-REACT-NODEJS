@@ -1,16 +1,16 @@
+import React, { useCallback, memo } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Form, message, Space, Modal, Input, Table } from "antd";
-import axios from "../../libraries/axiosClient";
-import React, { useCallback } from "react";
+import type { ColumnsType } from "antd/es/table";
 import {
   AppstoreAddOutlined,
   DeleteOutlined,
   EditOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import Styles from "./index.module.css";
-import { useNavigate } from "react-router-dom";
 
-import type { ColumnsType } from "antd/es/table";
+import axios from "../../libraries/axiosClient";
+import Styles from "./index.module.css";
 
 const apiName = "/categories";
 
@@ -18,7 +18,7 @@ const initialState = {
   categoryName: "",
 };
 
-export default function Categories() {
+function Categories() {
   const [categories, setCategories] = React.useState<any[]>([]);
 
   const [refresh, setRefresh] = React.useState<number>(0);
@@ -37,6 +37,7 @@ export default function Categories() {
 
   const [updateForm] = Form.useForm();
   const navigate = useNavigate();
+
   const create = () => {
     navigate("/category");
   };
@@ -242,7 +243,6 @@ export default function Categories() {
 
   return (
     <div style={{ padding: 24 }}>
-      {/* TABLE */}
       <Table
         rowKey="_id"
         dataSource={categories}
@@ -256,6 +256,7 @@ export default function Categories() {
         }}
       />
       {deleteConfirmModal}
+
       <Modal
         open={open}
         title="Cập nhật danh mục"
@@ -302,3 +303,5 @@ export default function Categories() {
     </div>
   );
 }
+
+export default memo(Categories);

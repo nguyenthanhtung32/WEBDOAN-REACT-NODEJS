@@ -1,4 +1,6 @@
-import React from "react";
+import React, { memo } from "react";
+import { useNavigate } from "react-router-dom";
+import type { ColumnsType } from "antd/es/table";
 import {
   Button,
   Form,
@@ -10,21 +12,19 @@ import {
   Input,
 } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-import type { ColumnsType } from "antd/es/table";
 
 import axios from "../../libraries/axiosClient";
 
 const apiName = "/orders";
 
-export default function Orders() {
+function Orders() {
   const [orders, setOrders] = React.useState<any[]>([]);
   const [employees, setEmployees] = React.useState([]);
-  const [customers, setCustomers] = React.useState<any[]>([]);
 
   const [refresh, setRefresh] = React.useState<number>(0);
   const [open, setOpen] = React.useState<boolean>(false);
   const [updateId, setUpdateId] = React.useState<number>(0);
+
   const [deleteOrderId, setOrderId] = React.useState<number>(0);
   const [showDeleteConfirm, setShowDeleteConfirm] =
     React.useState<boolean>(false);
@@ -204,25 +204,13 @@ export default function Orders() {
       });
   }, [refresh]);
 
-//   React.useEffect(() => {
-//     axios
-//       .get("/customers")
-//       .then((response) => {
-//         const { data } = response;
-//         setCustomers(data);
-//       })
-//       .catch((err) => {
-//         console.error(err);
-//       });
-//   }, [refresh]);
-
   const onUpdateFinish = (values: any) => {
     axios
       .patch(apiName + "/" + updateId, values)
       .then((response) => {
         setRefresh((f) => f + 1);
         updateForm.resetFields();
-        message.success("Cập nhật danh mục thành công!", 1.5);
+        message.success("Cập nhật đơn hàng thành công!", 1.5);
         setOpen(false);
       })
       .catch((err) => {});
@@ -234,9 +222,10 @@ export default function Orders() {
         <Table rowKey="_id" dataSource={orders} columns={columns} />
         {deleteConfirmModal}
       </div>
+
       <Modal
         open={open}
-        title="Cập nhật danh mục"
+        title="Cập nhật đơn hàng"
         onCancel={() => {
           setOpen(false);
         }}
@@ -291,3 +280,5 @@ export default function Orders() {
     </div>
   );
 }
+
+export default memo(Orders);

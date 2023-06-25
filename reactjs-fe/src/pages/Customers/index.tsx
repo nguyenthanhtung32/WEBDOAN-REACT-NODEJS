@@ -32,6 +32,11 @@ export default function Customers() {
 
   const [updateForm] = Form.useForm();
 
+  const formatDate = (dateString: any) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
   const onChangeFilter = useCallback((e: any) => {
     setFilter((prevState: any) => ({
       ...prevState,
@@ -215,6 +220,9 @@ export default function Customers() {
       title: "Ngày Sinh",
       dataIndex: "birthday",
       key: "birthday",
+      render: (text, record, index) => {
+        return <span key={text._id}>{formatDate(text)}</span>;
+      },
     },
     {
       width: "1%",

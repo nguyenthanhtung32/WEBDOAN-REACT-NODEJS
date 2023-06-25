@@ -1,11 +1,12 @@
-import { Button, Form, Input, InputNumber, message, Select } from "antd";
-import axios from "../../libraries/axiosClient";
-import React from "react";
+import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button, Form, Input, InputNumber, message, Select } from "antd";
+
+import axios from "../../libraries/axiosClient";
 
 const apiName = "/products";
 
-export default function Products() {
+function Products() {
   const [products, setProducts] = React.useState<any[]>([]);
   const [categories, setCategories] = React.useState<any[]>([]);
   const [suppliers, setSuppliers] = React.useState<any[]>([]);
@@ -181,3 +182,5 @@ export default function Products() {
     </div>
   );
 }
+
+export default memo(Products);

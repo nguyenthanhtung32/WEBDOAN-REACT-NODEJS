@@ -56,7 +56,6 @@ function ProductDetail(props) {
     }
   };
 
-  
   const handleBuyNow = async () => {
     setIsLoading(true);
     const token = localStorage.getItem("token");
@@ -68,14 +67,16 @@ function ProductDetail(props) {
     const decoded = jwt_decode(token);
     const customerId = decoded._id;
     console.log("customerId", customerId);
-  
-    const orderDetails = [{
-      productId: product._id,
-      quantity: quantity,
-      price: product.price - (product.price * product.discount / 100),
-      discount: product.discount,
-    }];
-  
+
+    const orderDetails = [
+      {
+        productId: product._id,
+        quantity: quantity,
+        price: product.price - (product.price * product.discount) / 100,
+        discount: product.discount,
+      },
+    ];
+
     router.push({
       pathname: "/buy-now",
       query: {
@@ -83,7 +84,6 @@ function ProductDetail(props) {
       },
     });
   };
-  
 
   return (
     <>
@@ -167,7 +167,10 @@ function ProductDetail(props) {
               >
                 {isLoading ? "Loading..." : "add to cart"}
               </div>
-              <div className={`${styles.btn} ${styles.btn_primary}`} onClick={handleBuyNow}>
+              <div
+                className={`${styles.btn} ${styles.btn_primary}`}
+                onClick={handleBuyNow}
+              >
                 {isLoading ? "Loading..." : "Mua Ngay"}
               </div>
             </div>
@@ -179,7 +182,9 @@ function ProductDetail(props) {
     </>
   );
 }
+
 export default memo(ProductDetail);
+
 export async function getStaticPaths() {
   return {
     paths: [],

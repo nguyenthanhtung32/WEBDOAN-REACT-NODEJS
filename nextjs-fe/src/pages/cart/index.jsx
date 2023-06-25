@@ -1,12 +1,12 @@
 import React, { memo } from "react";
-import { Button, Badge, Card, Col, Input, Row, message, Result } from "antd";
+import { Button, message, Result } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import numeral from "numeral";
 import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
-import styles from "./cart.module.css";
 
+import styles from "./cart.module.css";
 import axios from "../../libraries/axiosClient";
 
 function Cart() {
@@ -56,7 +56,7 @@ function Cart() {
           cart.products.some((product) => product.productId === productId)
         );
         const productIndex = newCarts[cartIndex].products.findIndex(
-          (product) => product.productId === productId
+          (product) => product.productId === productId,
         );
 
         newCarts[cartIndex].products.splice(productIndex, 1);
@@ -98,69 +98,70 @@ function Cart() {
           {carts.length > 0 &&
             carts.map((cart) => (
               <div key={cart._id}>
-                {cart.products.length > 0 ? (
-                  cart.products.map((product) => (
-                    <div class={styles.product} key={product.productId}>
-                      <div className={styles.product_image}>
-                        <img
-                          alt=""
-                          src={product.product.img}
-                          width="100px"
-                          height="100px"
-                        />
-                      </div>
-                      <div className={styles.product_details}>
-                        <div className="product_title">
-                          {product.product.name}
+                {cart.products.length > 0
+                  ? (
+                    cart.products.map((product) => (
+                      <div class={styles.product} key={product.productId}>
+                        <div className={styles.product_image}>
+                          <img
+                            alt=""
+                            src={product.product.img}
+                            width="100px"
+                            height="100px"
+                          />
                         </div>
-                        <div className="product_description">
-                          {product.product.description}
+                        <div className={styles.product_details}>
+                          <div className="product_title">
+                            {product.product.name}
+                          </div>
+                          <div className="product_description">
+                            {product.product.description}
+                          </div>
+                        </div>
+                        <div className={styles.product_price}>
+                          {numeral(product.product.price).format("0,0")} đ
+                        </div>
+                        <div className={styles.product_discount}>
+                          {numeral(product.product.discount).format("0,0")}%
+                        </div>
+                        <div class={styles.product_quantity}>
+                          <input
+                            type="number"
+                            value={product.quantity}
+                            min="1"
+                            onChange={(e) =>
+                              handleQuantityChange(
+                                product.product._id,
+                                parseInt(e.target.value),
+                              )}
+                          />
+                        </div>
+                        <div class={styles.product_removal}>
+                          <Button
+                            className={styles.remove_product}
+                            danger
+                            icon={<DeleteOutlined />}
+                            onClick={() =>
+                              handleRemoveCart(product.product._id)}
+                          />
+                        </div>
+                        <div class={styles.product_line_price}>
+                          {numeral(
+                            product.quantity *
+                              (product.product.price -
+                                (product.product.price *
+                                    product.product.discount *
+                                    1) /
+                                  100),
+                          ).format("0,0")} đ
                         </div>
                       </div>
-                      <div className={styles.product_price}>
-                        {numeral(product.product.price).format("0,0")} đ
-                      </div>
-                      <div className={styles.product_discount}>
-                        {numeral(product.product.discount).format("0,0")}%
-                      </div>
-                      <div class={styles.product_quantity}>
-                        <input
-                          type="number"
-                          value={product.quantity}
-                          min="1"
-                          onChange={(e) =>
-                            handleQuantityChange(
-                              product.product._id,
-                              parseInt(e.target.value)
-                            )
-                          }
-                        />
-                      </div>
-                      <div class={styles.product_removal}>
-                        <Button
-                          className={styles.remove_product}
-                          danger
-                          icon={<DeleteOutlined />}
-                          onClick={() => handleRemoveCart(product.product._id)}
-                        />
-                      </div>
-                      <div class={styles.product_line_price}>
-                        {numeral(
-                          product.quantity *
-                            (product.product.price -
-                              (product.product.price *
-                                product.product.discount *
-                                1) /
-                                100)
-                        ).format("0,0")} đ
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <Result
-                    title="Không có sản phẩm trong giỏ hàng"
-                    extra={
-                      <Button
+                    ))
+                  )
+                  : (
+                    <Result
+                      title="Không có sản phẩm trong giỏ hàng"
+                      extra={<Button
                         type="submit"
                         style={{
                           backgroundColor: "#1C86EE",
@@ -169,10 +170,9 @@ function Cart() {
                         key="console"
                       >
                         <Link href="/products">Tiếp Tục Mua Sắm</Link>
-                      </Button>
-                    }
-                  />
-                )}
+                      </Button>}
+                    />
+                  )}
               </div>
             ))}
         </div>
@@ -184,8 +184,7 @@ function Cart() {
                 <div key={cart._id}>
                   {cart.products.map((product) => {
                     // tính giá tiền của từng sản phẩm và cộng dồn vào biến totalPrice
-                    totalPrice +=
-                      product.quantity *
+                    totalPrice += product.quantity *
                       (product.product.price -
                         (product.product.price * product.product.discount * 1) /
                           100);

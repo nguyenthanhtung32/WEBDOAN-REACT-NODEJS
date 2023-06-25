@@ -1,15 +1,16 @@
-import React from "react";
-import { Button, Form, Input, message } from "antd";
-import axios from "../../libraries/axiosClient";
+import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button, Form, Input, message } from "antd";
+
+import axios from "../../libraries/axiosClient";
 
 const apiName = "/suppliers";
 
-export default function Suppliers() {
+function Suppliers() {
   const [suppliers, setSuppliers] = React.useState<any[]>([]);
   const [refresh, setRefresh] = React.useState<number>(0);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const [createForm] = Form.useForm();
 
   React.useEffect(() => {
@@ -26,15 +27,13 @@ export default function Suppliers() {
   }, [refresh, suppliers]);
 
   const onFinish = (values: any) => {
-    console.log(values);
-
     axios
       .post(apiName, values)
       .then((response) => {
         setRefresh((f) => f + 1);
         createForm.resetFields();
         message.success("Thêm mới nhà cung cấp thành công!", 1.5);
-        navigate("/suppliers")
+        navigate("/suppliers");
       })
       .catch((err) => {});
   };
@@ -96,3 +95,5 @@ export default function Suppliers() {
     </div>
   );
 }
+
+export default memo(Suppliers);

@@ -1,9 +1,11 @@
+import React, { memo } from "react";
 import {
   FacebookFilled,
   InstagramFilled,
   TwitterSquareFilled,
   YoutubeFilled,
 } from "@ant-design/icons";
+
 import styles from "./Footer.module.css";
 
 function Footer() {
@@ -70,4 +72,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default memo(Footer);
