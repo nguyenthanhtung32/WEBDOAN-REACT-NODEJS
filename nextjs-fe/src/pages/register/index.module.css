@@ -2,7 +2,6 @@
     height: 100vh;
     margin: 0 auto;
     position: relative;
-    /* background: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed); */
 }
 
 .form_1 {
@@ -100,7 +99,6 @@
     margin-left: 4px;
 }
 
-/* ....///Media query///..... */
 
 @media (max-width: 501px) {
 
@@ -117,7 +115,7 @@
 }
 
 @media (min-width: 765px) and (max-width: 1200px) {
-   
+
     .form_1 {
         width: 540px;
         height: 750px;

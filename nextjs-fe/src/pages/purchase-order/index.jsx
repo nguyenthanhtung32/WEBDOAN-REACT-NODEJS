@@ -23,6 +23,11 @@ const PurchaseOrder = () => {
       });
   }, []);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
   return (
     <div className={styles.container}>
       {orders?.length === 0
@@ -67,10 +72,13 @@ const PurchaseOrder = () => {
                           </div>
                           <div className={styles.product_bottom}>
                             <div className={styles.price}>
-                              {numeral(product.product.price).format("0,0")}đ
+                              đ{numeral(product.price).format("0,0")}
                             </div>
                             <div className={styles.priceDiscount}>
-                              {numeral(product.price).format("0,0")}đ
+                              đ
+                              {numeral(
+                                product.product.price * product.quantity,
+                              ).format("0,0")}
                             </div>
                           </div>
                         </div>
@@ -87,11 +95,15 @@ const PurchaseOrder = () => {
               </div>
               <div className={styles.status}>
                 <div className={styles.title}>Thời Gian Đặt Hàng</div>
-                <div className={styles.value}>{order.createdDate}</div>
+                <div className={styles.value}>
+                  {formatDate(order.createdDate)}
+                </div>
               </div>
               <div className={styles.status}>
                 <div className={styles.title}>Thời Gian Hoàn Thành</div>
-                <div className={styles.value}>{order.shippedDate}</div>
+                <div className={styles.value}>
+                  {formatDate(order.shippedDate)}
+                </div>
               </div>
             </div>
           ))

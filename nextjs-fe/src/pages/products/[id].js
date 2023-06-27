@@ -1,5 +1,4 @@
 import React, { memo } from "react";
-
 import numeral from "numeral";
 import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
@@ -15,8 +14,6 @@ function ProductDetail(props) {
 
   const [quantity, setQuantity] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [shippingAddress, setShippingAddress] = React.useState("");
-  const [description, setDescription] = React.useState("");
 
   const handleQuantityChange = (action) => {
     if (action === "increase") {
@@ -42,12 +39,15 @@ function ProductDetail(props) {
       const decoded = jwt_decode(token);
       const customerId = decoded._id;
 
-      const response = await axiosClient.post(`/carts`, {
+      await axiosClient.post(`/carts`, {
         customerId: customerId,
         productId: product._id,
         quantity: quantity,
       });
       setIsLoading(false);
+
+      axiosClient.get(`/carts/${customerId}`);
+
       message.success("Thêm sản phẩm vào giỏ hàng thành công!", 1.5);
     } catch (error) {
       console.log("error", error);
@@ -56,7 +56,7 @@ function ProductDetail(props) {
     }
   };
 
-  const handleBuyNow = async () => {
+  const handlePushBuyNow = async () => {
     setIsLoading(true);
     const token = localStorage.getItem("token");
     if (!token) {
@@ -64,9 +64,6 @@ function ProductDetail(props) {
       router.push("/login");
       return;
     }
-    const decoded = jwt_decode(token);
-    const customerId = decoded._id;
-    console.log("customerId", customerId);
 
     const orderDetails = [
       {
@@ -169,7 +166,7 @@ function ProductDetail(props) {
               </div>
               <div
                 className={`${styles.btn} ${styles.btn_primary}`}
-                onClick={handleBuyNow}
+                onClick={handlePushBuyNow}
               >
                 {isLoading ? "Loading..." : "Mua Ngay"}
               </div>

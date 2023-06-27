@@ -1,7 +1,7 @@
 import React, { useState, memo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Input, Button, Menu } from "antd";
+import { Menu } from "antd";
 import {
   ShoppingCartOutlined,
   SearchOutlined,
@@ -12,33 +12,14 @@ import jwt_decode from "jwt-decode";
 import styles from "./header.module.css";
 import axios from "../../libraries/axiosClient";
 
-const { SubMenu } = Menu;
-
 function Header() {
   const router = useRouter();
+  const { SubMenu } = Menu;
   const [isLogin, setIsLogin] = useState(false);
-  const [carts, setCarts] = React.useState(0);
-
-    // React.useEffect(() => {
-    //   const fetchCart = async () => {
-    //     try {
-    //       const token = localStorage.getItem("token");
-    //       const decoded = jwt_decode(token);
-    //       const customerId = decoded._id;
-    //       const response = await axios.get(`/carts/${customerId}`);
-    //       const data = response.data;
-
-    //       setCarts(data.payload.results);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   };
-    //   fetchCart();
-    // }, []);
 
   React.useEffect(() => {
     const token = localStorage.getItem("token");
-    
+
     if (token) {
       setIsLogin(true);
     }
@@ -125,8 +106,8 @@ function Header() {
                         Đăng xuất
                       </Menu.Item>
                       <Menu.Item key="3">
-                      <Link href="/purchase-order">Lịch sử mua hàng</Link>
-                    </Menu.Item>
+                        <Link href="/purchase-order">Lịch sử mua hàng</Link>
+                      </Menu.Item>
                     </SubMenu>
                   </Menu>
                 </div>

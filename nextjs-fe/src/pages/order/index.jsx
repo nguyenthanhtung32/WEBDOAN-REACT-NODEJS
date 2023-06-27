@@ -1,8 +1,8 @@
 import React, { memo } from "react";
-import { Input, message, Select } from "antd";
-import numeral from "numeral";
 import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
+import numeral from "numeral";
+import { Input, message, Select } from "antd";
 
 import styles from "./order.module.css";
 import axios from "../../libraries/axiosClient";
@@ -14,7 +14,6 @@ function Order() {
   const [description, setDescription] = React.useState("");
 
   const router = useRouter();
-  const { Option } = Select;
 
   React.useEffect(() => {
     const fetchCart = async () => {

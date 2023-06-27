@@ -1,6 +1,6 @@
 import React, { memo } from "react";
+import Link from "next/link";
 import { CheckCircleOutlined } from "@ant-design/icons";
-import { Button } from "antd";
 
 import styles from "./checkout.module.css";
 
@@ -8,8 +8,12 @@ function CheckOut() {
   return (
     <>
       <div className={styles.container}>
-        <CheckCircleOutlined /> Đặt hàng thành công!
-        <Button style={{ marginTop: "20px" }} href="/">Trang Chủ</Button>
+        <div>
+          <CheckCircleOutlined className={styles.icon} /> Đặt hàng thành công!
+        </div>
+        <Link href="/">
+          <button className={styles.btn}>Trang Chủ</button>
+        </Link>
       </div>
     </>
   );

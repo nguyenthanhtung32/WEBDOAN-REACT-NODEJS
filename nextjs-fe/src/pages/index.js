@@ -194,9 +194,6 @@ function Home() {
                   <Link href={`/products/${item._id}`}>
                     <Card
                       style={{ height: "100%", border: "1px solid #ccc" }}
-                      //   onClick={() => {
-                      //     onClickFilter(item._id);
-                      //   }}
                       hoverable
                       cover={
                         <img

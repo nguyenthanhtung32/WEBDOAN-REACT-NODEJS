@@ -1,10 +1,10 @@
 import React, { memo } from "react";
-import { Button, message, Result } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import numeral from "numeral";
 import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
+import { Button, message, Result } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 
 import styles from "./cart.module.css";
 import axios from "../../libraries/axiosClient";
@@ -75,7 +75,7 @@ function Cart() {
     }
   };
 
-  const handleAddOrder = async () => {
+  const handlePushOrder = async () => {
     router.push({
       pathname: "/order",
     });
@@ -106,16 +106,13 @@ function Cart() {
                           <img
                             alt=""
                             src={product.product.img}
-                            width="100px"
-                            height="100px"
+                            width="50px"
+                            height="50px"
                           />
                         </div>
                         <div className={styles.product_details}>
                           <div className="product_title">
                             {product.product.name}
-                          </div>
-                          <div className="product_description">
-                            {product.product.description}
                           </div>
                         </div>
                         <div className={styles.product_price}>
@@ -126,6 +123,7 @@ function Cart() {
                         </div>
                         <div class={styles.product_quantity}>
                           <input
+                            style={{ width: "80%" }}
                             type="number"
                             value={product.quantity}
                             min="1"
@@ -153,19 +151,22 @@ function Cart() {
                                     product.product.discount *
                                     1) /
                                   100),
-                          ).format("0,0")} đ
+                          ).format("0,0")}
+                          {" "}
+                          đ
                         </div>
                       </div>
                     ))
                   )
                   : (
                     <Result
-                      title="Không có sản phẩm trong giỏ hàng"
+                      title="Bạn chưa thêm sản phẩm vào giỏ hàng"
                       extra={<Button
                         type="submit"
                         style={{
-                          backgroundColor: "#1C86EE",
+                          backgroundColor: "rgb(242, 82, 32)",
                           color: "#fff",
+                          height: "30px",
                         }}
                         key="console"
                       >
@@ -198,7 +199,7 @@ function Cart() {
                 </div>
               );
             })}
-          <button className={styles.checkout} onClick={() => handleAddOrder()}>
+          <button className={styles.checkout} onClick={() => handlePushOrder()}>
             Đặt hàng
           </button>
         </div>

@@ -1,28 +1,26 @@
 import React, { memo } from "react";
 import { useRouter } from "next/router";
-import { Input, message } from "antd";
 import numeral from "numeral";
 import jwt_decode from "jwt-decode";
+import { Input, message } from "antd";
 
 import styles from "../order/order.module.css";
 import axios from "../../libraries/axiosClient";
 
-function Order() {
-  const [product, setProduct] = React.useState(null);
-
+function BuyNow() {
+  const router = useRouter();
+  const { orderDetails } = router.query;
   const [shippingAddress, setShippingAddress] = React.useState("");
   const [paymentType, setPaymentType] = React.useState("CASH");
   const [description, setDescription] = React.useState("");
 
-  const router = useRouter();
-  const { orderDetails } = router.query;
+  const [product, setProduct] = React.useState([]);
 
   React.useEffect(() => {
     if (orderDetails) {
       const parsedOrderDetails = JSON.parse(orderDetails);
       const productData = parsedOrderDetails[0];
       setProduct(productData);
-      console.log("productData", productData);
     }
   }, [orderDetails]);
 
@@ -35,7 +33,6 @@ function Order() {
     }
     const decoded = jwt_decode(token);
     const customerId = decoded._id;
-    console.log("customerId22", customerId);
 
     // Lấy dữ liệu từ query orderDetails
     const orderDetails = JSON.parse(router.query.orderDetails);
@@ -61,11 +58,9 @@ function Order() {
       if (response) {
         message.success("Đặt hàng thành công!", 1.5);
         router.push("/checkout");
-      } else {
-        message.success("Đặt hàng thất bại!", 1.5);
       }
     } catch (error) {
-      console.error(error);
+      message.error("Đặt hàng thất bại!", 1.5);
     }
   };
 
@@ -87,66 +82,49 @@ function Order() {
           <div className={styles.product_quantity}>Số Lượng</div>
           <div className={styles.product_line_price}>Thành Tiền</div>
         </div>
-        
         {product
           ? (
-            <div key={product._id} className={styles.product}>
-              <img className={styles.product_images} alt="" src={product.img}>
-              </img>
+            <div class={styles.product} key={product.productId}>
+              <div className={styles.product_image}>
+                <img alt="" src={product.img} width="50px" height="50px" />
+              </div>
               <div className={styles.product_details}>
-                <h2 className={styles.h2}>name :{product.name}</h2>
-                <h3 className={styles.h3}>
-                  Giá :
-                  <span
-                    style={{
-                      color: "#ff3300",
-                      fontWeight: "bold",
-                      marginLeft: "5px",
-                    }}
-                  >
-                    {numeral(
-                      product.price -
-                        (product.price * product.discount * 1) / 100,
-                    ).format("0,0")}
-                    ₫
-                  </span>
-                  {product.discount > 0 && (
-                    <span
-                      style={{
-                        textDecoration: "line-through",
-                        marginLeft: "8px",
-                      }}
-                    >
-                      {numeral(product.price).format("0,0")}₫
-                    </span>
-                  )}
-                </h3>
-                <h4 className={styles.h4}>
-                  Giảm giá : <span>
-                    {numeral(product.discount).format("0,0")}
-                  </span>
-                  {" "}
-                  %
-                </h4>
+                <div className="product_title">{product.name}</div>
+              </div>
+              <div className={styles.product_price}>
+                {numeral(product.price).format("0,0")}đ
+              </div>
+              <div className={styles.product_discount}>
+                {numeral(product.discount).format("0,0")}%
+              </div>
+              <div class={styles.product_quantity}>
+                <input
+                  type="number"
+                  value={product.quantity}
+                  min="1"
+                  onChange={(e) =>
+                    handleQuantityChange(
+                      product.product._id,
+                      parseInt(e.target.value),
+                    )}
+                />
+              </div>
 
-                <div className={styles.about}>
-                  <p className={styles.p}>
-                    Tồn kho: <span>{product.stock}</span>
-                  </p>
-                  <p className={styles.p}>
-                    Mã sản phẩm: <span>{product.productId}</span>
-                  </p>
-                </div>
-                <p className={styles.p}>số lượng :{product.quantity}</p>
+              <div class={styles.product_line_price}>
+                {numeral(
+                  product.quantity *
+                    (product.price -
+                      (product.price * product.discount * 1) / 100),
+                ).format("0,0")}
+                {" "}
+                đ
               </div>
             </div>
           )
           : (
             <span>Loading...</span>
           )}
-
         <Input
-          className={styles.chat}
           style={{ marginTop: "10px" }}
           placeholder="Lời nhắn cho người bán"
           value={description}
@@ -163,4 +141,4 @@ function Order() {
     </>
   );
 }
-export default memo(Order);
+export default memo(BuyNow);

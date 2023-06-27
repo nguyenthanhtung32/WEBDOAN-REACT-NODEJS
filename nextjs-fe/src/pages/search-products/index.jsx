@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import numeral from "numeral";
 import { UnorderedListOutlined } from "@ant-design/icons";
-
 import { Button, Card, Col, Input, message, Row } from "antd";
+
 import axios from "../../libraries/axiosClient";
 import styles from "./search-products.module.css";
 
@@ -82,7 +82,6 @@ function AllProducts({ products: initialProducts }) {
       .get(`${apiName}?${queryString}`)
       .then((response) => {
         const { data } = response;
-        console.log("response", response);
         setProducts(data.payload);
       })
       .catch((err) => {
@@ -159,7 +158,7 @@ function AllProducts({ products: initialProducts }) {
           onChange={onChangeFilter}
           allowClear
           className={styles.input_search}
-          style={{ borderBottom: "1px solid black"}}
+          style={{ borderBottom: "1px solid black" }}
         />
         <div className={styles.button}>
           <Button onClick={onSearch}>Tìm Kiếm</Button>
@@ -168,7 +167,7 @@ function AllProducts({ products: initialProducts }) {
       <div className={styles.card}>
         <Row
           gutter={[4, 4]}
-          style={{ display: "flex"}}
+          style={{ display: "flex" }}
         >
           {products.map((item) => (
             <Col
@@ -190,7 +189,7 @@ function AllProducts({ products: initialProducts }) {
                     flexDirection: "column",
                     justifyContent: "space-between",
                     // borderRadius: "8px",
-                    borderRadius : "0px",
+                    borderRadius: "0px",
                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                     width: "100%",
                   }}
@@ -223,7 +222,13 @@ function AllProducts({ products: initialProducts }) {
                     <div
                       className={styles.price}
                     >
-                      <span style={{ color: "#ff3300", fontWeight: "bold" ,  fontSize: "15px"}}>
+                      <span
+                        style={{
+                          color: "#ff3300",
+                          fontWeight: "bold",
+                          fontSize: "15px",
+                        }}
+                      >
                         {numeral(
                           item.price - (item.price * item.discount * 1) / 100,
                         ).format("0,0")}₫
@@ -233,7 +238,7 @@ function AllProducts({ products: initialProducts }) {
                           style={{
                             textDecoration: "line-through",
                             marginLeft: "4px",
-                            fontSize: "11px"
+                            fontSize: "11px",
                           }}
                         >
                           {numeral(item.price).format("0,0")}₫

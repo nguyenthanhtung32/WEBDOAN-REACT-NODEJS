@@ -27,8 +27,7 @@ function SignUp() {
     };
 
     try {
-      const response = await axios.post("/customers", payload);
-      console.log(response);
+      axios.post("/customers", payload);
       message.success("Đăng kí thành công!", 1.5);
       window.location.href = "/login";
     } catch (error) {
